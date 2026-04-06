@@ -30,7 +30,7 @@ jex/
 │   │   │   ├── audit/       # AuditLog — append-only event recorder
 │   │   │   └── vault/       # VaultStore — all Prisma queries
 │   │   └── prisma/schema.prisma
-│   └── web/          # Next.js 14 app (dashboard + landing + docs)
+│   └── web/          # Next.js 16 app (dashboard + landing + docs)
 │       ├── app/
 │       └── messages/ # next-intl i18n JSON (en.json, fr.json)
 ├── cli/              # Go binary — all jex commands
