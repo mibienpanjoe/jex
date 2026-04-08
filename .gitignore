@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Build output
+dist/
+.next/
+out/
+
+# Go binaries
+bin/
+*.exe
+
+# Database
+*.db
+*.db-journal
+
+# Prisma
+prisma/dev.db
+
+# OS
+.DS_Store
+Thumbs.db
