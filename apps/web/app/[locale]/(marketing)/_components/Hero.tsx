@@ -162,10 +162,7 @@ export function Hero() {
           <div className="animate-fade-up delay-300 flex flex-wrap items-center gap-3">
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white transition-colors"
-              style={{ background: "#6366F1" }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#4F46E5")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#6366F1")}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white transition-colors bg-[#6366F1] hover:bg-[#4F46E5]"
             >
               Get started for free
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

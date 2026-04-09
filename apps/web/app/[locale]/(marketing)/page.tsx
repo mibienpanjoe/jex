@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import { Header } from "./_components/Header";
 import { Hero } from "./_components/Hero";
 import { ProblemSection } from "./_components/ProblemSection";

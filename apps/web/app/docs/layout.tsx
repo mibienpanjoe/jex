@@ -1,5 +1,5 @@
 import "nextra-theme-docs/style.css";
-import { Layout } from "nextra-theme-docs";
+import { Layout, Navbar } from "nextra-theme-docs";
 import { getPageMap } from "nextra/page-map";
 
 export default async function DocsLayout({
@@ -12,33 +12,35 @@ export default async function DocsLayout({
   return (
     <div data-theme="light">
       <Layout
-        navbar={{
-          logoLink: "/",
-          logo: (
-            <span
-              className="flex items-center gap-2"
-              style={{ fontWeight: 700, letterSpacing: "-0.02em" }}
-            >
+        navbar={
+          <Navbar
+            logoLink="/"
+            logo={
               <span
-                style={{
-                  background: "#6366F1",
-                  color: "#fff",
-                  borderRadius: 6,
-                  width: 24,
-                  height: 24,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 13,
-                  fontWeight: 700,
-                }}
+                className="flex items-center gap-2"
+                style={{ fontWeight: 700, letterSpacing: "-0.02em" }}
               >
-                J
+                <span
+                  style={{
+                    background: "#6366F1",
+                    color: "#fff",
+                    borderRadius: 6,
+                    width: 24,
+                    height: 24,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 13,
+                    fontWeight: 700,
+                  }}
+                >
+                  J
+                </span>
+                Jex
               </span>
-              Jex
-            </span>
-          ),
-        }}
+            }
+          />
+        }
         pageMap={pageMap}
         docsRepositoryBase="https://github.com/jex-app/jex/tree/main/apps/web/content"
         footer={

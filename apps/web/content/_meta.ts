@@ -5,11 +5,9 @@ export default {
   },
   "getting-started": {
     title: "Getting Started",
-    type: "folder",
   },
   cli: {
     title: "CLI Reference",
-    type: "folder",
   },
   environments: {
     title: "Environments",
