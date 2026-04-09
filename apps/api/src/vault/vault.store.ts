@@ -147,3 +147,85 @@ export async function deleteSecret(
     where: { projectId_environment_key: { projectId, environment: env, key } },
   });
 }
+
+// ─── Member queries ───────────────────────────────────────────────────────────
+
+export async function listMembers(projectId: string) {
+  return prisma.projectMember.findMany({
+    where: { projectId },
+    include: { user: { select: { id: true, name: true, email: true } } },
+    orderBy: { joinedAt: "asc" },
+  });
+}
+
+export async function getMember(projectId: string, userId: string) {
+  return prisma.projectMember.findUnique({
+    where: { projectId_userId: { projectId, userId } },
+    include: { user: { select: { id: true, name: true, email: true } } },
+  });
+}
+
+export async function addMember(projectId: string, userId: string, role: Role) {
+  return prisma.projectMember.create({
+    data: { projectId, userId, role },
+  });
+}
+
+export async function updateMemberRole(
+  tx: PrismaTx,
+  projectId: string,
+  userId: string,
+  role: Role
+) {
+  return tx.projectMember.update({
+    where: { projectId_userId: { projectId, userId } },
+    data: { role },
+  });
+}
+
+export async function removeMember(tx: PrismaTx, projectId: string, userId: string) {
+  return tx.projectMember.delete({
+    where: { projectId_userId: { projectId, userId } },
+  });
+}
+
+// ─── CI/CD token queries ──────────────────────────────────────────────────────
+
+export async function listTokens(projectId: string) {
+  return prisma.cICDToken.findMany({
+    where: { projectId, revokedAt: null },
+    select: {
+      id: true,
+      projectId: true,
+      name: true,
+      scopedEnv: true,
+      createdAt: true,
+      lastUsedAt: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function createToken(
+  projectId: string,
+  name: string,
+  scopedEnv: string,
+  tokenHash: string
+) {
+  return prisma.cICDToken.create({
+    data: { projectId, name, scopedEnv, tokenHash },
+  });
+}
+
+export async function getTokenByHash(tokenHash: string) {
+  return prisma.cICDToken.findFirst({
+    where: { tokenHash },
+  });
+}
+
+export async function revokeToken(projectId: string, tokenId: string) {
+  return prisma.cICDToken.update({
+    where: { id: tokenId, projectId },
+    data: { revokedAt: new Date() },
+  });
+}
