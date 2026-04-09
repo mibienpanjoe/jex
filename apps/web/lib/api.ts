@@ -70,6 +70,37 @@ export const api = {
         body: JSON.stringify({ env, secrets }),
       }),
   },
+  members: {
+    list: (projectId: string) =>
+      apiFetch<Member[]>(`/api/v1/projects/${projectId}/members`),
+    invite: (projectId: string, email: string, role: string) =>
+      apiFetch<Member>(`/api/v1/projects/${projectId}/members`, {
+        method: "POST",
+        body: JSON.stringify({ email, role }),
+      }),
+    updateRole: (projectId: string, userId: string, role: string) =>
+      apiFetch<Member>(`/api/v1/projects/${projectId}/members/${userId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ role }),
+      }),
+    remove: (projectId: string, userId: string) =>
+      apiFetch<void>(`/api/v1/projects/${projectId}/members/${userId}`, {
+        method: "DELETE",
+      }),
+  },
+  tokens: {
+    list: (projectId: string) =>
+      apiFetch<CICDToken[]>(`/api/v1/projects/${projectId}/tokens`),
+    create: (projectId: string, name: string, scopedEnv: string) =>
+      apiFetch<{ token: string; meta: CICDToken }>(`/api/v1/projects/${projectId}/tokens`, {
+        method: "POST",
+        body: JSON.stringify({ name, scopedEnv }),
+      }),
+    revoke: (projectId: string, tokenId: string) =>
+      apiFetch<void>(`/api/v1/projects/${projectId}/tokens/${tokenId}`, {
+        method: "DELETE",
+      }),
+  },
   audit: {
     list: (projectId: string, params: { env?: string; limit?: number } = {}) => {
       const qs = new URLSearchParams();
@@ -115,4 +146,26 @@ export interface AuditEvent {
   env: string | null;
   key: string | null;
   timestamp: string;
+}
+
+export interface Member {
+  id: string;
+  projectId: string;
+  userId: string;
+  role: "Owner" | "Developer" | "ReadOnly";
+  joinedAt: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
+
+export interface CICDToken {
+  id: string;
+  projectId: string;
+  name: string;
+  scopedEnv: string;
+  createdAt: string;
+  lastUsedAt: string | null;
 }

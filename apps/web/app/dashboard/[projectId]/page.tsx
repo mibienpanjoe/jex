@@ -102,41 +102,29 @@ export default function ProjectPage() {
 
         {/* Quick links */}
         {activeEnv && (
-          <div style={{ display: "flex", gap: 10 }}>
-            <Link
-              href={`/dashboard/${projectId}/secrets`}
-              style={{
-                background: "#141720",
-                border: "1px solid #2A2F42",
-                borderRadius: 10,
-                padding: "20px 24px",
-                textDecoration: "none",
-                color: "#F0F2F8",
-                flex: 1,
-              }}
-            >
-              <div style={{ fontWeight: 600, fontSize: 14 }}>Secrets</div>
-              <div style={{ color: "#555A70", fontSize: 12, marginTop: 4 }}>
-                Manage encrypted secrets for {activeEnv}
-              </div>
-            </Link>
-            <Link
-              href={`/dashboard/${projectId}/audit`}
-              style={{
-                background: "#141720",
-                border: "1px solid #2A2F42",
-                borderRadius: 10,
-                padding: "20px 24px",
-                textDecoration: "none",
-                color: "#F0F2F8",
-                flex: 1,
-              }}
-            >
-              <div style={{ fontWeight: 600, fontSize: 14 }}>Audit log</div>
-              <div style={{ color: "#555A70", fontSize: 12, marginTop: 4 }}>
-                View all secret access and mutations
-              </div>
-            </Link>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            {[
+              { href: `/dashboard/${projectId}/secrets`, title: "Secrets", desc: `Manage encrypted secrets for ${activeEnv}` },
+              { href: `/dashboard/${projectId}/audit`, title: "Audit log", desc: "View all secret access and mutations" },
+              { href: `/dashboard/${projectId}/members`, title: "Members", desc: "Manage team members and roles" },
+              { href: `/dashboard/${projectId}/tokens`, title: "CI/CD tokens", desc: "Create and revoke environment-scoped tokens" },
+            ].map(({ href, title, desc }) => (
+              <Link
+                key={href}
+                href={href}
+                style={{
+                  background: "#141720",
+                  border: "1px solid #2A2F42",
+                  borderRadius: 10,
+                  padding: "20px 24px",
+                  textDecoration: "none",
+                  color: "#F0F2F8",
+                }}
+              >
+                <div style={{ fontWeight: 600, fontSize: 14 }}>{title}</div>
+                <div style={{ color: "#555A70", fontSize: 12, marginTop: 4 }}>{desc}</div>
+              </Link>
+            ))}
           </div>
         )}
       </div>
