@@ -6,7 +6,7 @@ import {
   renameProject,
   deleteProject,
 } from "../vault/vault.store";
-import { requireMember, requireOwner } from "../access/access.policy";
+import { requireMember, requireOwner, requireNotLastOwner } from "../access/access.policy";
 
 const router = Router();
 
@@ -68,6 +68,16 @@ router.delete("/:projectId", async (req: Request, res: Response) => {
 
   await requireOwner(userId, projectId, res);
   if (res.headersSent) return;
+
+  try {
+    await requireNotLastOwner(projectId, userId);
+  } catch (err: any) {
+    if (err?.code === "LAST_OWNER") {
+      res.status(409).json({ error: "LAST_OWNER" });
+      return;
+    }
+    throw err;
+  }
 
   await deleteProject(projectId);
   res.status(204).send();
