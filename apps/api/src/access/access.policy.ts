@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { PrismaClient, Role } from "@prisma/client";
+import { Actor } from "../types/express";
 
 const prisma = new PrismaClient();
 
@@ -66,5 +67,54 @@ export async function requireNotLastOwner(
     throw Object.assign(new Error("Cannot remove or demote the last owner"), {
       code: "LAST_OWNER",
     });
+  }
+}
+
+/**
+ * RBAC matrix for secret operations (FR-052):
+ *
+ * | Operation | Owner | Developer | ReadOnly | CICDToken |
+ * |-----------|-------|-----------|----------|-----------|
+ * | read      |  ✓    |    ✓      |    ✓     |    ✓ *    |
+ * | write     |  ✓    |    ✓      |    ✗     |    ✓ *    |
+ *
+ * * CICDToken: additionally restricted to actor.scopedEnv (INV-08)
+ *
+ * Throws ForbiddenError with code INSUFFICIENT_PERMISSIONS if denied.
+ */
+export async function authorize(
+  actor: Actor,
+  operation: "read" | "write",
+  projectId: string,
+  env: string
+): Promise<void> {
+  if (actor.actorType === "CICDToken") {
+    // CI/CD tokens are scoped to one environment (INV-08)
+    if (actor.scopedEnv !== env) {
+      throw Object.assign(
+        new Error("CI/CD token is not scoped to this environment"),
+        { code: "INSUFFICIENT_PERMISSIONS" }
+      );
+    }
+    // Tokens can always read and write within their scoped env
+    return;
+  }
+
+  // User actor — look up role
+  const membership = await prisma.projectMember.findUnique({
+    where: { projectId_userId: { projectId, userId: actor.userId } },
+  });
+
+  if (!membership) {
+    throw Object.assign(new Error("Not a member of this project"), {
+      code: "INSUFFICIENT_PERMISSIONS",
+    });
+  }
+
+  if (operation === "write" && membership.role === Role.ReadOnly) {
+    throw Object.assign(
+      new Error("ReadOnly members cannot write secrets"),
+      { code: "INSUFFICIENT_PERMISSIONS" }
+    );
   }
 }
