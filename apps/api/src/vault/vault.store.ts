@@ -1,5 +1,11 @@
 import { PrismaClient, Role } from "@prisma/client";
 
+// Prisma transaction client type (reused by callers)
+export type PrismaTx = Omit<
+  PrismaClient,
+  "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends"
+>;
+
 const prisma = new PrismaClient();
 
 const DEFAULT_ENVIRONMENTS = ["dev", "staging", "prod"];
@@ -88,5 +94,56 @@ export async function deleteEnvironment(projectId: string, name: string) {
 
   return prisma.environment.delete({
     where: { projectId_name: { projectId, name } },
+  });
+}
+
+// ─── Secret queries ───────────────────────────────────────────────────────────
+
+export async function listSecretKeys(projectId: string, env: string) {
+  return prisma.secret.findMany({
+    where: { projectId, environment: env },
+    select: { key: true, createdAt: true, updatedAt: true },
+    orderBy: { key: "asc" },
+  });
+}
+
+export async function getSecret(projectId: string, env: string, key: string) {
+  return prisma.secret.findUnique({
+    where: { projectId_environment_key: { projectId, environment: env, key } },
+    select: { ciphertext: true, iv: true },
+  });
+}
+
+export async function getAllSecrets(projectId: string, env: string) {
+  return prisma.secret.findMany({
+    where: { projectId, environment: env },
+    select: { key: true, ciphertext: true, iv: true },
+    orderBy: { key: "asc" },
+  });
+}
+
+export async function upsertSecret(
+  tx: PrismaTx,
+  projectId: string,
+  env: string,
+  key: string,
+  ciphertext: string,
+  iv: string
+) {
+  return tx.secret.upsert({
+    where: { projectId_environment_key: { projectId, environment: env, key } },
+    create: { projectId, environment: env, key, ciphertext, iv },
+    update: { ciphertext, iv },
+  });
+}
+
+export async function deleteSecret(
+  tx: PrismaTx,
+  projectId: string,
+  env: string,
+  key: string
+) {
+  return tx.secret.delete({
+    where: { projectId_environment_key: { projectId, environment: env, key } },
   });
 }
