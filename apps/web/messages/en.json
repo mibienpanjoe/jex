@@ -1,1 +1,78 @@
-{}
+{
+  "meta": {
+    "title": "Jex — Secrets Manager for Developer Teams",
+    "description": "Share secrets, not .env files. Jex is an open-source secrets manager with AES-256-GCM encryption, RBAC, and a Go CLI."
+  },
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How it works",
+    "docs": "Docs",
+    "github": "GitHub",
+    "login": "Login",
+    "getStarted": "Get started",
+    "getStartedFree": "Get started free"
+  },
+  "hero": {
+    "badge": "Open-source · MIT License",
+    "headline": "Share secrets,",
+    "headlineAccent": "not .env files.",
+    "subheadline": "Jex is an open-source secrets manager for developer teams. Encrypted vault, Go CLI, and a dashboard — without ever leaking a plaintext value.",
+    "ctaPrimary": "Get started for free",
+    "ctaSecondary": "View on GitHub",
+    "socialProof": "Free and self-hostable · AES-256-GCM encryption · RBAC · Audit trail"
+  },
+  "problem": {
+    "sectionLabel": "The problem",
+    "headline": "Your secrets are scattered.",
+    "subheadline": "Every team develops workarounds. None of them are secure. Jex fixes the root cause.",
+    "card1Headline": "No more Slack DMs",
+    "card1Body": "Sharing secrets over chat is a security incident waiting to happen. Jex gives every team member the exact secret they need — no message history to audit.",
+    "card2Headline": "No more stale credentials",
+    "card2Body": "One vault, one source of truth. When a secret rotates, every developer and every environment gets the update automatically — no manual sync.",
+    "card3Headline": "No more accidental commits",
+    "card3Body": "jex run injects secrets at process launch — in memory, never to disk. No .env file, no accidental git add, no exposure in your repository history."
+  },
+  "howItWorks": {
+    "sectionLabel": "How it works",
+    "headline": "Three steps. Start in five minutes.",
+    "step1Label": "Vault",
+    "step1Title": "Store secrets, encrypted",
+    "step1Desc": "Add secrets to the vault via the dashboard or CLI. Every value is encrypted with AES-256-GCM before it touches the database. The server never holds plaintext.",
+    "step2Label": "CLI",
+    "step2Title": "Pull or inject on demand",
+    "step2Desc": "Use jex secrets pull to write an atomic .env file, or jex run to inject directly into your process environment — no file ever written.",
+    "step3Label": "Run",
+    "step3Title": "Your app, with secrets",
+    "step3Desc": "Your process starts with secrets in its environment. Teammates, CI/CD pipelines, and different environments each get exactly the secrets they're authorized to see."
+  },
+  "features": {
+    "sectionLabel": "Features",
+    "headline": "Everything a team needs.",
+    "subheadline": "Built for developer teams who take security seriously without sacrificing developer experience.",
+    "feat1Title": "AES-256-GCM Encryption",
+    "feat1Desc": "Every secret is encrypted before it reaches the database. The server never holds plaintext values — your keys, your control.",
+    "feat2Title": "Role-Based Access Control",
+    "feat2Desc": "Owners, members, and read-only roles. Scope CI/CD tokens to a single environment. The last owner can never be removed.",
+    "feat3Title": "Environment Segmentation",
+    "feat3Desc": "dev, staging, prod — each environment is isolated. A member scoped to dev cannot read prod secrets, by design.",
+    "feat4Title": "Append-Only Audit Trail",
+    "feat4Desc": "Every read, write, and delete is recorded atomically alongside the secret operation. Immutable. Filterable. Always consistent.",
+    "feat5Title": "CI/CD Tokens",
+    "feat5Desc": "Create scoped tokens for pipelines with read-only access to a single environment. Revoke them instantly — no cache, no delay.",
+    "feat6Title": "Self-Hostable",
+    "feat6Desc": "Run the full stack with docker-compose up. Open-source, MIT licensed. No vendor lock-in, no data leaving your infrastructure."
+  },
+  "install": {
+    "sectionLabel": "Get started",
+    "headline": "Start in 5 minutes.",
+    "subheadline": "Install the CLI, log in, initialize your project, and pull secrets — all from your terminal.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "ctaPrimary": "Create free account",
+    "ctaDocs": "Read the docs \u2192"
+  },
+  "footer": {
+    "builtBy": "Built by",
+    "license": "MIT License"
+  }
+}

@@ -1,1 +1,78 @@
-{}
+{
+  "meta": {
+    "title": "Jex — Gestionnaire de secrets pour les équipes de développeurs",
+    "description": "Partagez des secrets, pas des fichiers .env. Jex est un gestionnaire de secrets open-source avec chiffrement AES-256-GCM, RBAC, et une CLI Go."
+  },
+  "nav": {
+    "features": "Fonctionnalités",
+    "howItWorks": "Comment ça marche",
+    "docs": "Documentation",
+    "github": "GitHub",
+    "login": "Connexion",
+    "getStarted": "Commencer",
+    "getStartedFree": "Commencer gratuitement"
+  },
+  "hero": {
+    "badge": "Open-source · Licence MIT",
+    "headline": "Partagez vos secrets,",
+    "headlineAccent": "pas vos fichiers .env.",
+    "subheadline": "Jex est un gestionnaire de secrets open-source pour les équipes de développeurs. Vault chiffré, CLI Go, et tableau de bord — sans jamais exposer une valeur en clair.",
+    "ctaPrimary": "Commencer gratuitement",
+    "ctaSecondary": "Voir sur GitHub",
+    "socialProof": "Gratuit et auto-hébergeable · Chiffrement AES-256-GCM · RBAC · Journal d'audit"
+  },
+  "problem": {
+    "sectionLabel": "Le problème",
+    "headline": "Vos secrets sont éparpillés.",
+    "subheadline": "Chaque équipe développe des contournements. Aucun n'est sécurisé. Jex résout le problème à la racine.",
+    "card1Headline": "Fini les DMs Slack",
+    "card1Body": "Partager des secrets par messagerie est un incident de sécurité qui attend de se produire. Jex donne à chaque membre de l'équipe exactement le secret dont il a besoin.",
+    "card2Headline": "Fini les identifiants obsolètes",
+    "card2Body": "Un vault, une seule source de vérité. Quand un secret est mis à jour, chaque développeur et chaque environnement reçoit la mise à jour automatiquement.",
+    "card3Headline": "Fini les commits accidentels",
+    "card3Body": "jex run injecte les secrets au lancement du processus — en mémoire, jamais sur le disque. Pas de fichier .env, pas de git add accidentel."
+  },
+  "howItWorks": {
+    "sectionLabel": "Comment ça marche",
+    "headline": "Trois étapes. Démarrez en cinq minutes.",
+    "step1Label": "Vault",
+    "step1Title": "Stockez vos secrets, chiffrés",
+    "step1Desc": "Ajoutez des secrets au vault via le tableau de bord ou la CLI. Chaque valeur est chiffrée avec AES-256-GCM avant d'atteindre la base de données.",
+    "step2Label": "CLI",
+    "step2Title": "Récupérez ou injectez à la demande",
+    "step2Desc": "Utilisez jex secrets pull pour écrire un fichier .env atomique, ou jex run pour injecter directement dans l'environnement de votre processus.",
+    "step3Label": "Exécution",
+    "step3Title": "Votre application, avec ses secrets",
+    "step3Desc": "Votre processus démarre avec les secrets dans son environnement. Chaque membre, pipeline CI/CD et environnement reçoit exactement les secrets autorisés."
+  },
+  "features": {
+    "sectionLabel": "Fonctionnalités",
+    "headline": "Tout ce dont une équipe a besoin.",
+    "subheadline": "Conçu pour les équipes de développeurs qui prennent la sécurité au sérieux sans sacrifier l'expérience développeur.",
+    "feat1Title": "Chiffrement AES-256-GCM",
+    "feat1Desc": "Chaque secret est chiffré avant d'atteindre la base de données. Le serveur ne détient jamais de valeurs en clair — vos clés, votre contrôle.",
+    "feat2Title": "Contrôle d'accès basé sur les rôles",
+    "feat2Desc": "Propriétaires, membres et rôles en lecture seule. Limitez les tokens CI/CD à un seul environnement. Le dernier propriétaire ne peut jamais être supprimé.",
+    "feat3Title": "Segmentation par environnement",
+    "feat3Desc": "dev, staging, prod — chaque environnement est isolé. Un membre limité à dev ne peut pas lire les secrets de prod, par conception.",
+    "feat4Title": "Journal d'audit immuable",
+    "feat4Desc": "Chaque lecture, écriture et suppression est enregistrée atomiquement. Immuable. Filtrable. Toujours cohérent.",
+    "feat5Title": "Tokens CI/CD",
+    "feat5Desc": "Créez des tokens limités pour les pipelines avec accès en lecture seule à un seul environnement. Révocation instantanée — pas de cache, pas de délai.",
+    "feat6Title": "Auto-hébergeable",
+    "feat6Desc": "Lancez la stack complète avec docker-compose up. Open-source, licence MIT. Pas d'enfermement propriétaire, pas de données quittant votre infrastructure."
+  },
+  "install": {
+    "sectionLabel": "Commencer",
+    "headline": "Démarrez en 5 minutes.",
+    "subheadline": "Installez la CLI, connectez-vous, initialisez votre projet et récupérez vos secrets — le tout depuis votre terminal.",
+    "copy": "Copier",
+    "copied": "Copié",
+    "ctaPrimary": "Créer un compte gratuit",
+    "ctaDocs": "Lire la documentation \u2192"
+  },
+  "footer": {
+    "builtBy": "Créé par",
+    "license": "Licence MIT"
+  }
+}
