@@ -1,0 +1,20 @@
+{
+  "name": "@jex/cli",
+  "version": "0.1.0",
+  "description": "Jex secrets manager CLI",
+  "license": "MIT",
+  "bin": {
+    "jex": "./bin/run.js"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "binaries/"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
