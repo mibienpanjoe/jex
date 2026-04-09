@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
+import { createHash } from "crypto";
 
 const prisma = new PrismaClient();
 
@@ -25,10 +26,12 @@ export async function authenticate(
 
   const token = authHeader.slice(7);
 
-  // CI/CD tokens are prefixed so we can dispatch without an extra DB round-trip
-  if (token.startsWith("cicd_")) {
+  // CI/CD tokens are prefixed jex_ — hash the value before DB lookup (INV-09, no cache)
+  if (token.startsWith("jex_")) {
+    const tokenHash = createHash("sha256").update(token).digest("hex");
+
     const cicdToken = await prisma.cICDToken.findFirst({
-      where: { tokenHash: token, revokedAt: null },
+      where: { tokenHash, revokedAt: null },
     });
 
     if (!cicdToken) {
