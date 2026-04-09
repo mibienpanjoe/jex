@@ -100,23 +100,43 @@ export default function ProjectPage() {
           ))}
         </div>
 
-        {/* Env content placeholder */}
+        {/* Quick links */}
         {activeEnv && (
-          <div
-            style={{
-              border: "1px dashed #2A2F42",
-              borderRadius: 10,
-              padding: "48px 32px",
-              textAlign: "center",
-              color: "#555A70",
-            }}
-          >
-            <p style={{ fontSize: 14 }}>
-              Secrets for <strong style={{ color: "#8B90A8" }}>{activeEnv}</strong> will appear here.
-            </p>
-            <p style={{ fontSize: 12, marginTop: 8 }}>
-              Secrets management is coming in Phase 3.
-            </p>
+          <div style={{ display: "flex", gap: 10 }}>
+            <Link
+              href={`/dashboard/${projectId}/secrets`}
+              style={{
+                background: "#141720",
+                border: "1px solid #2A2F42",
+                borderRadius: 10,
+                padding: "20px 24px",
+                textDecoration: "none",
+                color: "#F0F2F8",
+                flex: 1,
+              }}
+            >
+              <div style={{ fontWeight: 600, fontSize: 14 }}>Secrets</div>
+              <div style={{ color: "#555A70", fontSize: 12, marginTop: 4 }}>
+                Manage encrypted secrets for {activeEnv}
+              </div>
+            </Link>
+            <Link
+              href={`/dashboard/${projectId}/audit`}
+              style={{
+                background: "#141720",
+                border: "1px solid #2A2F42",
+                borderRadius: 10,
+                padding: "20px 24px",
+                textDecoration: "none",
+                color: "#F0F2F8",
+                flex: 1,
+              }}
+            >
+              <div style={{ fontWeight: 600, fontSize: 14 }}>Audit log</div>
+              <div style={{ color: "#555A70", fontSize: 12, marginTop: 4 }}>
+                View all secret access and mutations
+              </div>
+            </Link>
           </div>
         )}
       </div>

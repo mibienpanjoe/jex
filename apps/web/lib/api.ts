@@ -42,6 +42,44 @@ export const api = {
     list: (projectId: string) =>
       apiFetch<Env[]>(`/api/v1/projects/${projectId}/envs`),
   },
+  secrets: {
+    list: (projectId: string, env: string) =>
+      apiFetch<SecretMeta[]>(`/api/v1/projects/${projectId}/secrets?env=${encodeURIComponent(env)}`),
+    get: (projectId: string, env: string, key: string) =>
+      apiFetch<{ key: string; value: string }>(
+        `/api/v1/projects/${projectId}/secrets/${encodeURIComponent(key)}?env=${encodeURIComponent(env)}`
+      ),
+    create: (projectId: string, env: string, key: string, value: string) =>
+      apiFetch<{ key: string; env: string }>(`/api/v1/projects/${projectId}/secrets`, {
+        method: "POST",
+        body: JSON.stringify({ key, value, env }),
+      }),
+    update: (projectId: string, env: string, key: string, value: string) =>
+      apiFetch<{ key: string; env: string }>(
+        `/api/v1/projects/${projectId}/secrets/${encodeURIComponent(key)}?env=${encodeURIComponent(env)}`,
+        { method: "PUT", body: JSON.stringify({ value }) }
+      ),
+    delete: (projectId: string, env: string, key: string) =>
+      apiFetch<void>(
+        `/api/v1/projects/${projectId}/secrets/${encodeURIComponent(key)}?env=${encodeURIComponent(env)}`,
+        { method: "DELETE" }
+      ),
+    import: (projectId: string, env: string, secrets: Record<string, string>) =>
+      apiFetch<{ imported: number }>(`/api/v1/projects/${projectId}/secrets/import`, {
+        method: "POST",
+        body: JSON.stringify({ env, secrets }),
+      }),
+  },
+  audit: {
+    list: (projectId: string, params: { env?: string; limit?: number } = {}) => {
+      const qs = new URLSearchParams();
+      if (params.env) qs.set("env", params.env);
+      if (params.limit) qs.set("limit", String(params.limit));
+      return apiFetch<AuditEvent[]>(
+        `/api/v1/projects/${projectId}/audit?${qs.toString()}`
+      );
+    },
+  },
 };
 
 export interface Project {
@@ -59,4 +97,22 @@ export interface Env {
   isDefault: boolean;
   secretCount: number;
   createdAt: string;
+}
+
+export interface SecretMeta {
+  key: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AuditEvent {
+  id: string;
+  projectId: string;
+  actorId: string;
+  actorName: string;
+  actorType: "User" | "CICDToken";
+  operation: string;
+  env: string | null;
+  key: string | null;
+  timestamp: string;
 }
