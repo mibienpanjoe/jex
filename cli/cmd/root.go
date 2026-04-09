@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/jex-app/cli/cmd/secrets"
 	"github.com/spf13/cobra"
 )
 
@@ -28,5 +29,10 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.PersistentFlags().String("api-url", "https://api.jex.app", "Jex API base URL")
+	rootCmd.PersistentFlags().Bool("allow-insecure", false, "Allow HTTP (non-TLS) API connections")
+	rootCmd.PersistentFlags().String("env", "", "Override the default environment from .envault")
+
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(secrets.SecretsCmd)
 }
