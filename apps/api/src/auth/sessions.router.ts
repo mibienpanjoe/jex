@@ -6,7 +6,7 @@ const router = Router();
 
 // GET /api/v1/auth/sessions — list all non-revoked sessions for the current user
 router.get("/", async (req: Request, res: Response) => {
-  const actor = (req as any).actor as { userId: string };
+  const actor = req.actor as { userId: string };
 
   const sessions = await prisma.session.findMany({
     where: {
@@ -28,7 +28,7 @@ router.get("/", async (req: Request, res: Response) => {
 
 // DELETE /api/v1/auth/sessions/:sessionId — revoke a specific session
 router.delete("/:sessionId", async (req: Request, res: Response) => {
-  const actor = (req as any).actor as { userId: string };
+  const actor = req.actor as { userId: string };
   const sessionId = req.params["sessionId"] as string;
 
   const session = await prisma.session.findUnique({
