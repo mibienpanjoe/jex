@@ -1,3 +1,139 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ─── Design Tokens ─────────────────────────────────────────────────────── */
+
+:root {
+  --color-brand:        #6366F1;
+  --color-brand-hover:  #4F46E5;
+  --color-brand-subtle: #EEF2FF;
+  --color-success:      #22C55E;
+  --color-warning:      #F59E0B;
+  --color-danger:       #EF4444;
+  --color-prod:         #EF4444;
+  --color-staging:      #F59E0B;
+  --color-dev:          #22C55E;
+
+  --duration-instant: 80ms;
+  --duration-fast:   150ms;
+  --duration-base:   200ms;
+  --duration-slow:   300ms;
+  --ease-out:        cubic-bezier(0, 0, 0.2, 1);
+  --ease-in:         cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --color-bg-base:        #0D0F14;
+  --color-bg-surface:     #141720;
+  --color-bg-elevated:    #1C2030;
+  --color-border:         #2A2F42;
+  --color-border-subtle:  #1F2336;
+  --color-text-primary:   #F0F2F8;
+  --color-text-secondary: #8B90A8;
+  --color-text-muted:     #555A70;
+}
+
+[data-theme="light"] {
+  --color-bg-base:        #FAFAFA;
+  --color-bg-surface:     #FFFFFF;
+  --color-bg-elevated:    #F4F5F9;
+  --color-border:         #E2E4EC;
+  --color-text-primary:   #111318;
+  --color-text-secondary: #5A5F75;
+  --color-text-muted:     #A0A5B8;
+}
+
+/* ─── Base Styles ────────────────────────────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ─── Focus Rings ────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes modal-enter {
+    from { opacity: 0; transform: scale(0.97) translateY(4px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  @keyframes toast-slide-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  .animate-fade-up {
+    animation: fade-up var(--duration-slow) var(--ease-out) both;
+  }
+
+  .animate-fade-in {
+    animation: fade-in var(--duration-slow) var(--ease-out) both;
+  }
+
+  .animate-modal {
+    animation: modal-enter var(--duration-base) var(--ease-out);
+  }
+
+  .animate-toast {
+    animation: toast-slide-in var(--duration-base) var(--ease-out);
+  }
+
+  .cursor-blink {
+    animation: cursor-blink 1s step-end infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-modal,
+  .animate-toast {
+    animation: none;
+  }
+}
+
+/* ─── Utility Classes ────────────────────────────────────────────────────── */
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
