@@ -13,6 +13,8 @@ out/
 
 # Go binaries
 bin/
+# But track the npm wrapper entrypoint
+!packages/npm-wrapper/bin/
 *.exe
 
 # Database
