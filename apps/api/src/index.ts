@@ -7,6 +7,7 @@ import { projectsRouter } from "./projects/projects.router";
 import { envsRouter } from "./projects/envs.router";
 import { secretsRouter } from "./secrets/secrets.router";
 import { auditRouter } from "./audit/audit.router";
+import { membersRouter } from "./members/members.router";
 
 const app = express();
 const port = process.env.PORT ?? 3001;
@@ -25,6 +26,7 @@ app.use("/api/v1/projects", projectsRouter);
 app.use("/api/v1/projects/:projectId/envs", envsRouter);
 app.use("/api/v1/projects/:projectId/secrets", secretsRouter);
 app.use("/api/v1/projects/:projectId/audit", auditRouter);
+app.use("/api/v1/projects/:projectId/members", membersRouter);
 
 app.listen(port, () => {
   console.log(`API listening on port ${port}`);
