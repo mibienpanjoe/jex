@@ -1,8 +1,15 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import nextra from "nextra";
 
 const withNextIntl = createNextIntlPlugin();
 
-const nextConfig: NextConfig = {};
+const withNextra = nextra({
+  contentDirBasePath: "/docs",
+});
 
-export default withNextIntl(nextConfig);
+const nextConfig: NextConfig = {
+  pageExtensions: ["ts", "tsx", "md", "mdx"],
+};
+
+export default withNextIntl(withNextra(nextConfig));

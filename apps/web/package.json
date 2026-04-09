@@ -12,6 +12,8 @@
     "better-auth": "^1.6.1",
     "next": "^15.3.0",
     "next-intl": "^3.26.0",
+    "nextra": "^4.6.1",
+    "nextra-theme-docs": "^4.6.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
