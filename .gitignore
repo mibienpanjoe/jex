@@ -27,3 +27,7 @@ prisma/dev.db
 # OS
 .DS_Store
 Thumbs.db
+
+# Local-only project docs
+JEX_PROJECT_OVERVIEW.md
+IMPLEMENTATION_PLAN.md
