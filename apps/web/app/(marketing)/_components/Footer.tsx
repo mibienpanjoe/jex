@@ -36,7 +36,7 @@ export function Footer() {
         <nav className="flex items-center gap-5">
           {[
             { label: "Docs", href: "/docs" },
-            { label: "GitHub", href: "https://github.com/jex-app/jex", external: true },
+            { label: "GitHub", href: "https://github.com/mibienpanjoe/jex", external: true },
             { label: "Login", href: "/login" },
           ].map(({ label, href, external }) => (
             <Link

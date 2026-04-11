@@ -175,7 +175,7 @@ export function Hero() {
               </svg>
             </Link>
             <a
-              href="https://github.com/jex-app/jex"
+              href="https://github.com/mibienpanjoe/jex"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors border"

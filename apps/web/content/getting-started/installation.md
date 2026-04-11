@@ -28,7 +28,7 @@ jex version
 If you have Go 1.23+ installed:
 
 ```bash
-git clone https://github.com/jex-app/jex.git
+git clone https://github.com/mibienpanjoe/jex.git
 cd jex/cli
 go build -o jex .
 # Move the binary to somewhere on your PATH

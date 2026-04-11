@@ -48,7 +48,7 @@ export function Header() {
             { label: "Features", href: "#features" },
             { label: "How it works", href: "#how-it-works" },
             { label: "Docs", href: "/docs" },
-            { label: "GitHub", href: "https://github.com/jex-app/jex", external: true },
+            { label: "GitHub", href: "https://github.com/mibienpanjoe/jex", external: true },
           ].map(({ label, href, external }) => (
             <Link
               key={label}
@@ -126,7 +126,7 @@ export function Header() {
             { label: "Features", href: "#features" },
             { label: "How it works", href: "#how-it-works" },
             { label: "Docs", href: "/docs" },
-            { label: "GitHub", href: "https://github.com/jex-app/jex" },
+            { label: "GitHub", href: "https://github.com/mibienpanjoe/jex" },
             { label: "Login", href: "/login" },
           ].map(({ label, href }) => (
             <Link

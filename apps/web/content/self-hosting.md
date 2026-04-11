@@ -11,7 +11,7 @@ Jex is fully self-hostable. The entire stack runs with a single `docker-compose 
 ## Setup
 
 ```bash
-git clone https://github.com/jex-app/jex.git
+git clone https://github.com/mibienpanjoe/jex.git
 cd jex
 cp apps/api/.env.example apps/api/.env
 ```

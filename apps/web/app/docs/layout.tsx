@@ -42,7 +42,7 @@ export default async function DocsLayout({
           />
         }
         pageMap={pageMap}
-        docsRepositoryBase="https://github.com/jex-app/jex/tree/main/apps/web/content"
+        docsRepositoryBase="https://github.com/mibienpanjoe/jex/tree/main/apps/web/content"
         footer={
           <p style={{ fontSize: 13, color: "#A0A5B8" }}>
             MIT {new Date().getFullYear()} © Jex — Built by PARE Mibienpan Joseph

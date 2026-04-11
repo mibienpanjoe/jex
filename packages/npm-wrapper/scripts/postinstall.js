@@ -11,7 +11,7 @@ const fs = require("fs");
 const path = require("path");
 
 const VERSION = process.env.JEX_VERSION || "v0.1.0";
-const GITHUB_REPO = "jex-app/jex";
+const GITHUB_REPO = "mibienpanjoe/jex";
 
 const platform = process.platform;
 const arch = process.arch;
