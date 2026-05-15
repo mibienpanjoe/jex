@@ -10,6 +10,7 @@ const withNextra = nextra({
 
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
+  output: "standalone",
 };
 
 export default withNextIntl(withNextra(nextConfig));
