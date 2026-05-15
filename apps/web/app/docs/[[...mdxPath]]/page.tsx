@@ -1,7 +1,7 @@
-import { generateStaticParamsFor, importPage } from "nextra/pages";
+import { importPage } from "nextra/pages";
 import { useMDXComponents as getMDXComponents } from "../../../mdx-components";
 
-export const generateStaticParams = generateStaticParamsFor("mdxPath");
+export const dynamic = "force-dynamic";
 
 const Wrapper = getMDXComponents().wrapper!;
 
