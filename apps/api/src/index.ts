@@ -9,6 +9,7 @@ import { secretsRouter } from "./secrets/secrets.router";
 import { auditRouter } from "./audit/audit.router";
 import { membersRouter } from "./members/members.router";
 import { tokensRouter } from "./tokens/tokens.router";
+import { validateEnv } from "./config/validateEnv";
 
 const app = express();
 const port = process.env.PORT ?? 3001;
@@ -30,6 +31,13 @@ app.use("/api/v1/projects/:projectId/audit", auditRouter);
 app.use("/api/v1/projects/:projectId/members", membersRouter);
 app.use("/api/v1/projects/:projectId/tokens", tokensRouter);
 
-app.listen(port, () => {
-  console.log(`API listening on port ${port}`);
-});
+validateEnv()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`API listening on port ${port}`);
+    });
+  })
+  .catch((err: Error) => {
+    console.error(`Startup failed: ${err.message}`);
+    process.exit(1);
+  });
