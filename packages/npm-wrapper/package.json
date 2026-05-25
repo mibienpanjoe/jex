@@ -4,7 +4,7 @@
   "description": "Jex secrets manager CLI",
   "license": "MIT",
   "bin": {
-    "jex": "./bin/run.js"
+    "jex": "bin/run.js"
   },
   "scripts": {
     "postinstall": "node scripts/postinstall.js"
