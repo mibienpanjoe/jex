@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export function InstallBlock() {
   const [copied, setCopied] = useState(false);
-  const command = "npm install -g @jex/cli";
+  const command = "npm install -g jex-secrets";
 
   function handleCopy() {
     navigator.clipboard.writeText(command).then(() => {

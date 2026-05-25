@@ -105,7 +105,7 @@ Version: v1.0, 2026-04-06
 
 ### FR-060 — CLI
 
-- **FR-061**: The CLI binary MUST be named `jex` and installable globally via `npm install -g @jex/cli`.
+- **FR-061**: The CLI binary MUST be named `jex` and installable globally via `npm install -g jex-secrets`.
 - **FR-062**: `jex login` MUST authenticate the user. It SHOULD open a browser for OAuth. On headless environments, it MUST accept a token string via stdin or flag.
 - **FR-063**: `jex logout` MUST invalidate the local session token and delete it from disk.
 - **FR-064**: `jex init` MUST create a `.envault` file in the current directory containing: project name, default environment, and API base URL. This file MUST be committed to version control (it contains no secrets).

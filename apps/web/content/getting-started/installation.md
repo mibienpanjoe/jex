@@ -10,7 +10,7 @@
 The `jex` CLI is distributed as a compiled Go binary wrapped in an npm package.
 
 ```bash
-npm install -g @jex/cli
+npm install -g jex-secrets
 ```
 
 This installs the `jex` binary on your PATH. The postinstall script downloads

@@ -127,7 +127,7 @@ That's it. The API, web dashboard, and PostgreSQL database start together. Open 
 
 ```bash
 # npm (installs the correct binary for your platform automatically)
-npm install -g @jex/cli
+npm install -g jex-secrets
 
 # Verify
 jex --version

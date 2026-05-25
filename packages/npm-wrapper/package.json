@@ -1,5 +1,5 @@
 {
-  "name": "@jex/cli",
+  "name": "jex-secrets",
   "version": "0.1.0",
   "description": "Jex secrets manager CLI",
   "license": "MIT",

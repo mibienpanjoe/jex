@@ -5,7 +5,7 @@ This guide walks you through the complete developer workflow in under five minut
 ## 1. Install the CLI
 
 ```bash
-npm install -g @jex/cli
+npm install -g jex-secrets
 ```
 
 ## 2. Log in

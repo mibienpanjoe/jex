@@ -317,7 +317,7 @@ Dashboard (Owner)
 | VaultStore | Prisma ORM + PostgreSQL | Neon (serverless Postgres) |
 | AuditLog | Prisma ORM + PostgreSQL (`audit_events` table) | Neon |
 | Dashboard | Next.js 14, Tailwind CSS, next-intl | Vercel |
-| CLI Runner | Go, Cobra, Bubble Tea, lipgloss | npm (`@jex/cli`) binary |
+| CLI Runner | Go, Cobra, Bubble Tea, lipgloss | npm (`jex-secrets`) binary |
 
 ---
 
@@ -427,5 +427,5 @@ jex/
 
 ### ADR-04: npm package wraps Go binary
 **Decision:** The CLI is distributed as an npm package that ships pre-compiled Go binaries for each platform.
-**Rationale:** Most developers already have npm installed globally. Distributing via npm means `npm install -g @jex/cli` works without requiring users to install Go or download binaries manually. The npm package's `postinstall` script selects the correct binary for the user's platform.
+**Rationale:** Most developers already have npm installed globally. Distributing via npm means `npm install -g jex-secrets` works without requiring users to install Go or download binaries manually. The npm package's `postinstall` script selects the correct binary for the user's platform.
 **Consequence:** The npm package contains no JavaScript logic — it is a thin wrapper. The Go binary is the sole runtime artifact.

@@ -119,7 +119,7 @@ These come from `docs/03_design_contract_invariant.md` and `docs/04_transition_r
 - **Encryption:** Node.js built-in `crypto` with AES-256-GCM (not libsodium) — no native addon, auditable
 - **CLI language:** Go (not Node.js) — compiles to a self-contained binary; no runtime dependency for end users
 - **Audit atomicity:** `AuditLog.record()` runs inside the caller's Prisma transaction — not async, not fire-and-forget
-- **npm wraps Go binary:** `@jex/cli` npm package ships pre-compiled binaries; `postinstall` selects the right one by platform/arch
+- **npm wraps Go binary:** `jex-secrets` npm package ships pre-compiled binaries; `postinstall` selects the right one by platform/arch
 
 ---
 
