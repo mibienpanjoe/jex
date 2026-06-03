@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 const problems = [
   {
     icon: (
@@ -7,8 +9,8 @@ const problems = [
         <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
       </svg>
     ),
-    headline: "No more Slack DMs",
-    body: "Sharing secrets over chat is a security incident waiting to happen. Jex gives every team member the exact secret they need — no message history to audit.",
+    headlineKey: "card1Headline",
+    bodyKey: "card1Body",
   },
   {
     icon: (
@@ -16,8 +18,8 @@ const problems = [
         <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
       </svg>
     ),
-    headline: "No more stale credentials",
-    body: "One vault, one source of truth. When a secret rotates, every developer and every environment gets the update automatically — no manual sync.",
+    headlineKey: "card2Headline",
+    bodyKey: "card2Body",
   },
   {
     icon: (
@@ -26,12 +28,14 @@ const problems = [
         <path d="M4.93 4.93l14.14 14.14"/>
       </svg>
     ),
-    headline: "No more accidental commits",
-    body: "jex run injects secrets at process launch — in memory, never to disk. No .env file, no accidental git add, no exposure in your repository history.",
+    headlineKey: "card3Headline",
+    bodyKey: "card3Body",
   },
 ];
 
 export function ProblemSection() {
+  const t = useTranslations("problem");
+
   return (
     <section
       id="features"
@@ -45,24 +49,24 @@ export function ProblemSection() {
             className="inline-block text-xs font-semibold uppercase tracking-widest mb-3"
             style={{ color: "#6366F1" }}
           >
-            The problem
+            {t("sectionLabel")}
           </span>
           <h2
             className="text-3xl font-bold tracking-tight"
             style={{ color: "#111318", letterSpacing: "-0.03em" }}
           >
-            Your secrets are scattered.
+            {t("headline")}
           </h2>
           <p className="mt-3 text-base max-w-xl mx-auto" style={{ color: "#5A5F75" }}>
-            Every team develops workarounds. None of them are secure. Jex fixes the root cause.
+            {t("subheadline")}
           </p>
         </div>
 
         {/* 3-column grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {problems.map(({ icon, headline, body }) => (
+          {problems.map(({ icon, headlineKey, bodyKey }) => (
             <div
-              key={headline}
+              key={headlineKey}
               className="rounded-xl p-6 border transition-all"
               style={{
                 background: "#FFFFFF",
@@ -89,10 +93,10 @@ export function ProblemSection() {
                 className="text-base font-semibold mb-2"
                 style={{ color: "#111318" }}
               >
-                {headline}
+                {t(headlineKey)}
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: "#5A5F75" }}>
-                {body}
+                {t(bodyKey)}
               </p>
             </div>
           ))}

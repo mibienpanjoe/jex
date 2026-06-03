@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { withLocale } from "@/lib/i18n-path";
 
 export function InstallBlock() {
+  const locale = useLocale();
+  const t = useTranslations("install");
   const [copied, setCopied] = useState(false);
   const command = "npm install -g jex-secrets";
 
@@ -24,16 +28,16 @@ export function InstallBlock() {
           className="inline-block text-xs font-semibold uppercase tracking-widest mb-3"
           style={{ color: "#6366F1" }}
         >
-          Get started
+          {t("sectionLabel")}
         </span>
         <h2
           className="text-3xl font-bold mb-4"
           style={{ color: "#111318", letterSpacing: "-0.03em" }}
         >
-          Start in 5 minutes.
+          {t("headline")}
         </h2>
         <p className="text-base mb-10 max-w-md mx-auto" style={{ color: "#5A5F75" }}>
-          Install the CLI, log in, initialize your project, and pull secrets — all from your terminal.
+          {t("subheadline")}
         </p>
 
         {/* Install command */}
@@ -56,14 +60,14 @@ export function InstallBlock() {
               borderColor: copied ? "#6366F1" : "#E2E4EC",
               color: copied ? "#6366F1" : "#5A5F75",
             }}
-            aria-label="Copy install command"
+            aria-label={t("copy")}
           >
             {copied ? (
               <>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                Copied
+                {t("copied")}
               </>
             ) : (
               <>
@@ -71,7 +75,7 @@ export function InstallBlock() {
                   <rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.2"/>
                   <path d="M8 4V2a1 1 0 00-1-1H2a1 1 0 00-1 1v5a1 1 0 001 1h2" stroke="currentColor" strokeWidth="1.2"/>
                 </svg>
-                Copy
+                {t("copy")}
               </>
             )}
           </button>
@@ -105,18 +109,18 @@ export function InstallBlock() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
-            href="/register"
+            href={withLocale("/register", locale)}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium text-white transition-colors"
             style={{ background: "#6366F1" }}
           >
-            Create free account
+            {t("ctaPrimary")}
           </Link>
           <Link
             href="/docs/getting-started/quick-start"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium border transition-colors"
             style={{ background: "#FFFFFF", color: "#111318", borderColor: "#E2E4EC" }}
           >
-            Read the docs →
+            {t("ctaDocs")}
           </Link>
         </div>
       </div>

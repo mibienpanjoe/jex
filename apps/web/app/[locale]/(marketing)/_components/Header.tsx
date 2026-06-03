@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
+import { withLocale } from "@/lib/i18n-path";
+import { LanguageToggle } from "../../_components/LanguageToggle";
 
 export function Header() {
+  const locale = useLocale();
+  const t = useTranslations("nav");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -27,7 +32,7 @@ export function Header() {
     >
       <div className="mx-auto max-w-6xl px-6 h-14 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href={withLocale("/", locale)} className="flex items-center gap-2 group">
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-sm font-bold"
             style={{ background: "#6366F1" }}
@@ -45,10 +50,10 @@ export function Header() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1">
           {[
-            { label: "Features", href: "#features" },
-            { label: "How it works", href: "#how-it-works" },
-            { label: "Docs", href: "/docs" },
-            { label: "GitHub", href: "https://github.com/mibienpanjoe/jex", external: true },
+            { label: t("features"), href: "#features" },
+            { label: t("howItWorks"), href: "#how-it-works" },
+            { label: t("docs"), href: "/docs" },
+            { label: t("github"), href: "https://github.com/mibienpanjoe/jex", external: true },
           ].map(({ label, href, external }) => (
             <Link
               key={label}
@@ -73,21 +78,22 @@ export function Header() {
 
         {/* CTA group */}
         <div className="hidden md:flex items-center gap-3">
+          <LanguageToggle />
           <Link
-            href="/login"
+            href={withLocale("/login", locale)}
             className="text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
             style={{ color: "#5A5F75" }}
           >
-            Login
+            {t("login")}
           </Link>
           <Link
-            href="/register"
+            href={withLocale("/register", locale)}
             className="text-sm font-medium px-4 py-1.5 rounded-lg text-white transition-colors"
             style={{ background: "#6366F1" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#4F46E5")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#6366F1")}
           >
-            Get started
+            {t("getStarted")}
           </Link>
         </div>
 
@@ -123,11 +129,11 @@ export function Header() {
           style={{ background: "#FAFAFA", borderColor: "#E2E4EC" }}
         >
           {[
-            { label: "Features", href: "#features" },
-            { label: "How it works", href: "#how-it-works" },
-            { label: "Docs", href: "/docs" },
-            { label: "GitHub", href: "https://github.com/mibienpanjoe/jex" },
-            { label: "Login", href: "/login" },
+            { label: t("features"), href: "#features" },
+            { label: t("howItWorks"), href: "#how-it-works" },
+            { label: t("docs"), href: "/docs" },
+            { label: t("github"), href: "https://github.com/mibienpanjoe/jex" },
+            { label: t("login"), href: withLocale("/login", locale) },
           ].map(({ label, href }) => (
             <Link
               key={label}
@@ -140,13 +146,16 @@ export function Header() {
             </Link>
           ))}
           <Link
-            href="/register"
+            href={withLocale("/register", locale)}
             className="mt-2 py-2 px-4 text-sm font-medium text-center rounded-lg text-white"
             style={{ background: "#6366F1" }}
             onClick={() => setMenuOpen(false)}
           >
-            Get started free
+            {t("getStartedFree")}
           </Link>
+          <div className="pt-2">
+            <LanguageToggle />
+          </div>
         </div>
       )}
     </header>

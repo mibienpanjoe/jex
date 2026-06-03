@@ -3,7 +3,9 @@
 import { useEffect, useState, FormEvent } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { api, Project, Member } from "@/lib/api";
+import { withLocale } from "@/lib/i18n-path";
 
 const ROLE_COLORS: Record<string, string> = {
   Owner: "#6366F1",
@@ -14,6 +16,10 @@ const ROLE_COLORS: Record<string, string> = {
 const ROLES = ["Owner", "Developer", "ReadOnly"] as const;
 
 export default function MembersPage() {
+  const locale = useLocale();
+  const common = useTranslations("dashboard.common");
+  const projectT = useTranslations("dashboard.project");
+  const t = useTranslations("dashboard.members");
   const { projectId } = useParams<{ projectId: string }>();
   const router = useRouter();
 
@@ -47,13 +53,13 @@ export default function MembersPage() {
         setMembers(memberList);
         setMyRole(proj.role);
       } catch {
-        router.push("/dashboard");
+        router.push(withLocale("/dashboard", locale));
       } finally {
         setLoading(false);
       }
     }
     load();
-  }, [projectId, router]);
+  }, [locale, projectId, router]);
 
   const isOwner = myRole === "Owner";
   const ownerCount = members.filter((m) => m.role === "Owner").length;
@@ -70,9 +76,9 @@ export default function MembersPage() {
       setInviteRole("Developer");
     } catch (err: any) {
       const code = err?.body?.error ?? err.message;
-      if (code === "USER_NOT_FOUND") setInviteError("No account found with that email.");
-      else if (code === "ALREADY_MEMBER") setInviteError("This user is already a member.");
-      else setInviteError(err.message ?? "Failed to invite");
+      if (code === "USER_NOT_FOUND") setInviteError(t("userNotFound"));
+      else if (code === "ALREADY_MEMBER") setInviteError(t("alreadyMember"));
+      else setInviteError(err.message ?? t("inviteError"));
     } finally {
       setInviteLoading(false);
     }
@@ -84,7 +90,7 @@ export default function MembersPage() {
       const updated = await api.members.updateRole(projectId, userId, role);
       setMembers((prev) => prev.map((m) => (m.userId === userId ? { ...m, role: updated.role } : m)));
     } catch (err: any) {
-      alert(err?.body?.error === "LAST_OWNER" ? "Cannot demote the last owner." : err.message);
+      alert(err?.body?.error === "LAST_OWNER" ? t("cannotDemoteLastOwner") : err.message);
     } finally {
       setRoleChanging((r) => ({ ...r, [userId]: false }));
     }
@@ -97,7 +103,7 @@ export default function MembersPage() {
       setMembers((prev) => prev.filter((m) => m.userId !== userId));
       setRemoveTarget(null);
     } catch (err: any) {
-      alert(err?.body?.error === "LAST_OWNER" ? "Cannot remove the last owner." : err.message);
+      alert(err?.body?.error === "LAST_OWNER" ? t("cannotRemoveLastOwner") : err.message);
     } finally {
       setRemoveLoading(false);
     }
@@ -106,7 +112,7 @@ export default function MembersPage() {
   if (loading) {
     return (
       <div style={{ background: "#0D0F14", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#555A70", fontFamily: "Inter, system-ui, sans-serif" }}>
-        Loading…
+        {common("loading")}
       </div>
     );
   }
@@ -117,23 +123,23 @@ export default function MembersPage() {
     <div style={{ background: "#0D0F14", minHeight: "100vh", color: "#F0F2F8", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Top bar */}
       <div style={{ borderBottom: "1px solid #1F2336", padding: "0 32px", height: 56, display: "flex", alignItems: "center", gap: 12 }}>
-        <Link href="/dashboard" style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>Projects</Link>
+        <Link href={withLocale("/dashboard", locale)} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{projectT("projects")}</Link>
         <span style={{ color: "#2A2F42" }}>/</span>
-        <Link href={`/dashboard/${projectId}`} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{project.name}</Link>
+        <Link href={withLocale(`/dashboard/${projectId}`, locale)} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{project.name}</Link>
         <span style={{ color: "#2A2F42" }}>/</span>
-        <span style={{ fontWeight: 600, fontSize: 14 }}>Members</span>
+        <span style={{ fontWeight: 600, fontSize: 14 }}>{t("title")}</span>
       </div>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "36px 32px" }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
-          <span style={{ color: "#8B90A8", fontSize: 13 }}>{members.length} member{members.length !== 1 ? "s" : ""}</span>
+          <span style={{ color: "#8B90A8", fontSize: 13 }}>{t("count", { count: members.length })}</span>
           {isOwner && (
             <button
               onClick={() => setShowInvite(true)}
               style={{ background: "#6366F1", color: "#fff", border: "none", borderRadius: 8, padding: "7px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
             >
-              + Invite member
+              + {t("invite")}
             </button>
           )}
         </div>
@@ -180,7 +186,7 @@ export default function MembersPage() {
                       outline: "none",
                     }}
                   >
-                    {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+                    {ROLES.map((r) => <option key={r} value={r}>{t(`roles.${r}`)}</option>)}
                   </select>
                 ) : (
                   <RoleBadge role={member.role} />
@@ -190,25 +196,25 @@ export default function MembersPage() {
                 {isOwner && (
                   removeTarget === member.userId ? (
                     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                      <span style={{ color: "#EF4444", fontSize: 12 }}>Remove?</span>
+                      <span style={{ color: "#EF4444", fontSize: 12 }}>{t("confirmRemove")}</span>
                       <button
                         onClick={() => handleRemove(member.userId)}
                         disabled={removeLoading}
                         style={{ background: "#EF4444", color: "#fff", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 12, cursor: "pointer" }}
                       >
-                        {removeLoading ? "…" : "Yes"}
+                        {removeLoading ? "..." : common("yes")}
                       </button>
                       <button
                         onClick={() => setRemoveTarget(null)}
                         style={{ background: "transparent", border: "1px solid #2A2F42", borderRadius: 6, padding: "4px 10px", color: "#8B90A8", fontSize: 12, cursor: "pointer" }}
                       >
-                        Cancel
+                        {common("cancel")}
                       </button>
                     </div>
                   ) : (
                     <button
                       onClick={() => !isLastOwner && setRemoveTarget(member.userId)}
-                      title={isLastOwner ? "Cannot remove the last owner" : undefined}
+                      title={isLastOwner ? t("cannotRemoveLastOwner") : undefined}
                       style={{
                         background: "transparent",
                         border: "1px solid #2A2F42",
@@ -219,7 +225,7 @@ export default function MembersPage() {
                         cursor: isLastOwner ? "not-allowed" : "pointer",
                       }}
                     >
-                      Remove
+                      {common("remove")}
                     </button>
                   )
                 )}
@@ -239,10 +245,10 @@ export default function MembersPage() {
             onClick={(e) => e.stopPropagation()}
             style={{ background: "#141720", border: "1px solid #2A2F42", borderRadius: 12, padding: "32px 28px", width: 400 }}
           >
-            <h2 style={{ color: "#F0F2F8", fontSize: 17, fontWeight: 600, margin: "0 0 20px" }}>Invite member</h2>
+            <h2 style={{ color: "#F0F2F8", fontSize: 17, fontWeight: 600, margin: "0 0 20px" }}>{t("modalTitle")}</h2>
             <form onSubmit={handleInvite} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={{ color: "#8B90A8", fontSize: 12, fontWeight: 500 }}>Email</label>
+                <label style={{ color: "#8B90A8", fontSize: 12, fontWeight: 500 }}>{t("email")}</label>
                 <input
                   type="email"
                   value={inviteEmail}
@@ -253,22 +259,22 @@ export default function MembersPage() {
                 />
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={{ color: "#8B90A8", fontSize: 12, fontWeight: 500 }}>Role</label>
+                <label style={{ color: "#8B90A8", fontSize: 12, fontWeight: 500 }}>{t("role")}</label>
                 <select
                   value={inviteRole}
                   onChange={(e) => setInviteRole(e.target.value as typeof inviteRole)}
                   style={{ background: "#1C2030", border: "1px solid #2A2F42", borderRadius: 8, padding: "9px 12px", color: "#F0F2F8", fontSize: 14, outline: "none" }}
                 >
-                  {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+                  {ROLES.map((r) => <option key={r} value={r}>{t(`roles.${r}`)}</option>)}
                 </select>
               </div>
               {inviteError && <p style={{ color: "#EF4444", fontSize: 13, margin: 0 }}>{inviteError}</p>}
               <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 4 }}>
                 <button type="button" onClick={() => { setShowInvite(false); setInviteError(null); }} style={{ background: "transparent", border: "1px solid #2A2F42", borderRadius: 8, padding: "8px 16px", color: "#8B90A8", fontSize: 14, cursor: "pointer" }}>
-                  Cancel
+                  {common("cancel")}
                 </button>
                 <button type="submit" disabled={inviteLoading || !inviteEmail.trim()} style={{ background: "#6366F1", color: "#fff", border: "none", borderRadius: 8, padding: "8px 18px", fontSize: 14, fontWeight: 600, cursor: inviteLoading ? "not-allowed" : "pointer" }}>
-                  {inviteLoading ? "Inviting…" : "Invite"}
+                  {inviteLoading ? t("inviting") : t("invite")}
                 </button>
               </div>
             </form>
@@ -280,10 +286,11 @@ export default function MembersPage() {
 }
 
 function RoleBadge({ role }: { role: string }) {
+  const t = useTranslations("dashboard.members");
   const color = ROLE_COLORS[role] ?? "#8B90A8";
   return (
     <span style={{ fontSize: 11, fontWeight: 600, color, background: "#1C2030", border: `1px solid ${color}`, borderRadius: 5, padding: "3px 8px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-      {role}
+      {role === "Owner" || role === "Developer" || role === "ReadOnly" ? t(`roles.${role}`) : role}
     </span>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useTranslations } from "next-intl";
 import { api, Project } from "@/lib/api";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function NewProjectModal({ onClose, onCreated }: Props) {
+  const t = useTranslations("dashboard.projects.modal");
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -23,7 +25,7 @@ export function NewProjectModal({ onClose, onCreated }: Props) {
       const project = await api.projects.create(name.trim());
       onCreated(project);
     } catch (err: any) {
-      setError(err.message ?? "Failed to create project");
+      setError(err.message ?? t("error"));
       setLoading(false);
     }
   }
@@ -55,13 +57,13 @@ export function NewProjectModal({ onClose, onCreated }: Props) {
         }}
       >
         <h2 style={{ color: "#F0F2F8", fontSize: 17, fontWeight: 600, margin: "0 0 20px" }}>
-          New project
+          {t("title")}
         </h2>
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <label style={{ color: "#8B90A8", fontSize: 12, fontWeight: 500 }}>
-              Project name
+              {t("name")}
             </label>
             <input
               type="text"
@@ -97,7 +99,7 @@ export function NewProjectModal({ onClose, onCreated }: Props) {
                 cursor: "pointer",
               }}
             >
-              Cancel
+              {t("cancel")}
             </button>
             <button
               type="submit"
@@ -113,7 +115,7 @@ export function NewProjectModal({ onClose, onCreated }: Props) {
                 cursor: loading ? "not-allowed" : "pointer",
               }}
             >
-              {loading ? "Creating…" : "Create"}
+              {loading ? t("creating") : t("create")}
             </button>
           </div>
         </form>

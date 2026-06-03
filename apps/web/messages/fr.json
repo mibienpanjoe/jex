@@ -12,6 +12,168 @@
     "getStarted": "Commencer",
     "getStartedFree": "Commencer gratuitement"
   },
+  "auth": {
+    "email": "Email",
+    "password": "Mot de passe",
+    "continueGithub": "Continuer avec GitHub",
+    "continueGoogle": "Continuer avec Google",
+    "emailDivider": "ou continuer avec l'email",
+    "login": {
+      "subtitle": "Connectez-vous à votre compte",
+      "submit": "Se connecter",
+      "loading": "Connexion...",
+      "error": "La connexion a échoué",
+      "noAccount": "Pas encore de compte ?",
+      "createOne": "Créer un compte"
+    },
+    "register": {
+      "subtitle": "Créez votre compte",
+      "name": "Nom complet",
+      "submit": "Créer le compte",
+      "loading": "Création du compte...",
+      "error": "L'inscription a échoué",
+      "hasAccount": "Vous avez déjà un compte ?",
+      "signIn": "Se connecter"
+    }
+  },
+  "dashboard": {
+    "common": {
+      "loading": "Chargement...",
+      "cancel": "Annuler",
+      "create": "Créer",
+      "creating": "Création...",
+      "save": "Enregistrer",
+      "saving": "Enregistrement...",
+      "delete": "Supprimer",
+      "deleting": "Suppression...",
+      "edit": "Modifier",
+      "copy": "Copier",
+      "copied": "Copié !",
+      "yes": "Oui",
+      "remove": "Retirer"
+    },
+    "roles": {
+      "Owner": "Propriétaire",
+      "Developer": "Développeur",
+      "ReadOnly": "Lecture seule"
+    },
+    "projects": {
+      "title": "Projets",
+      "newProject": "Nouveau projet",
+      "created": "Créé le {date}",
+      "empty": "Aucun projet pour le moment.",
+      "createFirst": "Créer votre premier projet",
+      "modal": {
+        "title": "Nouveau projet",
+        "name": "Nom du projet",
+        "cancel": "Annuler",
+        "create": "Créer",
+        "creating": "Création...",
+        "error": "Impossible de créer le projet"
+      }
+    },
+    "project": {
+      "projects": "Projets",
+      "created": "Créé le {date}",
+      "links": {
+        "secrets": {
+          "title": "Secrets",
+          "desc": "Gérer les secrets chiffrés pour {env}"
+        },
+        "audit": {
+          "title": "Journal d'audit",
+          "desc": "Voir tous les accès et mutations de secrets"
+        },
+        "members": {
+          "title": "Membres",
+          "desc": "Gérer les membres et les rôles"
+        },
+        "tokens": {
+          "title": "Tokens CI/CD",
+          "desc": "Créer et révoquer des tokens limités à un environnement"
+        }
+      }
+    },
+    "secrets": {
+      "title": "Secrets",
+      "count": "{count, plural, =0 {0 secret} =1 {1 secret} other {# secrets}}",
+      "importEnv": "Importer .env",
+      "addSecret": "Ajouter un secret",
+      "key": "CLÉ",
+      "value": "VALEUR",
+      "createError": "Impossible de créer le secret",
+      "invalidImport": "Aucune paire CLÉ=VALEUR valide trouvée dans le fichier",
+      "importError": "L'import a échoué",
+      "imported": "{count, plural, =1 {1 secret importé} other {# secrets importés}}",
+      "empty": "Aucun secret dans {env}.",
+      "emptyHint": "Cliquez sur \"Ajouter un secret\" ou importez un fichier .env.",
+      "confirmDelete": "Supprimer {key} ?",
+      "hide": "Masquer",
+      "reveal": "Révéler"
+    },
+    "tokens": {
+      "title": "Tokens CI/CD",
+      "count": "{count, plural, =0 {0 token actif} =1 {1 token actif} other {# tokens actifs}}",
+      "newToken": "Nouveau token",
+      "createdTitle": "Token créé — copiez-le maintenant",
+      "createdBody": "Ce token ne sera plus affiché. Conservez-le dans un endroit sûr.",
+      "created": "Créé le {date}",
+      "lastUsed": "Dernière utilisation le {date}",
+      "empty": "Aucun token CI/CD actif.",
+      "emptyHint": "Créez un token pour l'utiliser dans votre pipeline CI.",
+      "confirmRevoke": "Révoquer ?",
+      "revoke": "Révoquer",
+      "modalTitle": "Nouveau token CI/CD",
+      "name": "Nom du token",
+      "scopedEnv": "Environnement limité",
+      "createError": "Impossible de créer le token",
+      "revokeError": "Impossible de révoquer le token"
+    },
+    "members": {
+      "title": "Membres",
+      "count": "{count, plural, =0 {0 membre} =1 {1 membre} other {# membres}}",
+      "invite": "Inviter un membre",
+      "modalTitle": "Inviter un membre",
+      "email": "Email",
+      "role": "Rôle",
+      "inviting": "Invitation...",
+      "confirmRemove": "Retirer ?",
+      "userNotFound": "Aucun compte trouvé avec cet email.",
+      "alreadyMember": "Cet utilisateur est déjà membre.",
+      "inviteError": "L'invitation a échoué",
+      "cannotDemoteLastOwner": "Impossible de rétrograder le dernier propriétaire.",
+      "cannotRemoveLastOwner": "Impossible de retirer le dernier propriétaire.",
+      "roles": {
+        "Owner": "Propriétaire",
+        "Developer": "Développeur",
+        "ReadOnly": "Lecture seule"
+      }
+    },
+    "audit": {
+      "title": "Journal d'audit",
+      "allEnvs": "Tous les environnements",
+      "allOperations": "Toutes les opérations",
+      "clearFilters": "Effacer les filtres",
+      "empty": "Aucun événement d'audit trouvé.",
+      "actor": "Acteur",
+      "operation": "Opération",
+      "environment": "Environnement",
+      "key": "Clé",
+      "time": "Heure",
+      "operations": {
+        "SECRET_CREATE": "Création",
+        "SECRET_READ": "Lecture",
+        "SECRET_READ_BULK": "Export",
+        "SECRET_UPDATE": "Mise à jour",
+        "SECRET_DELETE": "Suppression",
+        "MEMBER_INVITE": "Invitation",
+        "MEMBER_ROLE_CHANGE": "Changement de rôle",
+        "MEMBER_REMOVE": "Retrait",
+        "TOKEN_CREATE": "Token créé",
+        "TOKEN_REVOKE": "Token révoqué"
+      }
+    }
+  },
   "hero": {
     "badge": "Open-source · Licence MIT",
     "headline": "Partagez vos secrets,",
@@ -35,6 +197,7 @@
   "howItWorks": {
     "sectionLabel": "Comment ça marche",
     "headline": "Trois étapes. Démarrez en cinq minutes.",
+    "subheadline": "De la configuration au déploiement — une commande par étape, et rien en clair entre les deux.",
     "step1Label": "Vault",
     "step1Title": "Stockez vos secrets, chiffrés",
     "step1Desc": "Ajoutez des secrets au vault via le tableau de bord ou la CLI. Chaque valeur est chiffrée avec AES-256-GCM avant d'atteindre la base de données.",

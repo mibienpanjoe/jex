@@ -3,7 +3,9 @@
 import { useEffect, useState, FormEvent } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { api, Project, Env, CICDToken } from "@/lib/api";
+import { withLocale } from "@/lib/i18n-path";
 
 const ENV_COLORS: Record<string, string> = {
   prod: "#EF4444",
@@ -12,6 +14,10 @@ const ENV_COLORS: Record<string, string> = {
 };
 
 export default function TokensPage() {
+  const locale = useLocale();
+  const common = useTranslations("dashboard.common");
+  const projectT = useTranslations("dashboard.project");
+  const t = useTranslations("dashboard.tokens");
   const { projectId } = useParams<{ projectId: string }>();
   const router = useRouter();
 
@@ -48,13 +54,13 @@ export default function TokensPage() {
         setNewEnv(environments[0]?.name ?? "");
         setTokens(tokenList);
       } catch {
-        router.push("/dashboard");
+        router.push(withLocale("/dashboard", locale));
       } finally {
         setLoading(false);
       }
     }
     load();
-  }, [projectId, router]);
+  }, [locale, projectId, router]);
 
   async function handleCreate(e: FormEvent) {
     e.preventDefault();
@@ -68,7 +74,7 @@ export default function TokensPage() {
       setShowNew(false);
       setNewName("");
     } catch (err: any) {
-      setNewError(err.message ?? "Failed to create token");
+      setNewError(err.message ?? t("createError"));
     } finally {
       setNewLoading(false);
     }
@@ -81,7 +87,7 @@ export default function TokensPage() {
       setTokens((prev) => prev.filter((t) => t.id !== tokenId));
       setRevokeTarget(null);
     } catch (err: any) {
-      alert(err.message ?? "Failed to revoke token");
+      alert(err.message ?? t("revokeError"));
     } finally {
       setRevokeLoading(false);
     }
@@ -98,7 +104,7 @@ export default function TokensPage() {
   if (loading) {
     return (
       <div style={{ background: "#0D0F14", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#555A70", fontFamily: "Inter, system-ui, sans-serif" }}>
-        Loading…
+        {common("loading")}
       </div>
     );
   }
@@ -109,11 +115,11 @@ export default function TokensPage() {
     <div style={{ background: "#0D0F14", minHeight: "100vh", color: "#F0F2F8", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Top bar */}
       <div style={{ borderBottom: "1px solid #1F2336", padding: "0 32px", height: 56, display: "flex", alignItems: "center", gap: 12 }}>
-        <Link href="/dashboard" style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>Projects</Link>
+        <Link href={withLocale("/dashboard", locale)} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{projectT("projects")}</Link>
         <span style={{ color: "#2A2F42" }}>/</span>
-        <Link href={`/dashboard/${projectId}`} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{project.name}</Link>
+        <Link href={withLocale(`/dashboard/${projectId}`, locale)} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{project.name}</Link>
         <span style={{ color: "#2A2F42" }}>/</span>
-        <span style={{ fontWeight: 600, fontSize: 14 }}>CI/CD tokens</span>
+        <span style={{ fontWeight: 600, fontSize: 14 }}>{t("title")}</span>
       </div>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "36px 32px" }}>
@@ -127,7 +133,7 @@ export default function TokensPage() {
             marginBottom: 24,
           }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-              <span style={{ fontWeight: 600, fontSize: 14, color: "#22C55E" }}>Token created — copy it now</span>
+              <span style={{ fontWeight: 600, fontSize: 14, color: "#22C55E" }}>{t("createdTitle")}</span>
               <button
                 onClick={() => setCreatedToken(null)}
                 style={{ background: "transparent", border: "none", color: "#555A70", fontSize: 18, cursor: "pointer", lineHeight: 1 }}
@@ -136,7 +142,7 @@ export default function TokensPage() {
               </button>
             </div>
             <p style={{ color: "#8B90A8", fontSize: 12, margin: "0 0 12px" }}>
-              This token will not be shown again. Store it in a safe place.
+              {t("createdBody")}
             </p>
             <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
               <code style={{
@@ -167,7 +173,7 @@ export default function TokensPage() {
                   transition: "background 0.2s",
                 }}
               >
-                {copied ? "Copied!" : "Copy"}
+                {copied ? common("copied") : common("copy")}
               </button>
             </div>
           </div>
@@ -175,20 +181,20 @@ export default function TokensPage() {
 
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
-          <span style={{ color: "#8B90A8", fontSize: 13 }}>{tokens.length} active token{tokens.length !== 1 ? "s" : ""}</span>
+          <span style={{ color: "#8B90A8", fontSize: 13 }}>{t("count", { count: tokens.length })}</span>
           <button
             onClick={() => setShowNew(true)}
             style={{ background: "#6366F1", color: "#fff", border: "none", borderRadius: 8, padding: "7px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
           >
-            + New token
+            + {t("newToken")}
           </button>
         </div>
 
         {/* Token table */}
         {tokens.length === 0 ? (
           <div style={{ border: "1px dashed #2A2F42", borderRadius: 10, padding: "48px 32px", textAlign: "center", color: "#555A70" }}>
-            <p style={{ fontSize: 14 }}>No active CI/CD tokens.</p>
-            <p style={{ fontSize: 12, marginTop: 6 }}>Create a token to use in your CI pipeline.</p>
+            <p style={{ fontSize: 14 }}>{t("empty")}</p>
+            <p style={{ fontSize: 12, marginTop: 6 }}>{t("emptyHint")}</p>
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -203,8 +209,8 @@ export default function TokensPage() {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 14, fontWeight: 500, color: "#F0F2F8" }}>{token.name}</div>
                     <div style={{ fontSize: 12, color: "#555A70", marginTop: 2 }}>
-                      Created {new Date(token.createdAt).toLocaleDateString()}
-                      {token.lastUsedAt && ` · Last used ${new Date(token.lastUsedAt).toLocaleDateString()}`}
+                      {t("created", { date: new Date(token.createdAt).toLocaleDateString(locale) })}
+                      {token.lastUsedAt && ` · ${t("lastUsed", { date: new Date(token.lastUsedAt).toLocaleDateString(locale) })}`}
                     </div>
                   </div>
 
@@ -220,19 +226,19 @@ export default function TokensPage() {
                   {/* Revoke */}
                   {revokeTarget === token.id ? (
                     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                      <span style={{ color: "#EF4444", fontSize: 12 }}>Revoke?</span>
+                      <span style={{ color: "#EF4444", fontSize: 12 }}>{t("confirmRevoke")}</span>
                       <button
                         onClick={() => handleRevoke(token.id)}
                         disabled={revokeLoading}
                         style={{ background: "#EF4444", color: "#fff", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 12, cursor: "pointer" }}
                       >
-                        {revokeLoading ? "…" : "Yes"}
+                        {revokeLoading ? "..." : common("yes")}
                       </button>
                       <button
                         onClick={() => setRevokeTarget(null)}
                         style={{ background: "transparent", border: "1px solid #2A2F42", borderRadius: 6, padding: "4px 10px", color: "#8B90A8", fontSize: 12, cursor: "pointer" }}
                       >
-                        Cancel
+                        {common("cancel")}
                       </button>
                     </div>
                   ) : (
@@ -240,7 +246,7 @@ export default function TokensPage() {
                       onClick={() => setRevokeTarget(token.id)}
                       style={{ background: "transparent", border: "1px solid #7F1D1D", borderRadius: 6, padding: "4px 10px", color: "#EF4444", fontSize: 12, cursor: "pointer" }}
                     >
-                      Revoke
+                      {t("revoke")}
                     </button>
                   )}
                 </div>
@@ -260,10 +266,10 @@ export default function TokensPage() {
             onClick={(e) => e.stopPropagation()}
             style={{ background: "#141720", border: "1px solid #2A2F42", borderRadius: 12, padding: "32px 28px", width: 400 }}
           >
-            <h2 style={{ color: "#F0F2F8", fontSize: 17, fontWeight: 600, margin: "0 0 20px" }}>New CI/CD token</h2>
+            <h2 style={{ color: "#F0F2F8", fontSize: 17, fontWeight: 600, margin: "0 0 20px" }}>{t("modalTitle")}</h2>
             <form onSubmit={handleCreate} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={{ color: "#8B90A8", fontSize: 12, fontWeight: 500 }}>Token name</label>
+                <label style={{ color: "#8B90A8", fontSize: 12, fontWeight: 500 }}>{t("name")}</label>
                 <input
                   type="text"
                   value={newName}
@@ -274,7 +280,7 @@ export default function TokensPage() {
                 />
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={{ color: "#8B90A8", fontSize: 12, fontWeight: 500 }}>Scoped environment</label>
+                <label style={{ color: "#8B90A8", fontSize: 12, fontWeight: 500 }}>{t("scopedEnv")}</label>
                 <select
                   value={newEnv}
                   onChange={(e) => setNewEnv(e.target.value)}
@@ -286,10 +292,10 @@ export default function TokensPage() {
               {newError && <p style={{ color: "#EF4444", fontSize: 13, margin: 0 }}>{newError}</p>}
               <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 4 }}>
                 <button type="button" onClick={() => { setShowNew(false); setNewError(null); }} style={{ background: "transparent", border: "1px solid #2A2F42", borderRadius: 8, padding: "8px 16px", color: "#8B90A8", fontSize: 14, cursor: "pointer" }}>
-                  Cancel
+                  {common("cancel")}
                 </button>
                 <button type="submit" disabled={newLoading || !newName.trim()} style={{ background: "#6366F1", color: "#fff", border: "none", borderRadius: 8, padding: "8px 18px", fontSize: 14, fontWeight: 600, cursor: newLoading ? "not-allowed" : "pointer" }}>
-                  {newLoading ? "Creating…" : "Create"}
+                  {newLoading ? common("creating") : common("create")}
                 </button>
               </div>
             </form>

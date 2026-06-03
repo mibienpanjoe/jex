@@ -3,20 +3,22 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { api, Project, Env, AuditEvent } from "@/lib/api";
+import { withLocale } from "@/lib/i18n-path";
 
-const OPERATION_LABELS: Record<string, string> = {
-  SECRET_CREATE: "Create",
-  SECRET_READ: "Read",
-  SECRET_READ_BULK: "Export",
-  SECRET_UPDATE: "Update",
-  SECRET_DELETE: "Delete",
-  MEMBER_INVITE: "Invite",
-  MEMBER_ROLE_CHANGE: "Role change",
-  MEMBER_REMOVE: "Remove",
-  TOKEN_CREATE: "Token created",
-  TOKEN_REVOKE: "Token revoked",
-};
+const OPERATION_CODES = [
+  "SECRET_CREATE",
+  "SECRET_READ",
+  "SECRET_READ_BULK",
+  "SECRET_UPDATE",
+  "SECRET_DELETE",
+  "MEMBER_INVITE",
+  "MEMBER_ROLE_CHANGE",
+  "MEMBER_REMOVE",
+  "TOKEN_CREATE",
+  "TOKEN_REVOKE",
+] as const;
 
 const OPERATION_COLORS: Record<string, string> = {
   SECRET_CREATE: "#22C55E",
@@ -37,9 +39,11 @@ const ENV_COLORS: Record<string, string> = {
   dev: "#22C55E",
 };
 
-const ALL_OPERATIONS = Object.keys(OPERATION_LABELS);
-
 export default function AuditPage() {
+  const locale = useLocale();
+  const common = useTranslations("dashboard.common");
+  const projectT = useTranslations("dashboard.project");
+  const t = useTranslations("dashboard.audit");
   const { projectId } = useParams<{ projectId: string }>();
   const router = useRouter();
 
@@ -63,13 +67,13 @@ export default function AuditPage() {
         setProject(proj);
         setEnvs(environments);
       } catch {
-        router.push("/dashboard");
+        router.push(withLocale("/dashboard", locale));
       } finally {
         setLoading(false);
       }
     }
     load();
-  }, [projectId, router]);
+  }, [locale, projectId, router]);
 
   useEffect(() => {
     if (loading) return;
@@ -90,7 +94,7 @@ export default function AuditPage() {
   if (loading) {
     return (
       <div style={{ background: "#0D0F14", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#555A70", fontFamily: "Inter, system-ui, sans-serif" }}>
-        Loading…
+        {common("loading")}
       </div>
     );
   }
@@ -101,11 +105,11 @@ export default function AuditPage() {
     <div style={{ background: "#0D0F14", minHeight: "100vh", color: "#F0F2F8", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Top bar */}
       <div style={{ borderBottom: "1px solid #1F2336", padding: "0 32px", height: 56, display: "flex", alignItems: "center", gap: 12 }}>
-        <Link href="/dashboard" style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>Projects</Link>
+        <Link href={withLocale("/dashboard", locale)} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{projectT("projects")}</Link>
         <span style={{ color: "#2A2F42" }}>/</span>
-        <Link href={`/dashboard/${projectId}`} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{project.name}</Link>
+        <Link href={withLocale(`/dashboard/${projectId}`, locale)} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{project.name}</Link>
         <span style={{ color: "#2A2F42" }}>/</span>
-        <span style={{ fontWeight: 600, fontSize: 14 }}>Audit log</span>
+        <span style={{ fontWeight: 600, fontSize: 14 }}>{t("title")}</span>
       </div>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "36px 32px" }}>
@@ -116,7 +120,7 @@ export default function AuditPage() {
             onChange={(e) => setFilterEnv(e.target.value)}
             style={selectStyle}
           >
-            <option value="">All environments</option>
+            <option value="">{t("allEnvs")}</option>
             {envs.map((env) => (
               <option key={env.name} value={env.name}>{env.name}</option>
             ))}
@@ -126,9 +130,9 @@ export default function AuditPage() {
             onChange={(e) => setFilterOp(e.target.value)}
             style={selectStyle}
           >
-            <option value="">All operations</option>
-            {ALL_OPERATIONS.map((op) => (
-              <option key={op} value={op}>{OPERATION_LABELS[op]}</option>
+            <option value="">{t("allOperations")}</option>
+            {OPERATION_CODES.map((op) => (
+              <option key={op} value={op}>{t(`operations.${op}`)}</option>
             ))}
           </select>
           {(filterEnv || filterOp) && (
@@ -144,17 +148,17 @@ export default function AuditPage() {
                 cursor: "pointer",
               }}
             >
-              Clear filters
+              {t("clearFilters")}
             </button>
           )}
         </div>
 
         {/* Table */}
         {eventsLoading ? (
-          <p style={{ color: "#555A70", fontSize: 14 }}>Loading…</p>
+          <p style={{ color: "#555A70", fontSize: 14 }}>{common("loading")}</p>
         ) : events.length === 0 ? (
           <div style={{ border: "1px dashed #2A2F42", borderRadius: 10, padding: "48px 32px", textAlign: "center", color: "#555A70" }}>
-            <p style={{ fontSize: 14 }}>No audit events found.</p>
+            <p style={{ fontSize: 14 }}>{t("empty")}</p>
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -170,11 +174,11 @@ export default function AuditPage() {
               textTransform: "uppercase",
               letterSpacing: "0.5px",
             }}>
-              <span>Actor</span>
-              <span>Operation</span>
-              <span>Environment</span>
-              <span>Key</span>
-              <span>Time</span>
+              <span>{t("actor")}</span>
+              <span>{t("operation")}</span>
+              <span>{t("environment")}</span>
+              <span>{t("key")}</span>
+              <span>{t("time")}</span>
             </div>
             {events.map((event) => (
               <AuditRow key={event.id} event={event} />
@@ -187,8 +191,12 @@ export default function AuditPage() {
 }
 
 function AuditRow({ event }: { event: AuditEvent }) {
+  const locale = useLocale();
+  const t = useTranslations("dashboard.audit");
   const opColor = OPERATION_COLORS[event.operation] ?? "#8B90A8";
-  const opLabel = OPERATION_LABELS[event.operation] ?? event.operation;
+  const opLabel = OPERATION_CODES.includes(event.operation as (typeof OPERATION_CODES)[number])
+    ? t(`operations.${event.operation}`)
+    : event.operation;
   const envColor = event.env ? (ENV_COLORS[event.env] ?? "#6366F1") : "#2A2F42";
 
   return (
@@ -249,7 +257,7 @@ function AuditRow({ event }: { event: AuditEvent }) {
 
       {/* Timestamp */}
       <span style={{ fontSize: 12, color: "#555A70" }}>
-        {new Date(event.timestamp).toLocaleString()}
+        {new Date(event.timestamp).toLocaleString(locale)}
       </span>
     </div>
   );

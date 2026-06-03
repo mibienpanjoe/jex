@@ -3,9 +3,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { api, Project, Env } from "@/lib/api";
+import { withLocale } from "@/lib/i18n-path";
 
 export default function ProjectPage() {
+  const locale = useLocale();
+  const t = useTranslations("dashboard.project");
+  const common = useTranslations("dashboard.common");
   const { projectId } = useParams<{ projectId: string }>();
   const router = useRouter();
 
@@ -25,18 +30,18 @@ export default function ProjectPage() {
         setEnvs(environments);
         if (environments.length > 0) setActiveEnv(environments[0].name);
       } catch {
-        router.push("/dashboard");
+        router.push(withLocale("/dashboard", locale));
       } finally {
         setLoading(false);
       }
     }
     load();
-  }, [projectId, router]);
+  }, [locale, projectId, router]);
 
   if (loading) {
     return (
       <div style={{ background: "#0D0F14", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#555A70", fontFamily: "Inter, system-ui, sans-serif" }}>
-        Loading…
+        {common("loading")}
       </div>
     );
   }
@@ -53,8 +58,8 @@ export default function ProjectPage() {
     <div style={{ background: "#0D0F14", minHeight: "100vh", color: "#F0F2F8", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Top bar */}
       <div style={{ borderBottom: "1px solid #1F2336", padding: "0 32px", height: 56, display: "flex", alignItems: "center", gap: 12 }}>
-        <Link href="/dashboard" style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>
-          Projects
+        <Link href={withLocale("/dashboard", locale)} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>
+          {t("projects")}
         </Link>
         <span style={{ color: "#2A2F42" }}>/</span>
         <span style={{ fontWeight: 600, fontSize: 14 }}>{project.name}</span>
@@ -65,7 +70,7 @@ export default function ProjectPage() {
         <div style={{ marginBottom: 28 }}>
           <h1 style={{ fontSize: 22, fontWeight: 600, margin: 0 }}>{project.name}</h1>
           <p style={{ color: "#555A70", fontSize: 13, marginTop: 4 }}>
-            Created {new Date(project.createdAt).toLocaleDateString()}
+            {t("created", { date: new Date(project.createdAt).toLocaleDateString(locale) })}
           </p>
         </div>
 
@@ -104,10 +109,10 @@ export default function ProjectPage() {
         {activeEnv && (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             {[
-              { href: `/dashboard/${projectId}/secrets`, title: "Secrets", desc: `Manage encrypted secrets for ${activeEnv}` },
-              { href: `/dashboard/${projectId}/audit`, title: "Audit log", desc: "View all secret access and mutations" },
-              { href: `/dashboard/${projectId}/members`, title: "Members", desc: "Manage team members and roles" },
-              { href: `/dashboard/${projectId}/tokens`, title: "CI/CD tokens", desc: "Create and revoke environment-scoped tokens" },
+              { href: withLocale(`/dashboard/${projectId}/secrets`, locale), title: t("links.secrets.title"), desc: t("links.secrets.desc", { env: activeEnv }) },
+              { href: withLocale(`/dashboard/${projectId}/audit`, locale), title: t("links.audit.title"), desc: t("links.audit.desc") },
+              { href: withLocale(`/dashboard/${projectId}/members`, locale), title: t("links.members.title"), desc: t("links.members.desc") },
+              { href: withLocale(`/dashboard/${projectId}/tokens`, locale), title: t("links.tokens.title"), desc: t("links.tokens.desc") },
             ].map(({ href, title, desc }) => (
               <Link
                 key={href}

@@ -12,6 +12,168 @@
     "getStarted": "Get started",
     "getStartedFree": "Get started free"
   },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "continueGithub": "Continue with GitHub",
+    "continueGoogle": "Continue with Google",
+    "emailDivider": "or continue with email",
+    "login": {
+      "subtitle": "Sign in to your account",
+      "submit": "Sign in",
+      "loading": "Signing in...",
+      "error": "Login failed",
+      "noAccount": "Don't have an account?",
+      "createOne": "Create one"
+    },
+    "register": {
+      "subtitle": "Create your account",
+      "name": "Full name",
+      "submit": "Create account",
+      "loading": "Creating account...",
+      "error": "Registration failed",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in"
+    }
+  },
+  "dashboard": {
+    "common": {
+      "loading": "Loading...",
+      "cancel": "Cancel",
+      "create": "Create",
+      "creating": "Creating...",
+      "save": "Save",
+      "saving": "Saving...",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "edit": "Edit",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "yes": "Yes",
+      "remove": "Remove"
+    },
+    "roles": {
+      "Owner": "Owner",
+      "Developer": "Developer",
+      "ReadOnly": "Read-only"
+    },
+    "projects": {
+      "title": "Projects",
+      "newProject": "New project",
+      "created": "Created {date}",
+      "empty": "No projects yet.",
+      "createFirst": "Create your first project",
+      "modal": {
+        "title": "New project",
+        "name": "Project name",
+        "cancel": "Cancel",
+        "create": "Create",
+        "creating": "Creating...",
+        "error": "Failed to create project"
+      }
+    },
+    "project": {
+      "projects": "Projects",
+      "created": "Created {date}",
+      "links": {
+        "secrets": {
+          "title": "Secrets",
+          "desc": "Manage encrypted secrets for {env}"
+        },
+        "audit": {
+          "title": "Audit log",
+          "desc": "View all secret access and mutations"
+        },
+        "members": {
+          "title": "Members",
+          "desc": "Manage team members and roles"
+        },
+        "tokens": {
+          "title": "CI/CD tokens",
+          "desc": "Create and revoke environment-scoped tokens"
+        }
+      }
+    },
+    "secrets": {
+      "title": "Secrets",
+      "count": "{count, plural, =0 {0 secrets} =1 {1 secret} other {# secrets}}",
+      "importEnv": "Import .env",
+      "addSecret": "Add secret",
+      "key": "KEY",
+      "value": "VALUE",
+      "createError": "Failed to create secret",
+      "invalidImport": "No valid KEY=VALUE pairs found in file",
+      "importError": "Import failed",
+      "imported": "{count, plural, =1 {Imported 1 secret} other {Imported # secrets}}",
+      "empty": "No secrets in {env}.",
+      "emptyHint": "Click \"Add secret\" or import a .env file.",
+      "confirmDelete": "Delete {key}?",
+      "hide": "Hide",
+      "reveal": "Reveal"
+    },
+    "tokens": {
+      "title": "CI/CD tokens",
+      "count": "{count, plural, =0 {0 active tokens} =1 {1 active token} other {# active tokens}}",
+      "newToken": "New token",
+      "createdTitle": "Token created — copy it now",
+      "createdBody": "This token will not be shown again. Store it in a safe place.",
+      "created": "Created {date}",
+      "lastUsed": "Last used {date}",
+      "empty": "No active CI/CD tokens.",
+      "emptyHint": "Create a token to use in your CI pipeline.",
+      "confirmRevoke": "Revoke?",
+      "revoke": "Revoke",
+      "modalTitle": "New CI/CD token",
+      "name": "Token name",
+      "scopedEnv": "Scoped environment",
+      "createError": "Failed to create token",
+      "revokeError": "Failed to revoke token"
+    },
+    "members": {
+      "title": "Members",
+      "count": "{count, plural, =0 {0 members} =1 {1 member} other {# members}}",
+      "invite": "Invite member",
+      "modalTitle": "Invite member",
+      "email": "Email",
+      "role": "Role",
+      "inviting": "Inviting...",
+      "confirmRemove": "Remove?",
+      "userNotFound": "No account found with that email.",
+      "alreadyMember": "This user is already a member.",
+      "inviteError": "Failed to invite",
+      "cannotDemoteLastOwner": "Cannot demote the last owner.",
+      "cannotRemoveLastOwner": "Cannot remove the last owner.",
+      "roles": {
+        "Owner": "Owner",
+        "Developer": "Developer",
+        "ReadOnly": "Read-only"
+      }
+    },
+    "audit": {
+      "title": "Audit log",
+      "allEnvs": "All environments",
+      "allOperations": "All operations",
+      "clearFilters": "Clear filters",
+      "empty": "No audit events found.",
+      "actor": "Actor",
+      "operation": "Operation",
+      "environment": "Environment",
+      "key": "Key",
+      "time": "Time",
+      "operations": {
+        "SECRET_CREATE": "Create",
+        "SECRET_READ": "Read",
+        "SECRET_READ_BULK": "Export",
+        "SECRET_UPDATE": "Update",
+        "SECRET_DELETE": "Delete",
+        "MEMBER_INVITE": "Invite",
+        "MEMBER_ROLE_CHANGE": "Role change",
+        "MEMBER_REMOVE": "Remove",
+        "TOKEN_CREATE": "Token created",
+        "TOKEN_REVOKE": "Token revoked"
+      }
+    }
+  },
   "hero": {
     "badge": "Open-source · MIT License",
     "headline": "Share secrets,",
@@ -35,6 +197,7 @@
   "howItWorks": {
     "sectionLabel": "How it works",
     "headline": "Three steps. Start in five minutes.",
+    "subheadline": "From set to ship — one command per stage, and nothing plaintext in between.",
     "step1Label": "Vault",
     "step1Title": "Store secrets, encrypted",
     "step1Desc": "Add secrets to the vault via the dashboard or CLI. Every value is encrypted with AES-256-GCM before it touches the database. The server never holds plaintext.",

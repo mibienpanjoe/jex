@@ -1,12 +1,59 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { Suspense, useState, FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { isLocale, withLocale } from "@/lib/i18n-path";
 
-export default function LoginPage() {
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+
+function safeCallbackURL(value: string | null, locale: string): string {
+  const fallback = withLocale("/dashboard", locale);
+  if (!value) return fallback;
+  if (value.startsWith("/") && !value.startsWith("//")) {
+    const firstSegment = value.split("/")[1] ?? "";
+    return isLocale(firstSegment) ? value : withLocale(value, locale);
+  }
+
+  try {
+    const url = new URL(value);
+    const apiURL = new URL(API_BASE);
+    if (
+      url.origin === apiURL.origin &&
+      url.pathname === "/api/v1/auth/cli-callback"
+    ) {
+      return url.toString();
+    }
+  } catch {
+    return fallback;
+  }
+
+  return fallback;
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterForm />
+    </Suspense>
+  );
+}
+
+function RegisterForm() {
+  const locale = useLocale();
+  const t = useTranslations("auth.register");
+  const authT = useTranslations("auth");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackURL = safeCallbackURL(searchParams.get("callbackURL"), locale);
+  const defaultDashboard = withLocale("/dashboard", locale);
+  const loginHref =
+    callbackURL === defaultDashboard
+      ? withLocale("/login", locale)
+      : `${withLocale("/login", locale)}?callbackURL=${encodeURIComponent(callbackURL)}`;
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -17,22 +64,27 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
 
-    const { error: authError } = await authClient.signIn.email({
+    const { error: authError } = await authClient.signUp.email({
+      name,
       email,
       password,
     });
 
     if (authError) {
-      setError(authError.message ?? "Login failed");
+      setError(authError.message ?? t("error"));
       setLoading(false);
       return;
     }
 
-    router.push("/dashboard");
+    if (callbackURL.startsWith("http://") || callbackURL.startsWith("https://")) {
+      window.location.assign(callbackURL);
+    } else {
+      router.push(callbackURL);
+    }
   }
 
   async function handleOAuth(provider: "github" | "google") {
-    await authClient.signIn.social({ provider, callbackURL: "/dashboard" });
+    await authClient.signIn.social({ provider, callbackURL });
   }
 
   return (
@@ -59,7 +111,7 @@ export default function LoginPage() {
           Jex
         </span>
         <p style={{ color: "#8B90A8", fontSize: 14, marginTop: 6 }}>
-          Sign in to your account
+          {t("subtitle")}
         </p>
       </div>
 
@@ -67,12 +119,12 @@ export default function LoginPage() {
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
         <OAuthButton
           onClick={() => handleOAuth("github")}
-          label="Continue with GitHub"
+          label={authT("continueGithub")}
           icon={<GitHubIcon />}
         />
         <OAuthButton
           onClick={() => handleOAuth("google")}
-          label="Continue with Google"
+          label={authT("continueGoogle")}
           icon={<GoogleIcon />}
         />
       </div>
@@ -89,25 +141,32 @@ export default function LoginPage() {
         }}
       >
         <div style={{ flex: 1, height: 1, background: "#2A2F42" }} />
-        or continue with email
+        {authT("emailDivider")}
         <div style={{ flex: 1, height: 1, background: "#2A2F42" }} />
       </div>
 
-      {/* Email/password form */}
+      {/* Registration form */}
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         <Field
-          label="Email"
+          label={t("name")}
+          type="text"
+          value={name}
+          onChange={setName}
+          autoComplete="name"
+        />
+        <Field
+          label={authT("email")}
           type="email"
           value={email}
           onChange={setEmail}
           autoComplete="email"
         />
         <Field
-          label="Password"
+          label={authT("password")}
           type="password"
           value={password}
           onChange={setPassword}
-          autoComplete="current-password"
+          autoComplete="new-password"
         />
 
         {error && (
@@ -130,14 +189,14 @@ export default function LoginPage() {
             transition: "background 0.15s",
           }}
         >
-          {loading ? "Signing in…" : "Sign in"}
+          {loading ? t("loading") : t("submit")}
         </button>
       </form>
 
       <p style={{ color: "#8B90A8", fontSize: 13, textAlign: "center", marginTop: 24 }}>
-        Don&apos;t have an account?{" "}
-        <Link href="/register" style={{ color: "#6366F1" }}>
-          Create one
+        {t("hasAccount")}{" "}
+        <Link href={loginHref} style={{ color: "#6366F1" }}>
+          {t("signIn")}
         </Link>
       </p>
     </div>

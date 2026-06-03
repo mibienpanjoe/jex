@@ -2,10 +2,16 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { api, Project } from "@/lib/api";
+import { withLocale } from "@/lib/i18n-path";
+import { LanguageToggle } from "../_components/LanguageToggle";
 import { NewProjectModal } from "./NewProjectModal";
 
 export default function DashboardPage() {
+  const locale = useLocale();
+  const t = useTranslations("dashboard.projects");
+  const common = useTranslations("dashboard.common");
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -26,12 +32,13 @@ export default function DashboardPage() {
       {/* Top bar */}
       <div style={{ borderBottom: "1px solid #1F2336", padding: "0 32px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <span style={{ fontWeight: 700, fontSize: 18, letterSpacing: "-0.4px" }}>Jex</span>
+        <LanguageToggle />
       </div>
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 32px" }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 600, margin: 0 }}>Projects</h1>
+          <h1 style={{ fontSize: 22, fontWeight: 600, margin: 0 }}>{t("title")}</h1>
           <button
             onClick={() => setShowModal(true)}
             style={{
@@ -45,19 +52,19 @@ export default function DashboardPage() {
               cursor: "pointer",
             }}
           >
-            + New project
+            + {t("newProject")}
           </button>
         </div>
 
         {/* Project list */}
         {loading ? (
-          <p style={{ color: "#555A70" }}>Loading…</p>
+          <p style={{ color: "#555A70" }}>{common("loading")}</p>
         ) : projects.length === 0 ? (
           <EmptyState onNew={() => setShowModal(true)} />
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {projects.map((p) => (
-              <ProjectCard key={p.id} project={p} />
+            <ProjectCard key={p.id} project={p} locale={locale} />
             ))}
           </div>
         )}
@@ -76,10 +83,11 @@ export default function DashboardPage() {
   );
 }
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({ project, locale }: { project: Project; locale: string }) {
+  const t = useTranslations("dashboard.projects");
   return (
     <Link
-      href={`/dashboard/${project.id}`}
+      href={withLocale(`/dashboard/${project.id}`, locale)}
       style={{ textDecoration: "none" }}
     >
       <div
@@ -100,7 +108,7 @@ function ProjectCard({ project }: { project: Project }) {
         <div>
           <div style={{ fontWeight: 600, fontSize: 15, color: "#F0F2F8" }}>{project.name}</div>
           <div style={{ color: "#555A70", fontSize: 12, marginTop: 3 }}>
-            Created {new Date(project.createdAt).toLocaleDateString()}
+            {t("created", { date: new Date(project.createdAt).toLocaleDateString(locale) })}
           </div>
         </div>
         <RoleBadge role={project.role} />
@@ -110,6 +118,7 @@ function ProjectCard({ project }: { project: Project }) {
 }
 
 function RoleBadge({ role }: { role: Project["role"] }) {
+  const t = useTranslations("dashboard.roles");
   const colors: Record<string, string> = {
     Owner: "#6366F1",
     Developer: "#22C55E",
@@ -129,12 +138,14 @@ function RoleBadge({ role }: { role: Project["role"] }) {
         letterSpacing: "0.5px",
       }}
     >
-      {role}
+      {t(role)}
     </span>
   );
 }
 
 function EmptyState({ onNew }: { onNew: () => void }) {
+  const t = useTranslations("dashboard.projects");
+
   return (
     <div
       style={{
@@ -145,7 +156,7 @@ function EmptyState({ onNew }: { onNew: () => void }) {
         color: "#555A70",
       }}
     >
-      <p style={{ fontSize: 15, marginBottom: 16 }}>No projects yet.</p>
+      <p style={{ fontSize: 15, marginBottom: 16 }}>{t("empty")}</p>
       <button
         onClick={onNew}
         style={{
@@ -159,7 +170,7 @@ function EmptyState({ onNew }: { onNew: () => void }) {
           cursor: "pointer",
         }}
       >
-        Create your first project
+        {t("createFirst")}
       </button>
     </div>
   );

@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { withLocale } from "@/lib/i18n-path";
 
 export function Footer() {
+  const locale = useLocale();
+  const nav = useTranslations("nav");
+  const footer = useTranslations("footer");
+
   return (
     <footer
       className="border-t py-10"
@@ -19,7 +25,7 @@ export function Footer() {
             Jex
           </span>
           <span className="text-xs" style={{ color: "#A0A5B8" }}>
-            · MIT License · Built by{" "}
+            · {footer("license")} · {footer("builtBy")}{" "}
             <a
               href="https://github.com/mibienpanjoe"
               target="_blank"
@@ -34,10 +40,10 @@ export function Footer() {
 
         {/* Links */}
         <nav className="flex items-center gap-5">
-          {[
-            { label: "Docs", href: "/docs" },
-            { label: "GitHub", href: "https://github.com/mibienpanjoe/jex", external: true },
-            { label: "Login", href: "/login" },
+            {[
+            { label: nav("docs"), href: "/docs" },
+            { label: nav("github"), href: "https://github.com/mibienpanjoe/jex", external: true },
+            { label: nav("login"), href: withLocale("/login", locale) },
           ].map(({ label, href, external }) => (
             <Link
               key={label}

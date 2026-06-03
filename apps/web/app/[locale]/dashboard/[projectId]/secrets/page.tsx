@@ -3,7 +3,9 @@
 import { useEffect, useState, useRef, FormEvent, ChangeEvent } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { api, Project, Env, SecretMeta } from "@/lib/api";
+import { withLocale } from "@/lib/i18n-path";
 
 const ENV_COLORS: Record<string, string> = {
   prod: "#EF4444",
@@ -12,6 +14,10 @@ const ENV_COLORS: Record<string, string> = {
 };
 
 export default function SecretsPage() {
+  const locale = useLocale();
+  const common = useTranslations("dashboard.common");
+  const projectT = useTranslations("dashboard.project");
+  const t = useTranslations("dashboard.secrets");
   const { projectId } = useParams<{ projectId: string }>();
   const router = useRouter();
 
@@ -57,13 +63,13 @@ export default function SecretsPage() {
         setEnvs(environments);
         if (environments.length > 0) setActiveEnv(environments[0].name);
       } catch {
-        router.push("/dashboard");
+        router.push(withLocale("/dashboard", locale));
       } finally {
         setLoading(false);
       }
     }
     load();
-  }, [projectId, router]);
+  }, [locale, projectId, router]);
 
   useEffect(() => {
     if (!activeEnv) return;
@@ -112,7 +118,7 @@ export default function SecretsPage() {
       setAddValue("");
       setShowAdd(false);
     } catch (err: any) {
-      setAddError(err.message ?? "Failed to create secret");
+      setAddError(err.message ?? t("createError"));
     } finally {
       setAddLoading(false);
     }
@@ -162,7 +168,7 @@ export default function SecretsPage() {
         pairs[k] = v;
       }
       if (Object.keys(pairs).length === 0) {
-        setImportError("No valid KEY=VALUE pairs found in file");
+        setImportError(t("invalidImport"));
         return;
       }
       const { imported } = await api.secrets.import(projectId, activeEnv!, pairs);
@@ -174,9 +180,9 @@ export default function SecretsPage() {
           .map((k) => ({ key: k, createdAt: now, updatedAt: now }));
         return [...s, ...newKeys];
       });
-      alert(`Imported ${imported} secret${imported !== 1 ? "s" : ""}`);
+      alert(t("imported", { count: imported }));
     } catch (err: any) {
-      setImportError(err.message ?? "Import failed");
+      setImportError(err.message ?? t("importError"));
     } finally {
       if (fileRef.current) fileRef.current.value = "";
     }
@@ -185,7 +191,7 @@ export default function SecretsPage() {
   if (loading) {
     return (
       <div style={{ background: "#0D0F14", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#555A70", fontFamily: "Inter, system-ui, sans-serif" }}>
-        Loading…
+        {common("loading")}
       </div>
     );
   }
@@ -196,11 +202,11 @@ export default function SecretsPage() {
     <div style={{ background: "#0D0F14", minHeight: "100vh", color: "#F0F2F8", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Top bar */}
       <div style={{ borderBottom: "1px solid #1F2336", padding: "0 32px", height: 56, display: "flex", alignItems: "center", gap: 12 }}>
-        <Link href="/dashboard" style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>Projects</Link>
+        <Link href={withLocale("/dashboard", locale)} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{projectT("projects")}</Link>
         <span style={{ color: "#2A2F42" }}>/</span>
-        <Link href={`/dashboard/${projectId}`} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{project.name}</Link>
+        <Link href={withLocale(`/dashboard/${projectId}`, locale)} style={{ color: "#8B90A8", fontSize: 14, textDecoration: "none" }}>{project.name}</Link>
         <span style={{ color: "#2A2F42" }}>/</span>
-        <span style={{ fontWeight: 600, fontSize: 14 }}>Secrets</span>
+        <span style={{ fontWeight: 600, fontSize: 14 }}>{t("title")}</span>
       </div>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "36px 32px" }}>
@@ -235,7 +241,7 @@ export default function SecretsPage() {
         {/* Toolbar */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
           <span style={{ color: "#8B90A8", fontSize: 13 }}>
-            {secretsLoading ? "Loading…" : `${secrets.length} secret${secrets.length !== 1 ? "s" : ""}`}
+            {secretsLoading ? common("loading") : t("count", { count: secrets.length })}
           </span>
           <div style={{ display: "flex", gap: 8 }}>
             <label
@@ -249,7 +255,7 @@ export default function SecretsPage() {
                 cursor: "pointer",
               }}
             >
-              Import .env
+              {t("importEnv")}
               <input ref={fileRef} type="file" accept=".env,text/plain" style={{ display: "none" }} onChange={handleImport} />
             </label>
             <button
@@ -265,7 +271,7 @@ export default function SecretsPage() {
                 cursor: "pointer",
               }}
             >
-              + Add secret
+              + {t("addSecret")}
             </button>
           </div>
         </div>
@@ -291,7 +297,7 @@ export default function SecretsPage() {
             }}
           >
             <div style={{ display: "flex", flexDirection: "column", gap: 5, flex: "1 1 160px" }}>
-              <label style={{ color: "#8B90A8", fontSize: 11, fontWeight: 500 }}>KEY</label>
+              <label style={{ color: "#8B90A8", fontSize: 11, fontWeight: 500 }}>{t("key")}</label>
               <input
                 value={addKey}
                 onChange={(e) => setAddKey(e.target.value)}
@@ -301,7 +307,7 @@ export default function SecretsPage() {
               />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 5, flex: "2 1 260px" }}>
-              <label style={{ color: "#8B90A8", fontSize: 11, fontWeight: 500 }}>VALUE</label>
+              <label style={{ color: "#8B90A8", fontSize: 11, fontWeight: 500 }}>{t("value")}</label>
               <input
                 value={addValue}
                 onChange={(e) => setAddValue(e.target.value)}
@@ -311,9 +317,9 @@ export default function SecretsPage() {
             </div>
             {addError && <p style={{ color: "#EF4444", fontSize: 12, width: "100%", margin: 0 }}>{addError}</p>}
             <div style={{ display: "flex", gap: 8 }}>
-              <button type="button" onClick={() => { setShowAdd(false); setAddKey(""); setAddValue(""); }} style={cancelBtnStyle}>Cancel</button>
+              <button type="button" onClick={() => { setShowAdd(false); setAddKey(""); setAddValue(""); }} style={cancelBtnStyle}>{common("cancel")}</button>
               <button type="submit" disabled={addLoading || !addKey.trim() || !addValue.trim()} style={primaryBtnStyle}>
-                {addLoading ? "Saving…" : "Save"}
+                {addLoading ? common("saving") : common("save")}
               </button>
             </div>
           </form>
@@ -322,8 +328,8 @@ export default function SecretsPage() {
         {/* Secrets table */}
         {secretsLoading ? null : secrets.length === 0 ? (
           <div style={{ border: "1px dashed #2A2F42", borderRadius: 10, padding: "48px 32px", textAlign: "center", color: "#555A70" }}>
-            <p style={{ fontSize: 14 }}>No secrets in <strong style={{ color: "#8B90A8" }}>{activeEnv}</strong>.</p>
-            <p style={{ fontSize: 12, marginTop: 6 }}>Click "Add secret" or import a .env file.</p>
+            <p style={{ fontSize: 14 }}>{t("empty", { env: activeEnv })}</p>
+            <p style={{ fontSize: 12, marginTop: 6 }}>{t("emptyHint")}</p>
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -383,6 +389,9 @@ function SecretRow({
   onReveal, onHide, onEditStart, onEditChange, onEditSave, onEditCancel,
   onDeleteRequest, onDeleteConfirm, onDeleteCancel,
 }: SecretRowProps) {
+  const common = useTranslations("dashboard.common");
+  const t = useTranslations("dashboard.secrets");
+
   return (
     <div
       style={{
@@ -412,9 +421,9 @@ function SecretRow({
               style={{ ...inputStyle, flex: 1, fontFamily: "monospace", fontSize: 13 }}
             />
             <button onClick={onEditSave} disabled={editLoading} style={primaryBtnStyle}>
-              {editLoading ? "Saving…" : "Save"}
+              {editLoading ? common("saving") : common("save")}
             </button>
-            <button onClick={onEditCancel} style={cancelBtnStyle}>Cancel</button>
+            <button onClick={onEditCancel} style={cancelBtnStyle}>{common("cancel")}</button>
           </div>
         ) : revealedValue !== null ? (
           <span style={{ fontFamily: "monospace", fontSize: 13, color: "#8B90A8", wordBreak: "break-all" }}>
@@ -430,25 +439,25 @@ function SecretRow({
       {/* Actions */}
       {isDeleting ? (
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <span style={{ color: "#EF4444", fontSize: 12 }}>Delete {secret.key}?</span>
+          <span style={{ color: "#EF4444", fontSize: 12 }}>{t("confirmDelete", { key: secret.key })}</span>
           <button onClick={onDeleteConfirm} disabled={deleteLoading} style={{ ...primaryBtnStyle, background: "#EF4444" }}>
-            {deleteLoading ? "Deleting…" : "Delete"}
+            {deleteLoading ? common("deleting") : common("delete")}
           </button>
-          <button onClick={onDeleteCancel} style={cancelBtnStyle}>Cancel</button>
+          <button onClick={onDeleteCancel} style={cancelBtnStyle}>{common("cancel")}</button>
         </div>
       ) : (
         <div style={{ display: "flex", gap: 6 }}>
           {revealedValue !== null ? (
             <>
-              <ActionBtn onClick={onHide}>Hide</ActionBtn>
-              <ActionBtn onClick={onEditStart}>Edit</ActionBtn>
+              <ActionBtn onClick={onHide}>{t("hide")}</ActionBtn>
+              <ActionBtn onClick={onEditStart}>{common("edit")}</ActionBtn>
             </>
           ) : (
             <ActionBtn onClick={onReveal} disabled={isRevealing}>
-              {isRevealing ? "…" : "Reveal"}
+              {isRevealing ? "..." : t("reveal")}
             </ActionBtn>
           )}
-          <ActionBtn onClick={onDeleteRequest} danger>Delete</ActionBtn>
+          <ActionBtn onClick={onDeleteRequest} danger>{common("delete")}</ActionBtn>
         </div>
       )}
     </div>

@@ -1,27 +1,26 @@
+import { useTranslations } from "next-intl";
+
 const steps = [
   {
-    label: "Vault",
-    title: "Store secrets, encrypted",
-    description:
-      "Add secrets to the vault via the dashboard or CLI. Every value is encrypted with AES-256-GCM before it touches the database. The server never holds plaintext.",
+    labelKey: "step1Label",
+    titleKey: "step1Title",
+    descriptionKey: "step1Desc",
     command: "jex secrets set DATABASE_URL=postgres://...",
     result: "Set DATABASE_URL in dev.",
     resultTone: "success" as const,
   },
   {
-    label: "CLI",
-    title: "Pull or inject on demand",
-    description:
-      "jex secrets pull writes an atomic .env file, or jex run injects straight into your process environment — whichever your workflow needs.",
+    labelKey: "step2Label",
+    titleKey: "step2Title",
+    descriptionKey: "step2Desc",
     command: "jex run -- node server.js",
     result: "12 secrets injected · no disk write",
     resultTone: "success" as const,
   },
   {
-    label: "Run",
-    title: "No plaintext on disk",
-    description:
-      "Your process runs with its secrets in memory only. Teammates, CI pipelines, and each environment get exactly the scope they're authorized to read.",
+    labelKey: "step3Label",
+    titleKey: "step3Title",
+    descriptionKey: "step3Desc",
     command: "cat .env",
     result: "cat: .env: No such file or directory",
     resultTone: "muted" as const,
@@ -29,6 +28,8 @@ const steps = [
 ];
 
 export function HowItWorks() {
+  const t = useTranslations("howItWorks");
+
   return (
     <section
       id="how-it-works"
@@ -42,27 +43,26 @@ export function HowItWorks() {
             className="inline-block text-xs font-semibold uppercase tracking-widest mb-3"
             style={{ color: "#6366F1" }}
           >
-            How it works
+            {t("sectionLabel")}
           </span>
           <h2
             className="text-3xl font-bold tracking-tight"
             style={{ color: "#111318", letterSpacing: "-0.03em" }}
           >
-            Three steps. Start in five minutes.
+            {t("headline")}
           </h2>
           <p
             className="mt-3 text-base max-w-xl mx-auto"
             style={{ color: "#5A5F75" }}
           >
-            From set to ship — one command per stage, and nothing plaintext in
-            between.
+            {t("subheadline")}
           </p>
         </div>
 
         {/* Steps grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {steps.map((step, i) => (
-            <div key={step.label} className="relative">
+            <div key={step.labelKey} className="relative">
               {/* Dashed connector rail — from this circle's right edge to the
                   next circle's left edge. Desktop only. */}
               {i < steps.length - 1 && (
@@ -99,7 +99,7 @@ export function HowItWorks() {
                   className="text-[11px] font-semibold uppercase tracking-[0.14em] px-2 py-1 rounded"
                   style={{ background: "#EEF2FF", color: "#6366F1" }}
                 >
-                  {step.label}
+                  {t(step.labelKey)}
                 </span>
               </div>
 
@@ -107,13 +107,13 @@ export function HowItWorks() {
                 className="text-lg font-semibold mb-2"
                 style={{ color: "#111318", letterSpacing: "-0.01em" }}
               >
-                {step.title}
+                {t(step.titleKey)}
               </h3>
               <p
                 className="text-sm leading-relaxed mb-5"
                 style={{ color: "#5A5F75" }}
               >
-                {step.description}
+                {t(step.descriptionKey)}
               </p>
 
               {/* Terminal code block */}
