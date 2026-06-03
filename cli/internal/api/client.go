@@ -6,15 +6,16 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
 // Client is an HTTP client for the Jex API.
 type Client struct {
-	baseURL        string
-	token          string
-	allowInsecure  bool
-	httpClient     *http.Client
+	baseURL       string
+	token         string
+	allowInsecure bool
+	httpClient    *http.Client
 }
 
 // New creates a new API client. baseURL must use HTTPS unless allowInsecure is true.
@@ -33,13 +34,13 @@ func New(baseURL, token string, allowInsecure bool) (*Client, error) {
 // Project represents a project returned by the API.
 type Project struct {
 	ID   string `json:"id"`
-	Name string `json:"slug"`
+	Name string `json:"name"`
 }
 
 // Env represents an environment returned by the API.
 type Env struct {
-	Name          string `json:"name"`
-	SecretsCount  int    `json:"secretCount"`
+	Name         string `json:"name"`
+	SecretsCount int    `json:"secretCount"`
 }
 
 // SecretKey represents a key entry from the list endpoint.
@@ -50,8 +51,9 @@ type SecretKey struct {
 
 // ImportResult is the response from the import endpoint.
 type ImportResult struct {
-	Created int `json:"created"`
-	Updated int `json:"updated"`
+	Created  int `json:"created"`
+	Updated  int `json:"updated"`
+	Imported int `json:"imported"`
 }
 
 func (c *Client) do(method, path string, body any) (*http.Response, error) {
@@ -97,15 +99,19 @@ func (c *Client) ListProjects() ([]Project, error) {
 	var result struct {
 		Projects []Project `json:"projects"`
 	}
-	if err := c.decodeJSON(resp, &result); err != nil {
+	var projects []Project
+	if err := c.decodeFlexible(resp, &projects, &result); err != nil {
 		return nil, err
 	}
-	return result.Projects, nil
+	if result.Projects != nil {
+		return result.Projects, nil
+	}
+	return projects, nil
 }
 
 // ListEnvs returns all environments for a project.
 func (c *Client) ListEnvs(projectID string) ([]Env, error) {
-	resp, err := c.do("GET", "/api/v1/projects/"+projectID+"/envs", nil)
+	resp, err := c.do("GET", "/api/v1/projects/"+url.PathEscape(projectID)+"/envs", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -115,15 +121,19 @@ func (c *Client) ListEnvs(projectID string) ([]Env, error) {
 	var result struct {
 		Envs []Env `json:"envs"`
 	}
-	if err := c.decodeJSON(resp, &result); err != nil {
+	var envs []Env
+	if err := c.decodeFlexible(resp, &envs, &result); err != nil {
 		return nil, err
 	}
-	return result.Envs, nil
+	if result.Envs != nil {
+		return result.Envs, nil
+	}
+	return envs, nil
 }
 
 // ListKeys returns secret key names for a project and environment.
 func (c *Client) ListKeys(projectID, env string) ([]SecretKey, error) {
-	resp, err := c.do("GET", fmt.Sprintf("/api/v1/projects/%s/secrets?env=%s", projectID, env), nil)
+	resp, err := c.do("GET", fmt.Sprintf("/api/v1/projects/%s/secrets?env=%s", url.PathEscape(projectID), url.QueryEscape(env)), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -133,15 +143,19 @@ func (c *Client) ListKeys(projectID, env string) ([]SecretKey, error) {
 	var result struct {
 		Secrets []SecretKey `json:"secrets"`
 	}
-	if err := c.decodeJSON(resp, &result); err != nil {
+	var keys []SecretKey
+	if err := c.decodeFlexible(resp, &keys, &result); err != nil {
 		return nil, err
 	}
-	return result.Secrets, nil
+	if result.Secrets != nil {
+		return result.Secrets, nil
+	}
+	return keys, nil
 }
 
 // ExportSecrets exports all key-value pairs for a project/env in the given format ("dotenv" or "json").
 func (c *Client) ExportSecrets(projectID, env, format string) (string, error) {
-	resp, err := c.do("GET", fmt.Sprintf("/api/v1/projects/%s/secrets/export?env=%s&format=%s", projectID, env, format), nil)
+	resp, err := c.do("GET", fmt.Sprintf("/api/v1/projects/%s/secrets/export?env=%s&format=%s", url.PathEscape(projectID), url.QueryEscape(env), url.QueryEscape(format)), nil)
 	if err != nil {
 		return "", err
 	}
@@ -159,7 +173,7 @@ func (c *Client) ExportSecrets(projectID, env, format string) (string, error) {
 // SetSecret creates or updates a single secret.
 func (c *Client) SetSecret(projectID, env, key, value string) error {
 	body := map[string]string{"value": value, "env": env}
-	resp, err := c.do("PUT", fmt.Sprintf("/api/v1/projects/%s/secrets/%s", projectID, key), body)
+	resp, err := c.do("PUT", fmt.Sprintf("/api/v1/projects/%s/secrets/%s", url.PathEscape(projectID), url.PathEscape(key)), body)
 	if err != nil {
 		return err
 	}
@@ -169,7 +183,7 @@ func (c *Client) SetSecret(projectID, env, key, value string) error {
 // ImportSecrets bulk-imports key-value pairs.
 func (c *Client) ImportSecrets(projectID, env string, secrets map[string]string) (*ImportResult, error) {
 	body := map[string]any{"env": env, "secrets": secrets}
-	resp, err := c.do("POST", fmt.Sprintf("/api/v1/projects/%s/secrets/import", projectID), body)
+	resp, err := c.do("POST", fmt.Sprintf("/api/v1/projects/%s/secrets/import", url.PathEscape(projectID)), body)
 	if err != nil {
 		return nil, err
 	}
@@ -190,6 +204,18 @@ func (c *Client) RevokeCurrentSession() error {
 		return err
 	}
 	return checkStatus(resp)
+}
+
+func (c *Client) decodeFlexible(resp *http.Response, raw any, wrapped any) error {
+	defer resp.Body.Close()
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(b, raw); err == nil {
+		return nil
+	}
+	return json.Unmarshal(b, wrapped)
 }
 
 // APIError represents an error returned by the API.

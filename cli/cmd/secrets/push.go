@@ -57,6 +57,11 @@ func runPush(cmd *cobra.Command, args []string) error {
 		os.Exit(1)
 	}
 
+	if result.Imported > 0 || (result.Created == 0 && result.Updated == 0) {
+		fmt.Printf("Pushed %d secrets.\n", result.Imported)
+		return nil
+	}
+
 	fmt.Printf("Pushed %d secrets (%d created, %d updated).\n", result.Created+result.Updated, result.Created, result.Updated)
 	return nil
 }
