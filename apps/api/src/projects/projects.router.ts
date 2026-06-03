@@ -6,20 +6,31 @@ import {
   renameProject,
   deleteProject,
 } from "../vault/vault.store";
-import { requireMember, requireOwner, requireNotLastOwner } from "../access/access.policy";
+import {
+  requireMember,
+  requireOwner,
+  requireNotLastOwner,
+  requireUserActor,
+} from "../access/access.policy";
 
 const router = Router();
 
 // GET /api/v1/projects
 router.get("/", async (req: Request, res: Response) => {
-  const { userId } = req.actor as { userId: string };
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projects = await listProjectsForUser(userId);
   res.json(projects);
 });
 
 // POST /api/v1/projects
 router.post("/", async (req: Request, res: Response) => {
-  const { userId } = req.actor as { userId: string };
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const { name } = req.body as { name?: string };
 
   if (!name || typeof name !== "string" || !name.trim()) {
@@ -33,7 +44,10 @@ router.post("/", async (req: Request, res: Response) => {
 
 // GET /api/v1/projects/:projectId
 router.get("/:projectId", async (req: Request, res: Response) => {
-  const { userId } = req.actor as { userId: string };
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
 
   await requireMember(userId, projectId, res);
@@ -45,7 +59,10 @@ router.get("/:projectId", async (req: Request, res: Response) => {
 
 // PATCH /api/v1/projects/:projectId
 router.patch("/:projectId", async (req: Request, res: Response) => {
-  const { userId } = req.actor as { userId: string };
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
   const { name } = req.body as { name?: string };
 
@@ -63,7 +80,10 @@ router.patch("/:projectId", async (req: Request, res: Response) => {
 
 // DELETE /api/v1/projects/:projectId
 router.delete("/:projectId", async (req: Request, res: Response) => {
-  const { userId } = req.actor as { userId: string };
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
 
   await requireOwner(userId, projectId, res);

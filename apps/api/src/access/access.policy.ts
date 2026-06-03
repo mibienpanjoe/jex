@@ -1,8 +1,21 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { PrismaClient, Role } from "@prisma/client";
-import { Actor } from "../types/express";
+import { Actor, UserActor } from "../types/express";
 
 const prisma = new PrismaClient();
+
+/**
+ * Verify the authenticated actor is a user session, not a CI/CD token.
+ * Management routes are user-only; CI/CD tokens are for scoped secret reads.
+ */
+export function requireUserActor(req: Request, res: Response): UserActor | null {
+  const actor = req.actor;
+  if (!actor || actor.actorType !== "User") {
+    res.status(403).json({ error: "FORBIDDEN" });
+    return null;
+  }
+  return actor;
+}
 
 /**
  * Verify the actor belongs to this project.
@@ -76,7 +89,7 @@ export async function requireNotLastOwner(
  * | Operation | Owner | Developer | ReadOnly | CICDToken |
  * |-----------|-------|-----------|----------|-----------|
  * | read      |  ✓    |    ✓      |    ✓     |    ✓ *    |
- * | write     |  ✓    |    ✓      |    ✗     |    ✓ *    |
+ * | write     |  ✓    |    ✓      |    ✗     |    ✗      |
  *
  * * CICDToken: additionally restricted to actor.scopedEnv (INV-08)
  *
@@ -96,7 +109,11 @@ export async function authorize(
         { code: "INSUFFICIENT_PERMISSIONS" }
       );
     }
-    // Tokens can always read and write within their scoped env
+    if (operation === "write") {
+      throw Object.assign(new Error("CI/CD tokens are read-only"), {
+        code: "INSUFFICIENT_PERMISSIONS",
+      });
+    }
     return;
   }
 

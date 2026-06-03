@@ -1,12 +1,14 @@
 import { Router, Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { requireUserActor } from "../access/access.policy";
 
 const prisma = new PrismaClient();
 const router = Router();
 
 // GET /api/v1/auth/sessions — list all non-revoked sessions for the current user
 router.get("/", async (req: Request, res: Response) => {
-  const actor = req.actor as { userId: string };
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
 
   const sessions = await prisma.session.findMany({
     where: {
@@ -28,8 +30,11 @@ router.get("/", async (req: Request, res: Response) => {
 
 // DELETE /api/v1/auth/sessions/:sessionId — revoke a specific session
 router.delete("/:sessionId", async (req: Request, res: Response) => {
-  const actor = req.actor as { userId: string };
-  const sessionId = req.params["sessionId"] as string;
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const requestedSessionId = req.params["sessionId"] as string;
+  const sessionId = requestedSessionId === "current" ? actor.sessionId : requestedSessionId;
 
   const session = await prisma.session.findUnique({
     where: { id: sessionId },

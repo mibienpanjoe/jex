@@ -4,6 +4,7 @@ import {
   requireOwner,
   requireMember,
   requireNotLastOwner,
+  requireUserActor,
 } from "../access/access.policy";
 import {
   listMembers,
@@ -19,7 +20,10 @@ const prisma = new PrismaClient();
 
 // GET /api/v1/projects/:projectId/members
 router.get("/", async (req: Request, res: Response) => {
-  const { userId } = req.actor as any;
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
 
   await requireMember(userId, projectId, res);
@@ -31,7 +35,10 @@ router.get("/", async (req: Request, res: Response) => {
 
 // POST /api/v1/projects/:projectId/members  { email, role }
 router.post("/", async (req: Request, res: Response) => {
-  const { userId } = req.actor as any;
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
 
   await requireOwner(userId, projectId, res);
@@ -76,7 +83,10 @@ router.post("/", async (req: Request, res: Response) => {
 
 // PATCH /api/v1/projects/:projectId/members/:targetUserId  { role }
 router.patch("/:targetUserId", async (req: Request, res: Response) => {
-  const { userId } = req.actor as any;
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
   const targetUserId = req.params["targetUserId"] as string;
   const { role } = req.body as { role?: string };
@@ -119,7 +129,10 @@ router.patch("/:targetUserId", async (req: Request, res: Response) => {
 
 // DELETE /api/v1/projects/:projectId/members/:targetUserId
 router.delete("/:targetUserId", async (req: Request, res: Response) => {
-  const { userId } = req.actor as any;
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
   const targetUserId = req.params["targetUserId"] as string;
 

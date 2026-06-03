@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 import { createHash } from "crypto";
+import { fromNodeHeaders } from "better-auth/node";
+import { auth } from "./better-auth.config";
 
 const prisma = new PrismaClient();
 
@@ -19,15 +21,10 @@ export async function authenticate(
 ): Promise<void> {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: "UNAUTHORIZED" });
-    return;
-  }
-
-  const token = authHeader.slice(7);
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
 
   // CI/CD tokens are prefixed jex_ — hash the value before DB lookup (INV-09, no cache)
-  if (token.startsWith("jex_")) {
+  if (token?.startsWith("jex_")) {
     const tokenHash = createHash("sha256").update(token).digest("hex");
 
     const cicdToken = await prisma.cICDToken.findFirst({
@@ -49,19 +46,54 @@ export async function authenticate(
     return;
   }
 
-  // User session — look up by token; reject if revoked (INV-09, no cache)
-  const session = await prisma.session.findUnique({
-    where: { token },
+  // User bearer session — look up by token; reject if revoked (INV-09, no cache)
+  if (token) {
+    const session = await prisma.session.findUnique({
+      where: { token },
+    });
+
+    if (!session || session.revokedAt !== null || session.expiresAt < new Date()) {
+      res.status(401).json({ error: "UNAUTHORIZED" });
+      return;
+    }
+
+    req.actor = {
+      actorType: "User",
+      userId: session.userId,
+      sessionId: session.id,
+    };
+
+    next();
+    return;
+  }
+
+  // Browser session cookie — resolve through Better Auth, then enforce our
+  // database revocation field on every request.
+  const sessionResult = await auth.api
+    .getSession({
+      headers: fromNodeHeaders(req.headers),
+      query: { disableCookieCache: true, disableRefresh: true },
+    })
+    .catch(() => null);
+
+  if (!sessionResult?.session) {
+    res.status(401).json({ error: "UNAUTHORIZED" });
+    return;
+  }
+
+  const dbSession = await prisma.session.findUnique({
+    where: { id: sessionResult.session.id },
   });
 
-  if (!session || session.revokedAt !== null || session.expiresAt < new Date()) {
+  if (!dbSession || dbSession.revokedAt !== null || dbSession.expiresAt < new Date()) {
     res.status(401).json({ error: "UNAUTHORIZED" });
     return;
   }
 
   req.actor = {
     actorType: "User",
-    userId: session.userId,
+    userId: dbSession.userId,
+    sessionId: dbSession.id,
   };
 
   next();

@@ -30,6 +30,8 @@ Edit `apps/api/.env`:
 DATABASE_URL=postgresql://jex:jexpass@db:5432/jex
 ENCRYPTION_KEY=<paste hex output here>
 BETTER_AUTH_SECRET=<paste base64 output here>
+BETTER_AUTH_URL=http://localhost:3001
+WEB_ORIGIN=http://localhost:3000
 PORT=3001
 ```
 
@@ -52,6 +54,8 @@ The API starts at `http://localhost:3001` and the dashboard at `http://localhost
 | `DATABASE_URL` | yes | PostgreSQL connection string. Inside the compose network the host is `db`. |
 | `ENCRYPTION_KEY` | yes | 64-character hex string (32 bytes). Generated with `openssl rand -hex 32`. |
 | `BETTER_AUTH_SECRET` | yes | Random secret used to sign auth sessions. |
+| `BETTER_AUTH_URL` | no | Public API origin that serves `/api/v1/auth/*`. Defaults to `http://localhost:3001`. |
+| `WEB_ORIGIN` | no | Public dashboard origin allowed to make credentialed API requests. Defaults to `http://localhost:3000`. |
 | `PORT` | no | Defaults to `3001`. |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | no | Only if GitHub OAuth login is enabled. |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | no | Only if Google OAuth login is enabled. |
@@ -61,7 +65,6 @@ The API starts at `http://localhost:3001` and the dashboard at `http://localhost
 | Variable | Required | Notes |
 |---|---|---|
 | `NEXT_PUBLIC_API_URL` | yes | URL the dashboard calls. Use the public API origin, not the internal compose hostname. |
-| `BETTER_AUTH_URL` | yes | Public origin of the dashboard itself. |
 
 ## Pointing the CLI at your instance
 
@@ -85,11 +88,17 @@ api.jex.yourcompany.com {
 }
 ```
 
-Then set in `apps/web/.env`:
+Then set in `apps/api/.env`:
+
+```bash
+BETTER_AUTH_URL=https://api.jex.yourcompany.com
+WEB_ORIGIN=https://jex.yourcompany.com
+```
+
+And set in `apps/web/.env`:
 
 ```bash
 NEXT_PUBLIC_API_URL=https://api.jex.yourcompany.com
-BETTER_AUTH_URL=https://jex.yourcompany.com
 ```
 
 ## Database backups

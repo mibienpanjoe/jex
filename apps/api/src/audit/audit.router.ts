@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { requireMember } from "../access/access.policy";
+import { requireMember, requireUserActor } from "../access/access.policy";
 import { query } from "./audit.log";
 import { OperationType } from "@prisma/client";
 
@@ -7,7 +7,10 @@ const router = Router({ mergeParams: true });
 
 // GET /api/v1/projects/:projectId/audit?env=&operation=&since=&until=&limit=
 router.get("/", async (req: Request, res: Response) => {
-  const { userId } = req.actor as any;
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
 
   await requireMember(userId, projectId, res);

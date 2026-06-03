@@ -3,6 +3,7 @@ import "express";
 export type UserActor = {
   actorType: "User";
   userId: string;
+  sessionId: string;
 };
 
 export type CICDTokenActor = {

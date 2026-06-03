@@ -1,5 +1,4 @@
 import { Router, Request, Response } from "express";
-import { requireMember } from "../access/access.policy";
 import {
   listKeys,
   getSecretValue,
@@ -28,11 +27,6 @@ function getEnv(req: Request, res: Response): string | null {
 // GET /api/v1/projects/:projectId/secrets?env=
 router.get("/", async (req: Request, res: Response) => {
   const projectId = req.params["projectId"] as string;
-  const { userId } = actor(req) as any;
-
-  await requireMember(userId, projectId, res);
-  if (res.headersSent) return;
-
   const env = getEnv(req, res);
   if (!env) return;
 

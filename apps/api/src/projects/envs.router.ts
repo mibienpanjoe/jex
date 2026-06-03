@@ -4,13 +4,16 @@ import {
   createEnvironment,
   deleteEnvironment,
 } from "../vault/vault.store";
-import { requireMember, requireOwner } from "../access/access.policy";
+import { requireMember, requireOwner, requireUserActor } from "../access/access.policy";
 
 const router = Router({ mergeParams: true });
 
 // GET /api/v1/projects/:projectId/envs
 router.get("/", async (req: Request, res: Response) => {
-  const { userId } = req.actor as { userId: string };
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
 
   await requireMember(userId, projectId, res);
@@ -22,7 +25,10 @@ router.get("/", async (req: Request, res: Response) => {
 
 // POST /api/v1/projects/:projectId/envs  (Owner only)
 router.post("/", async (req: Request, res: Response) => {
-  const { userId } = req.actor as { userId: string };
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
   const { name } = req.body as { name?: string };
 
@@ -48,7 +54,10 @@ router.post("/", async (req: Request, res: Response) => {
 
 // DELETE /api/v1/projects/:projectId/envs/:envName  (Owner only)
 router.delete("/:envName", async (req: Request, res: Response) => {
-  const { userId } = req.actor as { userId: string };
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
   const envName = req.params["envName"] as string;
 

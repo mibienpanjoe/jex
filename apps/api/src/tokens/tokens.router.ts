@@ -1,13 +1,16 @@
 import { Router, Request, Response } from "express";
 import { randomBytes, createHash } from "crypto";
-import { requireOwner } from "../access/access.policy";
+import { requireOwner, requireUserActor } from "../access/access.policy";
 import { listTokens, createToken, revokeToken } from "../vault/vault.store";
 
 const router = Router({ mergeParams: true });
 
 // GET /api/v1/projects/:projectId/tokens
 router.get("/", async (req: Request, res: Response) => {
-  const { userId } = req.actor as any;
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
 
   await requireOwner(userId, projectId, res);
@@ -19,7 +22,10 @@ router.get("/", async (req: Request, res: Response) => {
 
 // POST /api/v1/projects/:projectId/tokens  { name, scopedEnv }
 router.post("/", async (req: Request, res: Response) => {
-  const { userId } = req.actor as any;
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
 
   await requireOwner(userId, projectId, res);
@@ -44,7 +50,10 @@ router.post("/", async (req: Request, res: Response) => {
 
 // DELETE /api/v1/projects/:projectId/tokens/:tokenId
 router.delete("/:tokenId", async (req: Request, res: Response) => {
-  const { userId } = req.actor as any;
+  const actor = requireUserActor(req, res);
+  if (!actor) return;
+
+  const { userId } = actor;
   const projectId = req.params["projectId"] as string;
   const tokenId = req.params["tokenId"] as string;
 
