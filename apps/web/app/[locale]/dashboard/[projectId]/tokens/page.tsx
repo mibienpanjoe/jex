@@ -5,7 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { api, Project, Env, CICDToken } from "@/lib/api";
+import { getErrorMessage, handleDashboardLoadError } from "@/lib/dashboard-errors";
 import { withLocale } from "@/lib/i18n-path";
+import { DashboardErrorState } from "../../DashboardErrorState";
 
 const ENV_COLORS: Record<string, string> = {
   prod: "#EF4444",
@@ -25,6 +27,7 @@ export default function TokensPage() {
   const [envs, setEnvs] = useState<Env[]>([]);
   const [tokens, setTokens] = useState<CICDToken[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // New token modal
   const [showNew, setShowNew] = useState(false);
@@ -41,24 +44,31 @@ export default function TokensPage() {
   const [revokeTarget, setRevokeTarget] = useState<string | null>(null);
   const [revokeLoading, setRevokeLoading] = useState(false);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const [proj, environments, tokenList] = await Promise.all([
-          api.projects.get(projectId),
-          api.envs.list(projectId),
-          api.tokens.list(projectId),
-        ]);
-        setProject(proj);
-        setEnvs(environments);
-        setNewEnv(environments[0]?.name ?? "");
-        setTokens(tokenList);
-      } catch {
-        router.push(withLocale("/dashboard", locale));
-      } finally {
-        setLoading(false);
-      }
+  async function load() {
+    setError(null);
+    setLoading(true);
+    try {
+      const [proj, environments, tokenList] = await Promise.all([
+        api.projects.get(projectId),
+        api.envs.list(projectId),
+        api.tokens.list(projectId),
+      ]);
+      setProject(proj);
+      setEnvs(environments);
+      setNewEnv(environments[0]?.name ?? "");
+      setTokens(tokenList);
+    } catch (err) {
+      handleDashboardLoadError(err, {
+        locale,
+        router,
+        onRecoverableError: () => setError(getErrorMessage(err, common("loadError"))),
+      });
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     load();
   }, [locale, projectId, router]);
 
@@ -74,7 +84,7 @@ export default function TokensPage() {
       setShowNew(false);
       setNewName("");
     } catch (err: any) {
-      setNewError(err.message ?? t("createError"));
+      setNewError(err?.body?.error === "ENVIRONMENT_NOT_FOUND" ? t("envNotFound") : err.message ?? t("createError"));
     } finally {
       setNewLoading(false);
     }
@@ -105,6 +115,16 @@ export default function TokensPage() {
     return (
       <div style={{ background: "#0D0F14", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#555A70", fontFamily: "Inter, system-ui, sans-serif" }}>
         {common("loading")}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ background: "#0D0F14", minHeight: "100vh", color: "#F0F2F8", fontFamily: "Inter, system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 32px" }}>
+          <DashboardErrorState message={error} onRetry={load} />
+        </div>
       </div>
     );
   }
@@ -184,7 +204,8 @@ export default function TokensPage() {
           <span style={{ color: "#8B90A8", fontSize: 13 }}>{t("count", { count: tokens.length })}</span>
           <button
             onClick={() => setShowNew(true)}
-            style={{ background: "#6366F1", color: "#fff", border: "none", borderRadius: 8, padding: "7px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
+            disabled={envs.length === 0}
+            style={{ background: envs.length === 0 ? "#2A2F42" : "#6366F1", color: "#fff", border: "none", borderRadius: 8, padding: "7px 16px", fontSize: 13, fontWeight: 600, cursor: envs.length === 0 ? "not-allowed" : "pointer" }}
           >
             + {t("newToken")}
           </button>

@@ -8,6 +8,7 @@ process.env.ENCRYPTION_KEY ??= "a".repeat(64);
 process.env.BETTER_AUTH_SECRET ??= "integration-test-better-auth-secret";
 process.env.BETTER_AUTH_URL ??= "http://127.0.0.1:3001";
 process.env.WEB_ORIGIN ??= "http://localhost:3000";
+process.env.WEB_DEFAULT_LOCALE ??= "fr";
 
 const integrationEnabled = process.env.JEX_INTEGRATION_TESTS === "1";
 const hasDatabase = Boolean(process.env.DATABASE_URL);
@@ -178,6 +179,160 @@ test("DELETE /auth/sessions/current revokes the current bearer session", async (
   assert.equal(afterRevoke.status, 401);
 });
 
+test("secret write routes support CLI set and empty values", async (t) => {
+  if (!requireDatabase(t)) return;
+  await seedProject();
+
+  const update = await api("/api/v1/projects/project_1/secrets/DATABASE_URL?env=dev", {
+    method: "PUT",
+    headers: jsonBearer(userToken),
+    body: JSON.stringify({ value: "postgres://changed" }),
+  });
+  assert.equal(update.status, 200);
+  assert.deepEqual(await update.json(), { key: "DATABASE_URL", env: "dev" });
+
+  const createEmpty = await api("/api/v1/projects/project_1/secrets", {
+    method: "POST",
+    headers: jsonBearer(userToken),
+    body: JSON.stringify({ env: "dev", key: "EMPTY_SECRET", value: "" }),
+  });
+  assert.equal(createEmpty.status, 201);
+  assert.deepEqual(await createEmpty.json(), { key: "EMPTY_SECRET", env: "dev" });
+
+  const readEmpty = await api("/api/v1/projects/project_1/secrets/EMPTY_SECRET?env=dev", {
+    headers: bearer(userToken),
+  });
+  assert.equal(readEmpty.status, 200);
+  assert.deepEqual(await readEmpty.json(), { key: "EMPTY_SECRET", value: "" });
+});
+
+test("bulk import reports created and updated counts", async (t) => {
+  if (!requireDatabase(t)) return;
+  await seedProject();
+
+  const response = await api("/api/v1/projects/project_1/secrets/import", {
+    method: "POST",
+    headers: jsonBearer(userToken),
+    body: JSON.stringify({
+      env: "dev",
+      secrets: {
+        DATABASE_URL: "postgres://updated",
+        API_KEY: "new-key",
+      },
+    }),
+  });
+
+  assert.equal(response.status, 201);
+  assert.deepEqual(await response.json(), { created: 1, updated: 1, imported: 2 });
+});
+
+test("environment management validates names and deletes scoped secrets", async (t) => {
+  if (!requireDatabase(t)) return;
+  await seedProject();
+
+  const invalid = await api("/api/v1/projects/project_1/envs", {
+    method: "POST",
+    headers: jsonBearer(userToken),
+    body: JSON.stringify({ name: "preview env" }),
+  });
+  assert.equal(invalid.status, 422);
+  assert.deepEqual(await invalid.json(), { error: "INVALID_ENV_NAME", field: "name" });
+
+  const created = await api("/api/v1/projects/project_1/envs", {
+    method: "POST",
+    headers: jsonBearer(userToken),
+    body: JSON.stringify({ name: "preview-1" }),
+  });
+  assert.equal(created.status, 201);
+  const createdBody = (await created.json()) as { name: string; isDefault: boolean };
+  assert.equal(createdBody.name, "preview-1");
+  assert.equal(createdBody.isDefault, false);
+
+  const duplicate = await api("/api/v1/projects/project_1/envs", {
+    method: "POST",
+    headers: jsonBearer(userToken),
+    body: JSON.stringify({ name: "preview-1" }),
+  });
+  assert.equal(duplicate.status, 409);
+  assert.deepEqual(await duplicate.json(), { error: "ENVIRONMENT_NAME_TAKEN" });
+
+  const secret = await api("/api/v1/projects/project_1/secrets", {
+    method: "POST",
+    headers: jsonBearer(userToken),
+    body: JSON.stringify({ env: "preview-1", key: "TEMP_SECRET", value: "secret" }),
+  });
+  assert.equal(secret.status, 201);
+
+  const deleted = await api("/api/v1/projects/project_1/envs/preview-1", {
+    method: "DELETE",
+    headers: bearer(userToken),
+  });
+  assert.equal(deleted.status, 204);
+
+  const orphan = await prisma!.secret.findUnique({
+    where: {
+      projectId_environment_key: {
+        projectId: "project_1",
+        environment: "preview-1",
+        key: "TEMP_SECRET",
+      },
+    },
+  });
+  assert.equal(orphan, null);
+
+  const deleteDefault = await api("/api/v1/projects/project_1/envs/dev", {
+    method: "DELETE",
+    headers: bearer(userToken),
+  });
+  assert.equal(deleteDefault.status, 422);
+  assert.deepEqual(await deleteDefault.json(), { error: "CANNOT_DELETE_DEFAULT_ENV" });
+});
+
+test("token creation validates scoped environment and records audit events", async (t) => {
+  if (!requireDatabase(t)) return;
+  await seedProject();
+
+  const invalid = await api("/api/v1/projects/project_1/tokens", {
+    method: "POST",
+    headers: jsonBearer(userToken),
+    body: JSON.stringify({ name: "Deploy preview", scopedEnv: "preview-404" }),
+  });
+  assert.equal(invalid.status, 404);
+  assert.deepEqual(await invalid.json(), { error: "ENVIRONMENT_NOT_FOUND" });
+
+  const created = await api("/api/v1/projects/project_1/tokens", {
+    method: "POST",
+    headers: jsonBearer(userToken),
+    body: JSON.stringify({ name: "Deploy prod", scopedEnv: "prod" }),
+  });
+  assert.equal(created.status, 201);
+  const createdBody = (await created.json()) as {
+    token: string;
+    meta: { id: string; scopedEnv: string; tokenHash?: string };
+  };
+  assert(createdBody.token.startsWith("jex_"));
+  assert.equal(createdBody.meta.scopedEnv, "prod");
+  assert.equal(createdBody.meta.tokenHash, undefined);
+
+  const revoked = await api(`/api/v1/projects/project_1/tokens/${createdBody.meta.id}`, {
+    method: "DELETE",
+    headers: bearer(userToken),
+  });
+  assert.equal(revoked.status, 204);
+
+  const events = await prisma!.auditEvent.findMany({
+    where: { projectId: "project_1", operation: { in: ["TOKEN_CREATE", "TOKEN_REVOKE"] } },
+    orderBy: { timestamp: "asc" },
+  });
+  assert.deepEqual(
+    events.map((event) => ({ operation: event.operation, env: event.env, key: event.key })),
+    [
+      { operation: "TOKEN_CREATE", env: "prod", key: "Deploy prod" },
+      { operation: "TOKEN_REVOKE", env: "prod", key: "Deploy prod" },
+    ]
+  );
+});
+
 test("CLI callback rejects non-loopback redirects", async (t) => {
   if (!requireDatabase(t)) return;
   await seedProject();
@@ -199,7 +354,7 @@ test("CLI callback redirects unauthenticated browsers to web login", async (t) =
   assert.equal(response.status, 302);
   const location = response.headers.get("location");
   assert(location);
-  assert(location.startsWith("http://localhost:3000/login?callbackURL="));
+  assert(location.startsWith("http://localhost:3000/fr/login?callbackURL="));
   assert(location.includes(encodeURIComponent("/api/v1/auth/cli-callback")));
 });
 

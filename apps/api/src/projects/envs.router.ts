@@ -7,6 +7,7 @@ import {
 import { requireMember, requireOwner, requireUserActor } from "../access/access.policy";
 
 const router = Router({ mergeParams: true });
+const ENV_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 // GET /api/v1/projects/:projectId/envs
 router.get("/", async (req: Request, res: Response) => {
@@ -40,12 +41,18 @@ router.post("/", async (req: Request, res: Response) => {
     return;
   }
 
+  const normalizedName = name.trim().toLowerCase();
+  if (!ENV_NAME_PATTERN.test(normalizedName)) {
+    res.status(422).json({ error: "INVALID_ENV_NAME", field: "name" });
+    return;
+  }
+
   try {
-    const env = await createEnvironment(projectId, name.trim().toLowerCase());
+    const env = await createEnvironment(projectId, normalizedName);
     res.status(201).json(env);
   } catch (err: any) {
     if (err?.code === "P2002") {
-      res.status(409).json({ error: "ENV_ALREADY_EXISTS" });
+      res.status(409).json({ error: "ENVIRONMENT_NAME_TAKEN" });
       return;
     }
     throw err;
@@ -69,7 +76,7 @@ router.delete("/:envName", async (req: Request, res: Response) => {
     res.status(204).send();
   } catch (err: any) {
     if (err?.code === "DEFAULT_ENV") {
-      res.status(409).json({ error: "CANNOT_DELETE_DEFAULT_ENV" });
+      res.status(422).json({ error: "CANNOT_DELETE_DEFAULT_ENV" });
       return;
     }
     if (err?.code === "P2025") {

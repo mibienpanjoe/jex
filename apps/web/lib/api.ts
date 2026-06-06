@@ -41,6 +41,15 @@ export const api = {
   envs: {
     list: (projectId: string) =>
       apiFetch<Env[]>(`/api/v1/projects/${projectId}/envs`),
+    create: (projectId: string, name: string) =>
+      apiFetch<Env>(`/api/v1/projects/${projectId}/envs`, {
+        method: "POST",
+        body: JSON.stringify({ name }),
+      }),
+    delete: (projectId: string, name: string) =>
+      apiFetch<void>(`/api/v1/projects/${projectId}/envs/${encodeURIComponent(name)}`, {
+        method: "DELETE",
+      }),
   },
   secrets: {
     list: (projectId: string, env: string) =>

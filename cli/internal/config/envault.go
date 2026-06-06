@@ -20,18 +20,24 @@ type Envault struct {
 
 // Read walks up the directory tree from the current directory to find and parse .envault.
 func Read() (*Envault, error) {
+	cfg, _, err := ReadWithPath()
+	return cfg, err
+}
+
+// ReadWithPath walks up the directory tree and returns both the parsed config and its path.
+func ReadWithPath() (*Envault, string, error) {
 	dir, err := os.Getwd()
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 	for {
 		candidate := filepath.Join(dir, filename)
 		if _, err := os.Stat(candidate); err == nil {
 			var cfg Envault
 			if _, err := toml.DecodeFile(candidate, &cfg); err != nil {
-				return nil, fmt.Errorf("failed to parse %s: %w", candidate, err)
+				return nil, "", fmt.Errorf("failed to parse %s: %w", candidate, err)
 			}
-			return &cfg, nil
+			return &cfg, candidate, nil
 		}
 		parent := filepath.Dir(dir)
 		if parent == dir {
@@ -39,18 +45,24 @@ func Read() (*Envault, error) {
 		}
 		dir = parent
 	}
-	return nil, fmt.Errorf("no .envault found. Run jex init")
+	return nil, "", fmt.Errorf("no .envault found. Run jex init")
 }
 
 // Write creates or overwrites .envault in the current directory.
 // Only project, defaultEnv, and apiURL are written — never secrets (INV-15).
 func Write(project, defaultEnv, apiURL string) error {
+	return WriteAt(filename, project, defaultEnv, apiURL)
+}
+
+// WriteAt creates or overwrites a .envault file at path.
+// Only project, defaultEnv, and apiURL are written — never secrets (INV-15).
+func WriteAt(path, project, defaultEnv, apiURL string) error {
 	cfg := Envault{
 		Project:    project,
 		DefaultEnv: defaultEnv,
 		APIURL:     apiURL,
 	}
-	f, err := os.Create(filename)
+	f, err := os.Create(path)
 	if err != nil {
 		return err
 	}

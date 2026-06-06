@@ -32,6 +32,7 @@ ENCRYPTION_KEY=<paste hex output here>
 BETTER_AUTH_SECRET=<paste base64 output here>
 BETTER_AUTH_URL=http://localhost:3001
 WEB_ORIGIN=http://localhost:3000
+WEB_DEFAULT_LOCALE=fr
 PORT=3001
 ```
 
@@ -56,6 +57,7 @@ The API starts at `http://localhost:3001` and the dashboard at `http://localhost
 | `BETTER_AUTH_SECRET` | yes | Random secret used to sign auth sessions. |
 | `BETTER_AUTH_URL` | no | Public API origin that serves `/api/v1/auth/*`. Defaults to `http://localhost:3001`. |
 | `WEB_ORIGIN` | no | Public dashboard origin allowed to make credentialed API requests. Defaults to `http://localhost:3000`. |
+| `WEB_DEFAULT_LOCALE` | no | Locale used for auth redirects from the API to the dashboard. Defaults to `fr`. |
 | `PORT` | no | Defaults to `3001`. |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | no | Only if GitHub OAuth login is enabled. |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | no | Only if Google OAuth login is enabled. |

@@ -92,8 +92,11 @@ export async function deleteEnvironment(projectId: string, name: string) {
     });
   }
 
-  return prisma.environment.delete({
-    where: { projectId_name: { projectId, name } },
+  return prisma.$transaction(async (tx) => {
+    await tx.secret.deleteMany({ where: { projectId, environment: name } });
+    return tx.environment.delete({
+      where: { projectId_name: { projectId, name } },
+    });
   });
 }
 
