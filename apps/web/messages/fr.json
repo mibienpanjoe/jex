@@ -10,7 +10,9 @@
     "github": "GitHub",
     "login": "Connexion",
     "getStarted": "Commencer",
-    "getStartedFree": "Commencer gratuitement"
+    "getStartedFree": "Commencer gratuitement",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
   },
   "auth": {
     "meta": {

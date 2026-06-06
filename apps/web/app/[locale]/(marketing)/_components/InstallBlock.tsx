@@ -42,19 +42,19 @@ export function InstallBlock() {
 
         {/* Install command */}
         <div
-          className="flex items-center justify-between rounded-xl border px-5 py-4 mb-6 font-mono text-sm"
+          className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border px-5 py-4 mb-6 font-mono text-sm text-left"
           style={{
             background: "#FFFFFF",
             borderColor: "#E2E4EC",
           }}
         >
-          <span style={{ color: "#111318" }}>
+          <span className="block w-full overflow-x-auto whitespace-nowrap" style={{ color: "#111318" }}>
             <span style={{ color: "#A0A5B8" }}>$</span>{" "}
             {command}
           </span>
           <button
             onClick={handleCopy}
-            className="ml-4 shrink-0 flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border transition-all"
+            className="shrink-0 flex min-h-11 w-full sm:w-auto items-center justify-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border transition-all"
             style={{
               background: copied ? "#EEF2FF" : "#F4F5F9",
               borderColor: copied ? "#6366F1" : "#E2E4EC",
@@ -110,14 +110,14 @@ export function InstallBlock() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
             href={withLocale("/register", locale)}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium text-white transition-colors"
+            className="w-full sm:w-auto inline-flex min-h-11 items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium text-white transition-colors"
             style={{ background: "#6366F1" }}
           >
             {t("ctaPrimary")}
           </Link>
           <Link
             href="/docs/getting-started/quick-start"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium border transition-colors"
+            className="w-full sm:w-auto inline-flex min-h-11 items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium border transition-colors"
             style={{ background: "#FFFFFF", color: "#111318", borderColor: "#E2E4EC" }}
           >
             {t("ctaDocs")}

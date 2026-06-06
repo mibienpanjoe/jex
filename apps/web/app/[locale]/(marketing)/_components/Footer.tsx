@@ -14,7 +14,7 @@ export function Footer() {
     >
       <div className="mx-auto max-w-6xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Logo + tagline */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
           <div
             className="w-6 h-6 rounded-md flex items-center justify-center text-white text-xs font-bold"
             style={{ background: "#6366F1" }}
@@ -30,7 +30,7 @@ export function Footer() {
               href="https://github.com/mibienpanjoe"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline"
+              className="inline-flex min-h-11 items-center hover:underline"
               style={{ color: "#5A5F75" }}
             >
               PARE Mibienpan Joseph
@@ -39,7 +39,7 @@ export function Footer() {
         </div>
 
         {/* Links */}
-        <nav className="flex items-center gap-5">
+        <nav className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
             {[
             { label: nav("docs"), href: "/docs" },
             { label: nav("github"), href: "https://github.com/mibienpanjoe/jex", external: true },
@@ -50,7 +50,7 @@ export function Footer() {
               href={href}
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
-              className="text-xs font-medium transition-colors hover:underline"
+              className="inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-medium transition-colors hover:underline"
               style={{ color: "#5A5F75" }}
             >
               {label}

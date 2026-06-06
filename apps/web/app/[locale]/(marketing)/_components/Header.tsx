@@ -18,6 +18,17 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all"
@@ -30,9 +41,9 @@ export function Header() {
         transition: "background 200ms ease, border-color 200ms ease, backdrop-filter 200ms ease",
       }}
     >
-      <div className="mx-auto max-w-6xl px-6 h-14 flex items-center justify-between">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between">
         {/* Logo */}
-        <Link href={withLocale("/", locale)} className="flex items-center gap-2 group">
+        <Link href={withLocale("/", locale)} className="flex min-h-11 items-center gap-2 group">
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-sm font-bold"
             style={{ background: "#6366F1" }}
@@ -48,7 +59,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1">
           {[
             { label: t("features"), href: "#features" },
             { label: t("howItWorks"), href: "#how-it-works" },
@@ -60,7 +71,7 @@ export function Header() {
               href={href}
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
-              className="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors"
+              className="inline-flex min-h-11 items-center px-3 py-1.5 text-sm font-medium rounded-lg transition-colors"
               style={{ color: "#5A5F75" }}
               onMouseEnter={(e) => {
                 (e.target as HTMLElement).style.color = "#111318";
@@ -77,18 +88,18 @@ export function Header() {
         </nav>
 
         {/* CTA group */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           <LanguageToggle />
           <Link
             href={withLocale("/login", locale)}
-            className="text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
+            className="inline-flex min-h-11 items-center text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
             style={{ color: "#5A5F75" }}
           >
             {t("login")}
           </Link>
           <Link
             href={withLocale("/register", locale)}
-            className="text-sm font-medium px-4 py-1.5 rounded-lg text-white transition-colors"
+            className="inline-flex min-h-11 items-center text-sm font-medium px-4 py-1.5 rounded-lg text-white transition-colors"
             style={{ background: "#6366F1" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#4F46E5")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#6366F1")}
@@ -99,9 +110,11 @@ export function Header() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2 rounded-lg"
+          className="lg:hidden flex h-11 w-11 items-center justify-center rounded-lg"
           style={{ color: "#5A5F75" }}
-          aria-label="Toggle menu"
+          aria-label={menuOpen ? t("closeMenu") : t("openMenu")}
+          aria-controls="marketing-mobile-menu"
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
@@ -125,8 +138,13 @@ export function Header() {
       {/* Mobile menu */}
       {menuOpen && (
         <div
-          className="md:hidden border-t px-6 py-4 flex flex-col gap-2"
-          style={{ background: "#FAFAFA", borderColor: "#E2E4EC" }}
+          id="marketing-mobile-menu"
+          className="fixed inset-x-0 top-14 z-50 lg:hidden border-y px-4 sm:px-6 py-4 flex flex-col gap-1 shadow-lg"
+          style={{
+            background: "#FAFAFA",
+            borderColor: "#E2E4EC",
+            boxShadow: "0 20px 40px rgba(17,19,24,0.08)",
+          }}
         >
           {[
             { label: t("features"), href: "#features" },
@@ -138,7 +156,7 @@ export function Header() {
             <Link
               key={label}
               href={href}
-              className="py-2 text-sm font-medium"
+              className="flex min-h-11 items-center rounded-lg px-3 text-sm font-medium"
               style={{ color: "#5A5F75" }}
               onClick={() => setMenuOpen(false)}
             >
@@ -147,7 +165,7 @@ export function Header() {
           ))}
           <Link
             href={withLocale("/register", locale)}
-            className="mt-2 py-2 px-4 text-sm font-medium text-center rounded-lg text-white"
+            className="mt-2 flex min-h-11 items-center justify-center px-4 text-sm font-medium text-center rounded-lg text-white"
             style={{ background: "#6366F1" }}
             onClick={() => setMenuOpen(false)}
           >

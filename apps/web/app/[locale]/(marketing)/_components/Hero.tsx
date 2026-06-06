@@ -29,7 +29,7 @@ function TerminalDemo() {
       </div>
 
       {/* Terminal content */}
-      <div className="p-5 font-mono text-sm leading-relaxed space-y-1">
+      <div className="p-4 sm:p-5 font-mono text-xs sm:text-sm leading-relaxed space-y-1">
         {/* Command 1 */}
         <div className="flex items-center gap-2">
           <span style={{ color: "#22C55E" }}>$</span>
@@ -104,7 +104,7 @@ export function Hero() {
 
   return (
     <section
-      className="relative min-h-screen flex items-center pt-14 overflow-hidden"
+      className="relative flex items-center pt-14 overflow-hidden lg:min-h-[calc(100svh-128px)]"
       style={{ background: "#FAFAFA" }}
     >
       {/* Dot-grid background */}
@@ -119,15 +119,7 @@ export function Hero() {
         }}
       />
 
-      {/* Indigo glow blob top-right */}
-      <div
-        className="pointer-events-none absolute -top-40 right-0 w-[600px] h-[500px]"
-        style={{
-          background: "radial-gradient(ellipse at top right, rgba(99,102,241,0.12) 0%, transparent 70%)",
-        }}
-      />
-
-      <div className="relative mx-auto max-w-6xl px-6 py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="relative mx-auto max-w-6xl px-6 py-16 sm:py-20 lg:py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {/* Left: Headline + CTAs */}
         <div>
           {/* Pill badge */}
@@ -166,7 +158,7 @@ export function Hero() {
           <div className="animate-fade-up delay-300 flex flex-wrap items-center gap-3">
             <Link
               href={withLocale("/register", locale)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white transition-colors bg-[#6366F1] hover:bg-[#4F46E5]"
+              className="inline-flex min-h-11 items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white transition-colors bg-[#6366F1] hover:bg-[#4F46E5]"
             >
               {t("ctaPrimary")}
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -177,7 +169,7 @@ export function Hero() {
               href="https://github.com/mibienpanjoe/jex"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors border"
+              className="inline-flex min-h-11 items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors border"
               style={{ background: "#FFFFFF", color: "#111318", borderColor: "#E2E4EC" }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -194,7 +186,7 @@ export function Hero() {
         </div>
 
         {/* Right: Terminal demo */}
-        <div className="animate-fade-up delay-200 lg:block">
+        <div className="animate-fade-up delay-200 mx-auto w-full max-w-xl lg:max-w-none">
           <TerminalDemo />
         </div>
       </div>

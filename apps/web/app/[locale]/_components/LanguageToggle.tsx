@@ -13,7 +13,7 @@ export function LanguageToggle() {
   return (
     <Link
       href={switchLocalePath(pathname, nextLocale)}
-      className="inline-flex h-8 items-center rounded-lg border px-3 text-xs font-semibold transition-colors"
+      className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border px-3 text-xs font-semibold transition-colors"
       style={{
         borderColor: "#E2E4EC",
         color: "#5A5F75",
