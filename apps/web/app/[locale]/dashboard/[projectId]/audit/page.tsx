@@ -5,7 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { api, Project, Env, AuditEvent } from "@/lib/api";
+import { getErrorMessage, handleDashboardLoadError } from "@/lib/dashboard-errors";
 import { withLocale } from "@/lib/i18n-path";
+import { DashboardErrorState } from "../../DashboardErrorState";
 
 const OPERATION_CODES = [
   "SECRET_CREATE",
@@ -51,27 +53,35 @@ export default function AuditPage() {
   const [envs, setEnvs] = useState<Env[]>([]);
   const [events, setEvents] = useState<AuditEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [eventsLoading, setEventsLoading] = useState(false);
 
   // Filters
   const [filterEnv, setFilterEnv] = useState("");
   const [filterOp, setFilterOp] = useState("");
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const [proj, environments] = await Promise.all([
-          api.projects.get(projectId),
-          api.envs.list(projectId),
-        ]);
-        setProject(proj);
-        setEnvs(environments);
-      } catch {
-        router.push(withLocale("/dashboard", locale));
-      } finally {
-        setLoading(false);
-      }
+  async function load() {
+    setError(null);
+    setLoading(true);
+    try {
+      const [proj, environments] = await Promise.all([
+        api.projects.get(projectId),
+        api.envs.list(projectId),
+      ]);
+      setProject(proj);
+      setEnvs(environments);
+    } catch (err) {
+      handleDashboardLoadError(err, {
+        locale,
+        router,
+        onRecoverableError: () => setError(getErrorMessage(err, common("loadError"))),
+      });
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     load();
   }, [locale, projectId, router]);
 
@@ -95,6 +105,16 @@ export default function AuditPage() {
     return (
       <div style={{ background: "#0D0F14", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#555A70", fontFamily: "Inter, system-ui, sans-serif" }}>
         {common("loading")}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ background: "#0D0F14", minHeight: "100vh", color: "#F0F2F8", fontFamily: "Inter, system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 32px" }}>
+          <DashboardErrorState message={error} onRetry={load} />
+        </div>
       </div>
     );
   }

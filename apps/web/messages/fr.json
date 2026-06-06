@@ -13,6 +13,10 @@
     "getStartedFree": "Commencer gratuitement"
   },
   "auth": {
+    "meta": {
+      "title": "Connexion",
+      "description": "Connectez-vous à Jex ou créez un compte pour gérer les secrets de votre équipe."
+    },
     "email": "Email",
     "password": "Mot de passe",
     "continueGithub": "Continuer avec GitHub",
@@ -39,6 +43,8 @@
   "dashboard": {
     "common": {
       "loading": "Chargement...",
+      "loadError": "Impossible de joindre l'API Jex. Vérifiez que le serveur API est lancé, puis réessayez.",
+      "retry": "Réessayer",
       "cancel": "Annuler",
       "create": "Créer",
       "creating": "Création...",
@@ -58,6 +64,10 @@
       "ReadOnly": "Lecture seule"
     },
     "projects": {
+      "meta": {
+        "title": "Tableau de bord",
+        "description": "Gérez les projets, secrets, membres, journaux d'audit et tokens CI/CD Jex."
+      },
       "title": "Projets",
       "newProject": "Nouveau projet",
       "created": "Créé le {date}",
@@ -75,6 +85,18 @@
     "project": {
       "projects": "Projets",
       "created": "Créé le {date}",
+      "environments": {
+        "title": "Environnements",
+        "desc": "Créez des environnements personnalisés et supprimez ceux qui ne servent plus.",
+        "placeholder": "preview-1",
+        "create": "Créer",
+        "creating": "Création...",
+        "deleteLabel": "Supprimer {name}",
+        "invalidName": "Utilisez seulement des minuscules, des chiffres et des tirets simples.",
+        "duplicate": "Un environnement avec ce nom existe déjà.",
+        "defaultProtected": "Les environnements par défaut ne peuvent pas être supprimés.",
+        "actionError": "La mise à jour de l'environnement a échoué."
+      },
       "links": {
         "secrets": {
           "title": "Secrets",
@@ -126,6 +148,7 @@
       "modalTitle": "Nouveau token CI/CD",
       "name": "Nom du token",
       "scopedEnv": "Environnement limité",
+      "envNotFound": "Cet environnement n'existe plus.",
       "createError": "Impossible de créer le token",
       "revokeError": "Impossible de révoquer le token"
     },

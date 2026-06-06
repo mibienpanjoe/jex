@@ -3,23 +3,35 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { api, Project } from "@/lib/api";
+import { getErrorMessage, handleDashboardLoadError } from "@/lib/dashboard-errors";
 import { withLocale } from "@/lib/i18n-path";
 import { LanguageToggle } from "../_components/LanguageToggle";
+import { DashboardErrorState } from "./DashboardErrorState";
 import { NewProjectModal } from "./NewProjectModal";
 
 export default function DashboardPage() {
   const locale = useLocale();
+  const router = useRouter();
   const t = useTranslations("dashboard.projects");
   const common = useTranslations("dashboard.common");
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   async function load() {
+    setError(null);
     try {
       const data = await api.projects.list();
       setProjects(data);
+    } catch (err) {
+      handleDashboardLoadError(err, {
+        locale,
+        router,
+        onRecoverableError: () => setError(getErrorMessage(err, common("loadError"))),
+      });
     } finally {
       setLoading(false);
     }
@@ -59,6 +71,8 @@ export default function DashboardPage() {
         {/* Project list */}
         {loading ? (
           <p style={{ color: "#555A70" }}>{common("loading")}</p>
+        ) : error ? (
+          <DashboardErrorState message={error} onRetry={load} />
         ) : projects.length === 0 ? (
           <EmptyState onNew={() => setShowModal(true)} />
         ) : (

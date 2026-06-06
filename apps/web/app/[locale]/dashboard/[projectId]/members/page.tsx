@@ -5,7 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { api, Project, Member } from "@/lib/api";
+import { getErrorMessage, handleDashboardLoadError } from "@/lib/dashboard-errors";
 import { withLocale } from "@/lib/i18n-path";
+import { DashboardErrorState } from "../../DashboardErrorState";
 
 const ROLE_COLORS: Record<string, string> = {
   Owner: "#6366F1",
@@ -26,6 +28,7 @@ export default function MembersPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [myRole, setMyRole] = useState<string | null>(null);
 
   // Invite modal
@@ -42,22 +45,29 @@ export default function MembersPage() {
   const [removeTarget, setRemoveTarget] = useState<string | null>(null);
   const [removeLoading, setRemoveLoading] = useState(false);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const [proj, memberList] = await Promise.all([
-          api.projects.get(projectId),
-          api.members.list(projectId),
-        ]);
-        setProject(proj);
-        setMembers(memberList);
-        setMyRole(proj.role);
-      } catch {
-        router.push(withLocale("/dashboard", locale));
-      } finally {
-        setLoading(false);
-      }
+  async function load() {
+    setError(null);
+    setLoading(true);
+    try {
+      const [proj, memberList] = await Promise.all([
+        api.projects.get(projectId),
+        api.members.list(projectId),
+      ]);
+      setProject(proj);
+      setMembers(memberList);
+      setMyRole(proj.role);
+    } catch (err) {
+      handleDashboardLoadError(err, {
+        locale,
+        router,
+        onRecoverableError: () => setError(getErrorMessage(err, common("loadError"))),
+      });
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     load();
   }, [locale, projectId, router]);
 
@@ -113,6 +123,16 @@ export default function MembersPage() {
     return (
       <div style={{ background: "#0D0F14", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#555A70", fontFamily: "Inter, system-ui, sans-serif" }}>
         {common("loading")}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ background: "#0D0F14", minHeight: "100vh", color: "#F0F2F8", fontFamily: "Inter, system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 32px" }}>
+          <DashboardErrorState message={error} onRetry={load} />
+        </div>
       </div>
     );
   }

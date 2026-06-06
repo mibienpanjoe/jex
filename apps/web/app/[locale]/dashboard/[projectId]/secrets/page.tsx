@@ -5,7 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { api, Project, Env, SecretMeta } from "@/lib/api";
+import { getErrorMessage, handleDashboardLoadError } from "@/lib/dashboard-errors";
 import { withLocale } from "@/lib/i18n-path";
+import { DashboardErrorState } from "../../DashboardErrorState";
 
 const ENV_COLORS: Record<string, string> = {
   prod: "#EF4444",
@@ -26,6 +28,7 @@ export default function SecretsPage() {
   const [activeEnv, setActiveEnv] = useState<string | null>(null);
   const [secrets, setSecrets] = useState<SecretMeta[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [secretsLoading, setSecretsLoading] = useState(false);
 
   // Reveal state: key → plain text value (null = hidden)
@@ -52,22 +55,29 @@ export default function SecretsPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [importError, setImportError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const [proj, environments] = await Promise.all([
-          api.projects.get(projectId),
-          api.envs.list(projectId),
-        ]);
-        setProject(proj);
-        setEnvs(environments);
-        if (environments.length > 0) setActiveEnv(environments[0].name);
-      } catch {
-        router.push(withLocale("/dashboard", locale));
-      } finally {
-        setLoading(false);
-      }
+  async function load() {
+    setError(null);
+    setLoading(true);
+    try {
+      const [proj, environments] = await Promise.all([
+        api.projects.get(projectId),
+        api.envs.list(projectId),
+      ]);
+      setProject(proj);
+      setEnvs(environments);
+      if (environments.length > 0) setActiveEnv(environments[0].name);
+    } catch (err) {
+      handleDashboardLoadError(err, {
+        locale,
+        router,
+        onRecoverableError: () => setError(getErrorMessage(err, common("loadError"))),
+      });
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     load();
   }, [locale, projectId, router]);
 
@@ -192,6 +202,16 @@ export default function SecretsPage() {
     return (
       <div style={{ background: "#0D0F14", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#555A70", fontFamily: "Inter, system-ui, sans-serif" }}>
         {common("loading")}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ background: "#0D0F14", minHeight: "100vh", color: "#F0F2F8", fontFamily: "Inter, system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 32px" }}>
+          <DashboardErrorState message={error} onRetry={load} />
+        </div>
       </div>
     );
   }

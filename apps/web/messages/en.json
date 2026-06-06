@@ -13,6 +13,10 @@
     "getStartedFree": "Get started free"
   },
   "auth": {
+    "meta": {
+      "title": "Login",
+      "description": "Sign in to Jex or create an account to manage your team secrets."
+    },
     "email": "Email",
     "password": "Password",
     "continueGithub": "Continue with GitHub",
@@ -39,6 +43,8 @@
   "dashboard": {
     "common": {
       "loading": "Loading...",
+      "loadError": "We could not reach the Jex API. Check that the API server is running, then try again.",
+      "retry": "Try again",
       "cancel": "Cancel",
       "create": "Create",
       "creating": "Creating...",
@@ -58,6 +64,10 @@
       "ReadOnly": "Read-only"
     },
     "projects": {
+      "meta": {
+        "title": "Dashboard",
+        "description": "Manage Jex projects, secrets, members, audit logs, and CI/CD tokens."
+      },
       "title": "Projects",
       "newProject": "New project",
       "created": "Created {date}",
@@ -75,6 +85,18 @@
     "project": {
       "projects": "Projects",
       "created": "Created {date}",
+      "environments": {
+        "title": "Environments",
+        "desc": "Create custom environments and delete ones you no longer use.",
+        "placeholder": "preview-1",
+        "create": "Create",
+        "creating": "Creating...",
+        "deleteLabel": "Delete {name}",
+        "invalidName": "Use lowercase letters, numbers, and single hyphens only.",
+        "duplicate": "An environment with this name already exists.",
+        "defaultProtected": "Default environments cannot be deleted.",
+        "actionError": "Environment update failed."
+      },
       "links": {
         "secrets": {
           "title": "Secrets",
@@ -126,6 +148,7 @@
       "modalTitle": "New CI/CD token",
       "name": "Token name",
       "scopedEnv": "Scoped environment",
+      "envNotFound": "That environment no longer exists.",
       "createError": "Failed to create token",
       "revokeError": "Failed to revoke token"
     },

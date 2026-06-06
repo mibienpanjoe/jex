@@ -16,6 +16,15 @@ function getWebOrigin(): string {
   return process.env.WEB_ORIGIN ?? process.env.DASHBOARD_ORIGIN ?? "http://localhost:3000";
 }
 
+function getWebDefaultLocale(): string {
+  const configured = process.env.WEB_DEFAULT_LOCALE ?? "fr";
+  return configured === "en" ? "en" : "fr";
+}
+
+function getLoginURL(): URL {
+  return new URL(`/${getWebDefaultLocale()}/login`, getWebOrigin());
+}
+
 function isAllowedLoopbackRedirect(value: string): boolean {
   try {
     const url = new URL(value);
@@ -47,7 +56,7 @@ router.get("/cli-callback", async (req: Request, res: Response) => {
 
   if (!sessionResult?.session) {
     const callbackURL = `${getPublicAPIURL(req)}${req.originalUrl}`;
-    const loginURL = new URL("/login", getWebOrigin());
+    const loginURL = getLoginURL();
     loginURL.searchParams.set("callbackURL", callbackURL);
     res.redirect(loginURL.toString());
     return;

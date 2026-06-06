@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/url"
 	"os/exec"
 	"runtime"
 
@@ -59,7 +60,7 @@ func runLogin(cmd *cobra.Command, args []string) error {
 	}()
 
 	callbackURL := fmt.Sprintf("http://127.0.0.1:%d/callback", port)
-	loginURL := fmt.Sprintf("%s/api/v1/auth/cli-callback?redirect=%s", apiURL, callbackURL)
+	loginURL := fmt.Sprintf("%s/api/v1/auth/cli-callback?redirect=%s", apiURL, url.QueryEscape(callbackURL))
 
 	fmt.Printf("Opening browser to log in...\nIf it does not open, visit:\n  %s\n", loginURL)
 	openBrowser(loginURL)
