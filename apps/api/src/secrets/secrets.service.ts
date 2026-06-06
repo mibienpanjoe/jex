@@ -141,13 +141,23 @@ export async function importSecrets(
   projectId: string,
   env: string,
   pairs: Record<string, string>
-): Promise<void> {
+): Promise<{ created: number; updated: number; imported: number }> {
   await authorize(actor, "write", projectId, env);
 
   const actorId = actor.actorType === "User" ? actor.userId : actor.tokenId;
   const entries = Object.entries(pairs);
+  let created = 0;
+  let updated = 0;
 
   await prisma.$transaction(async (tx) => {
+    const existing = await tx.secret.findMany({
+      where: { projectId, environment: env, key: { in: entries.map(([key]) => key) } },
+      select: { key: true },
+    });
+    const existingKeys = new Set(existing.map((secret) => secret.key));
+    created = entries.length - existingKeys.size;
+    updated = existingKeys.size;
+
     for (const [key, value] of entries) {
       const { ciphertext, iv } = encrypt(value);
       await upsertSecret(tx, projectId, env, key, ciphertext, iv);
@@ -163,4 +173,6 @@ export async function importSecrets(
       key: `[bulk: ${entries.length} keys]`,
     });
   });
+
+  return { created, updated, imported: entries.length };
 }

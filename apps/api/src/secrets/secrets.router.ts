@@ -96,7 +96,7 @@ router.post("/", async (req: Request, res: Response) => {
   const projectId = req.params["projectId"] as string;
   const { key, value, env } = req.body as { key?: string; value?: string; env?: string };
 
-  if (!key || !value || !env) {
+  if (!key || typeof value !== "string" || !env) {
     res.status(400).json({ error: "VALIDATION_ERROR" });
     return;
   }
@@ -121,7 +121,7 @@ router.put("/:key", async (req: Request, res: Response) => {
   if (!env) return;
 
   const { value } = req.body as { value?: string };
-  if (!value) {
+  if (typeof value !== "string") {
     res.status(400).json({ error: "VALIDATION_ERROR", field: "value" });
     return;
   }
@@ -169,9 +169,14 @@ router.post("/import", async (req: Request, res: Response) => {
     return;
   }
 
+  if (Object.values(secrets).some((value) => typeof value !== "string")) {
+    res.status(400).json({ error: "VALIDATION_ERROR", field: "secrets" });
+    return;
+  }
+
   try {
-    await importSecrets(actor(req), projectId, env, secrets);
-    res.status(201).json({ imported: Object.keys(secrets).length });
+    const result = await importSecrets(actor(req), projectId, env, secrets);
+    res.status(201).json(result);
   } catch (err: any) {
     if (err?.code === "INSUFFICIENT_PERMISSIONS") {
       res.status(403).json({ error: "INSUFFICIENT_PERMISSIONS" });

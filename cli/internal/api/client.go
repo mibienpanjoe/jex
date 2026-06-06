@@ -131,6 +131,32 @@ func (c *Client) ListEnvs(projectID string) ([]Env, error) {
 	return envs, nil
 }
 
+// CreateEnv creates a project environment.
+func (c *Client) CreateEnv(projectID, name string) (*Env, error) {
+	body := map[string]string{"name": name}
+	resp, err := c.do("POST", "/api/v1/projects/"+url.PathEscape(projectID)+"/envs", body)
+	if err != nil {
+		return nil, err
+	}
+	if err := checkStatus(resp); err != nil {
+		return nil, err
+	}
+	var env Env
+	if err := c.decodeJSON(resp, &env); err != nil {
+		return nil, err
+	}
+	return &env, nil
+}
+
+// DeleteEnv deletes a project environment.
+func (c *Client) DeleteEnv(projectID, name string) error {
+	resp, err := c.do("DELETE", fmt.Sprintf("/api/v1/projects/%s/envs/%s", url.PathEscape(projectID), url.PathEscape(name)), nil)
+	if err != nil {
+		return err
+	}
+	return checkStatus(resp)
+}
+
 // ListKeys returns secret key names for a project and environment.
 func (c *Client) ListKeys(projectID, env string) ([]SecretKey, error) {
 	resp, err := c.do("GET", fmt.Sprintf("/api/v1/projects/%s/secrets?env=%s", url.PathEscape(projectID), url.QueryEscape(env)), nil)
@@ -172,8 +198,8 @@ func (c *Client) ExportSecrets(projectID, env, format string) (string, error) {
 
 // SetSecret creates or updates a single secret.
 func (c *Client) SetSecret(projectID, env, key, value string) error {
-	body := map[string]string{"value": value, "env": env}
-	resp, err := c.do("PUT", fmt.Sprintf("/api/v1/projects/%s/secrets/%s", url.PathEscape(projectID), url.PathEscape(key)), body)
+	body := map[string]string{"value": value}
+	resp, err := c.do("PUT", fmt.Sprintf("/api/v1/projects/%s/secrets/%s?env=%s", url.PathEscape(projectID), url.PathEscape(key), url.QueryEscape(env)), body)
 	if err != nil {
 		return err
 	}
