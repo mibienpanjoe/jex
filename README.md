@@ -4,7 +4,7 @@
 
 # Jex
 
-**Stop sharing `.env` files over chat . Start using a vault.**
+**Stop sharing `.env` files over chat. Start using a vault.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-22C55E.svg?style=flat-square)](LICENSE)
 [![Go](https://img.shields.io/badge/CLI-Go-00ADD8?style=flat-square&logo=go&logoColor=white)](cli/)
@@ -21,10 +21,10 @@
 
 ## What is Jex?
 
-Jex is an **open-source secrets manager** for developer teams. It gives your team a shared encrypted vault where secrets are stored, versioned, and accessed by role ; replacing the insecure habit of sharing `.env` files over chat.
+Jex is an **open-source secrets manager** for developer teams. It gives your team a shared encrypted vault where secrets are stored, versioned, and accessed by role, replacing the insecure habit of sharing `.env` files over chat.
 
 ```bash
-# Inject secrets directly into any process — nothing written to disk
+# Inject secrets directly into any process; nothing written to disk
 jex run -- npm start
 
 # Pull secrets to a local .env file
@@ -34,7 +34,7 @@ jex secrets pull
 jex secrets push
 ```
 
-Secrets are **encrypted with AES-256-GCM** before they ever reach the database. The server never stores plain text — ever.
+Secrets are **encrypted with AES-256-GCM** before they ever reach the database. The server never stores plain text.
 
 ---
 
@@ -45,7 +45,7 @@ Developer teams routinely share environment variables through insecure channels:
 | Problem | Impact |
 |---------|--------|
 | Secrets in chat history | Accessible to anyone with account access, forever |
-| Manual rotation | Someone always misses an update — outages follow |
+| Manual rotation | Someone always misses an update, then outages follow |
 | `.env` files on disk | One `git add .` away from a public repo leak |
 | No audit trail | No record of who accessed which secret, when |
 
@@ -57,30 +57,30 @@ Existing solutions (HashiCorp Vault, AWS Secrets Manager, Doppler) are either to
 ## Features
 
 ### For Developers
-- **`jex run -- <command>`** — inject secrets into a subprocess without writing any file to disk
-- **`jex secrets pull`** — download secrets to a local `.env` instantly
-- **`jex secrets push`** — bulk-import an existing `.env` to the vault
-- **`jex secrets set KEY=value`** — set a single secret from the terminal
-- **`jex login`** — authenticate via browser OAuth (GitHub, Google) or token
+- **`jex run -- <command>`**: inject secrets into a subprocess without writing any file to disk
+- **`jex secrets pull`**: download secrets to a local `.env` instantly
+- **`jex secrets push`**: bulk-import an existing `.env` to the vault
+- **`jex secrets set KEY=value`**: set a single secret from the terminal
+- **`jex login`**: authenticate via browser OAuth (GitHub, Google) or token
 
 ### For Team Owners
 - Role-based access control with three roles: **Owner**, **Developer**, **Read-only**
 - Environment-scoped permissions: `dev`, `staging`, `prod`
-- Invite teammates by email — no account required to receive an invite
-- **Audit log** — every secret access event is recorded (who, what, when, which env)
-- Full-featured web dashboard — no CLI required for management
+- Invite teammates by email; no account required to receive an invite
+- **Audit log**: every secret access event is recorded (who, what, when, which env)
+- Full-featured web dashboard; no CLI required for management
 
 ### For CI/CD Pipelines
 - Create scoped, environment-locked tokens from the dashboard
-- Tokens are **revoked instantly** — no propagation delay, no cache
-- Read-only by design — CI tokens cannot create or modify secrets
+- Tokens are **revoked instantly**: no propagation delay, no cache
+- Read-only by design: CI tokens cannot create or modify secrets
 
 ### Security Architecture
-- **AES-256-GCM** encryption — secrets are encrypted before any database write
-- **Zero plain text at rest** — `VaultStore` only ever receives ciphertext
-- **Audit-first** — audit writes are inside the same transaction as secret writes; no silent failures
-- **RBAC on every request** — `AccessPolicy` is called before any secret operation, no shortcuts
-- **`jex run` never writes a file** — subprocess injection via `exec.Command` env only
+- **AES-256-GCM** encryption: secrets are encrypted before any database write
+- **Zero plain text at rest**: `VaultStore` only ever receives ciphertext
+- **Audit-first**: audit writes are inside the same transaction as secret writes; no silent failures
+- **RBAC on every request**: `AccessPolicy` is called before any secret operation, no shortcuts
+- **`jex run` never writes a file**: subprocess injection via `exec.Command` env only
 
 ---
 
@@ -115,7 +115,7 @@ jex init
 # Pull secrets for your current environment
 jex secrets pull
 
-# Run your app with secrets injected — no .env file created
+# Run your app with secrets injected; no .env file created
 jex run -- npm run dev
 ```
 
@@ -157,15 +157,15 @@ jex/
 ├── apps/
 │   ├── api/                 # Node.js/Express backend (TypeScript)
 │   │   ├── src/
-│   │   │   ├── auth/        # AuthGateway — token validation, sessions
-│   │   │   ├── access/      # AccessPolicy — RBAC enforcement
-│   │   │   ├── crypto/      # CryptoService — AES-256-GCM
+│   │   │   ├── auth/        # AuthGateway: token validation, sessions
+│   │   │   ├── access/      # AccessPolicy: RBAC enforcement
+│   │   │   ├── crypto/      # CryptoService: AES-256-GCM
 │   │   │   ├── secrets/     # SecretsService + routes
-│   │   │   ├── audit/       # AuditLog — append-only event recorder
-│   │   │   └── vault/       # VaultStore — all Prisma queries
+│   │   │   ├── audit/       # AuditLog: append-only event recorder
+│   │   │   └── vault/       # VaultStore: all Prisma queries
 │   │   └── prisma/
 │   └── web/                 # Next.js 16 dashboard + landing + docs
-├── cli/                     # Go binary — all jex commands
+├── cli/                     # Go binary for all jex commands
 │   ├── cmd/
 │   └── internal/
 │       ├── api/             # HTTP client to the API
@@ -183,10 +183,10 @@ jex/
 |----------|----------|
 | [Requirements (PRD)](docs/01_requirements_prd.md) | What we're building and for whom |
 | [SRS](docs/02_requirements_srs.md) | Precise functional and non-functional requirements |
-| [Invariants](docs/03_design_contract_invariant.md) | What can never be false — security guarantees |
+| [Invariants](docs/03_design_contract_invariant.md) | Security guarantees that can never be false |
 | [Architecture](docs/05_architecture.md) | Component design, data model, flows |
 | [API Specification](docs/06_api_specification.md) | Every HTTP endpoint, schema, and error code |
-| [Visual Identity](docs/07_visual_identity.md) | Design system — colors, typography, components |
+| [Visual Identity](docs/07_visual_identity.md) | Design system: colors, typography, components |
 
 ---
 
@@ -198,15 +198,15 @@ Jex is in active development and contributions are welcome. Read [CONTRIBUTING.m
 
 ## Roadmap
 
-- **v0.1** — MVP: vault, CLI, dashboard, RBAC, audit log, self-host *(in development)*
-- **v0.2** — Secret versioning, `--watch` mode, git hook integration, French UI
-- **Post v0.2** — Custom environments, secret expiry/TTL, TUI project picker
+- **v0.1**: MVP with vault, CLI, dashboard, RBAC, audit log, and self-hosting *(in development)*
+- **v0.2**: Secret versioning, `--watch` mode, git hook integration, French UI
+- **Post v0.2**: Custom environments, secret expiry/TTL, TUI project picker
 
 ---
 
 ## License
 
-MIT  free to use, self-host, and modify. See [LICENSE](LICENSE).
+MIT: free to use, self-host, and modify. See [LICENSE](LICENSE).
 
 ---
 
