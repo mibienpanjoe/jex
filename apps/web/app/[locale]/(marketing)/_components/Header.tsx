@@ -44,12 +44,13 @@ export function Header() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link href={withLocale("/", locale)} className="flex min-h-11 items-center gap-2 group">
-          <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-sm font-bold"
-            style={{ background: "#6366F1" }}
-          >
-            J
-          </div>
+          <img
+            src="/brand/jex-pangolin-mark.svg"
+            alt=""
+            className="h-7 w-7 rounded-lg"
+            width={28}
+            height={28}
+          />
           <span
             className="text-base font-bold tracking-tight"
             style={{ color: "#111318", letterSpacing: "-0.02em" }}
@@ -63,7 +64,7 @@ export function Header() {
           {[
             { label: t("features"), href: "#features" },
             { label: t("howItWorks"), href: "#how-it-works" },
-            { label: t("docs"), href: "/docs" },
+            { label: t("docs"), href: withLocale("/docs", locale) },
             { label: t("github"), href: "https://github.com/mibienpanjoe/jex", external: true },
           ].map(({ label, href, external }) => (
             <Link
@@ -149,7 +150,7 @@ export function Header() {
           {[
             { label: t("features"), href: "#features" },
             { label: t("howItWorks"), href: "#how-it-works" },
-            { label: t("docs"), href: "/docs" },
+            { label: t("docs"), href: withLocale("/docs", locale) },
             { label: t("github"), href: "https://github.com/mibienpanjoe/jex" },
             { label: t("login"), href: withLocale("/login", locale) },
           ].map(({ label, href }) => (

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Jex — Secrets Manager for Developer Teams",
-    "description": "Share secrets, not .env files. Jex is an open-source secrets manager with AES-256-GCM encryption, RBAC, and a Go CLI."
+    "description": "Manage project secrets without shared .env files. Jex is an open-source manager with AES-256-GCM encryption, RBAC, and a Go CLI."
   },
   "nav": {
     "features": "Features",
@@ -201,9 +201,9 @@
   },
   "hero": {
     "badge": "Open-source · MIT License",
-    "headline": "Share secrets,",
-    "headlineAccent": "not .env files.",
-    "subheadline": "Jex is an open-source secrets manager for developer teams. Encrypted vault, Go CLI, and a dashboard — without ever leaking a plaintext value.",
+    "headline": "Your env vars,",
+    "headlineAccent": "locked and shared the right way.",
+    "subheadline": "Jex helps teams manage project secrets in an encrypted vault. Pull them with the Go CLI, inject them at runtime, and keep control from the dashboard.",
     "ctaPrimary": "Get started for free",
     "ctaSecondary": "View on GitHub",
     "socialProof": "Free and self-hostable · AES-256-GCM encryption · RBAC · Audit trail"
@@ -213,11 +213,11 @@
     "headline": "Your secrets are scattered.",
     "subheadline": "Every team develops workarounds. None of them are secure. Jex fixes the root cause.",
     "card1Headline": "No more Slack DMs",
-    "card1Body": "Sharing secrets over chat is a security incident waiting to happen. Jex gives every team member the exact secret they need — no message history to audit.",
+    "card1Body": "Sharing secrets over chat is a security incident waiting to happen. Jex gives every team member the exact keys they need, with no message history to audit.",
     "card2Headline": "No more stale credentials",
-    "card2Body": "One vault, one source of truth. When a secret rotates, every developer and every environment gets the update automatically — no manual sync.",
+    "card2Body": "One vault, one source of truth. When a secret changes, every developer and every environment gets the update automatically, with no manual sync.",
     "card3Headline": "No more accidental commits",
-    "card3Body": "jex run injects secrets at process launch — in memory, never to disk. No .env file, no accidental git add, no exposure in your repository history."
+    "card3Body": "jex run injects secrets at process launch: in memory, never to disk. No .env file, no accidental git add, no exposure in your repository history."
   },
   "howItWorks": {
     "sectionLabel": "How it works",
@@ -231,7 +231,7 @@
     "step2Desc": "Use jex secrets pull to write an atomic .env file, or jex run to inject directly into your process environment — no file ever written.",
     "step3Label": "Run",
     "step3Title": "Your app, with secrets",
-    "step3Desc": "Your process starts with secrets in its environment. Teammates, CI/CD pipelines, and different environments each get exactly the secrets they're authorized to see."
+    "step3Desc": "Your process starts with secrets in its environment. Teammates, CI/CD pipelines, and different environments each get exactly the keys they're authorized to see."
   },
   "features": {
     "sectionLabel": "Features",

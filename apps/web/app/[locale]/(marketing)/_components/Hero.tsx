@@ -1,102 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { withLocale } from "@/lib/i18n-path";
-
-function TerminalDemo() {
-  return (
-    <div
-      className="rounded-xl overflow-hidden shadow-2xl"
-      style={{
-        background: "#0D0F14",
-        border: "1px solid #2A2F42",
-        boxShadow: "0 32px 64px rgba(0,0,0,0.25), 0 0 0 1px rgba(99,102,241,0.08)",
-      }}
-    >
-      {/* Window chrome */}
-      <div
-        className="flex items-center gap-2 px-4 py-3"
-        style={{ borderBottom: "1px solid #1F2336" }}
-      >
-        <div className="w-3 h-3 rounded-full" style={{ background: "#EF4444" }} />
-        <div className="w-3 h-3 rounded-full" style={{ background: "#F59E0B" }} />
-        <div className="w-3 h-3 rounded-full" style={{ background: "#22C55E" }} />
-        <span
-          className="ml-2 text-xs font-mono"
-          style={{ color: "#555A70" }}
-        >
-          terminal
-        </span>
-      </div>
-
-      {/* Terminal content */}
-      <div className="p-4 sm:p-5 font-mono text-xs sm:text-sm leading-relaxed space-y-1">
-        {/* Command 1 */}
-        <div className="flex items-center gap-2">
-          <span style={{ color: "#22C55E" }}>$</span>
-          <span style={{ color: "#8B90A8" }}>jex</span>
-          <span style={{ color: "#F0F2F8" }}>secrets pull</span>
-        </div>
-        <div style={{ color: "#555A70" }} className="pl-4">
-          ✓ Fetching secrets for{" "}
-          <span style={{ color: "#8B90A8" }}>my-app</span>
-          {" "}
-          <span
-            className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium"
-            style={{ background: "rgba(34,197,94,0.12)", color: "#22C55E" }}
-          >
-            dev
-          </span>
-        </div>
-        <div style={{ color: "#22C55E" }} className="pl-4">
-          ✓ Pulled 14 secrets to .env
-        </div>
-
-        {/* Spacer */}
-        <div className="py-1" />
-
-        {/* Command 2 */}
-        <div className="flex items-center gap-2">
-          <span style={{ color: "#22C55E" }}>$</span>
-          <span style={{ color: "#8B90A8" }}>jex</span>
-          <span style={{ color: "#F0F2F8" }}>run</span>
-          <span style={{ color: "#555A70" }}>--</span>
-          <span style={{ color: "#6366F1" }}>npm run dev</span>
-        </div>
-        <div style={{ color: "#555A70" }} className="pl-4">
-          ● Injecting 14 secrets into environment
-        </div>
-        <div style={{ color: "#22C55E" }} className="pl-4">
-          ✓ No .env file written to disk
-        </div>
-        <div className="pl-4" style={{ color: "#555A70" }}>
-          &gt;{" "}
-          <span style={{ color: "#8B90A8" }}>my-app@1.0.0</span>{" "}
-          dev
-        </div>
-        <div className="pl-4" style={{ color: "#555A70" }}>
-          &gt;{" "}
-          <span style={{ color: "#F0F2F8" }}>next dev</span>
-        </div>
-        <div className="pl-4 pt-1" style={{ color: "#8B90A8" }}>
-          ▲ Next.js 15.0.0
-        </div>
-        <div className="pl-4" style={{ color: "#555A70" }}>
-          - Local:{" "}
-          <span style={{ color: "#6366F1" }}>http://localhost:3000</span>
-        </div>
-
-        {/* Blinking cursor */}
-        <div className="flex items-center gap-2 pt-2">
-          <span style={{ color: "#22C55E" }}>$</span>
-          <span
-            className="cursor-blink inline-block w-2 h-4 align-middle"
-            style={{ background: "#6366F1" }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function Hero() {
   const locale = useLocale();
@@ -122,17 +27,6 @@ export function Hero() {
       <div className="relative mx-auto max-w-6xl px-6 py-16 sm:py-20 lg:py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {/* Left: Headline + CTAs */}
         <div>
-          {/* Pill badge */}
-          <div className="animate-fade-up mb-6 inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-medium"
-            style={{ borderColor: "#E2E4EC", background: "#FFFFFF", color: "#5A5F75" }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: "#22C55E" }}
-            />
-            {t("badge")}
-          </div>
-
           {/* Headline */}
           <h1
             className="animate-fade-up delay-100 font-bold leading-[1.1] tracking-[-0.04em] mb-5"
@@ -185,9 +79,18 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Right: Terminal demo */}
+        {/* Right: Mascot */}
         <div className="animate-fade-up delay-200 mx-auto w-full max-w-xl lg:max-w-none">
-          <TerminalDemo />
+          <div className="relative mx-auto aspect-square w-full max-w-[460px]">
+            <Image
+              src="/brand/jex-pangolin-mascot-compact.png"
+              alt="Pangolin mascot guarding encrypted secrets"
+              fill
+              priority
+              sizes="(min-width: 1024px) 460px, 90vw"
+              className="object-contain"
+            />
+          </div>
         </div>
       </div>
     </section>

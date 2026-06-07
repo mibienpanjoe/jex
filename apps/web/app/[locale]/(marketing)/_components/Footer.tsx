@@ -15,12 +15,13 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Logo + tagline */}
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
-          <div
-            className="w-6 h-6 rounded-md flex items-center justify-center text-white text-xs font-bold"
-            style={{ background: "#6366F1" }}
-          >
-            J
-          </div>
+          <img
+            src="/brand/jex-pangolin-mark.svg"
+            alt=""
+            className="h-6 w-6 rounded-md"
+            width={24}
+            height={24}
+          />
           <span className="text-sm font-semibold" style={{ color: "#111318" }}>
             Jex
           </span>
@@ -41,7 +42,7 @@ export function Footer() {
         {/* Links */}
         <nav className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
             {[
-            { label: nav("docs"), href: "/docs" },
+            { label: nav("docs"), href: withLocale("/docs", locale) },
             { label: nav("github"), href: "https://github.com/mibienpanjoe/jex", external: true },
             { label: nav("login"), href: withLocale("/login", locale) },
           ].map(({ label, href, external }) => (
