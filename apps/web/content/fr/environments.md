@@ -10,11 +10,11 @@ Chaque environnement possède son propre ensemble de secrets. Un secret avec la 
 |---------------|---------|-------|
 | `dev` | Vert | Partageable avec tous les membres |
 | `staging` | Ambre | Correspond à la configuration de production |
-| `prod` | Rouge | Restreint aux propriétaires par défaut |
+| `prod` | Rouge | Restreint aux admins projet par défaut |
 
 ## Créer des environnements personnalisés
 
-Les environnements personnalisés peuvent être créés par les propriétaires depuis le tableau de bord (**Paramètres → Environnements → Nouvel environnement**) ou via l'API.
+Les environnements personnalisés peuvent être créés par les admins projet depuis le tableau de bord (**Paramètres → Environnements → Nouvel environnement**) ou via l'API.
 
 > **Note :** `dev`, `staging` et `prod` sont réservés et ne peuvent pas être supprimés.
 

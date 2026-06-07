@@ -63,8 +63,8 @@ Existing solutions (HashiCorp Vault, AWS Secrets Manager, Doppler) are either to
 - **`jex secrets set KEY=value`**: set a single secret from the terminal
 - **`jex login`**: authenticate via browser OAuth (GitHub, Google) or token
 
-### For Team Owners
-- Role-based access control with three roles: **Owner**, **Developer**, **Read-only**
+### For Project Admins
+- Role-based access control with three roles: **Project Admin**, **Developer**, **Read-only**
 - Environment-scoped permissions: `dev`, `staging`, `prod`
 - Invite teammates by email; no account required to receive an invite
 - **Audit log**: every secret access event is recorded (who, what, when, which env)
@@ -123,7 +123,7 @@ jex run -- npm run dev
 
 ## RBAC Matrix
 
-| Operation | Owner | Developer | Read-only | CI Token |
+| Operation | Project Admin | Developer | Read-only | CI Token |
 |-----------|:-----:|:---------:|:---------:|:--------:|
 | Read `dev` | ✅ | ✅ | ✅ | ✅ (if scoped) |
 | Write `dev` | ✅ | ✅ | ❌ | ❌ |

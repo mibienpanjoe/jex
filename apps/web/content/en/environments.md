@@ -11,11 +11,11 @@ Each environment holds its own independent set of secrets. A secret with the key
 |-------------|-------|-------|
 | `dev` | Green | Safe to share with all members |
 | `staging` | Amber | Matches production config |
-| `prod` | Red | Restricted to owners by default |
+| `prod` | Red | Restricted to project admins by default |
 
 ## Creating custom environments
 
-Custom environments can be created by project owners from the dashboard
+Custom environments can be created by project admins from the dashboard
 (**Settings → Environments → New environment**) or via the API.
 
 > **Note:** `dev`, `staging`, and `prod` are reserved and cannot be deleted.

@@ -23,7 +23,7 @@ A software engineer working on a team project. They need to pull the correct env
 
 **Pain point**: "I just cloned the repo — where do I get the `.env` file?"
 
-### Secondary — Team Owner / Lead
+### Secondary — Project Admin / Lead
 A senior developer or tech lead who manages project access, onboards teammates, and controls which environments each person can touch. They need oversight and control without becoming a bottleneck.
 
 **Pain point**: "I rotated the production DB password — now I have to message everyone individually and hope they update before something breaks."
@@ -37,7 +37,7 @@ A GitHub Actions workflow, Docker build, or deployment script that needs read ac
 
 ## 3. Solution Overview
 
-Jex is an open-source secrets manager built for developer teams. It provides a shared encrypted vault where secrets are stored, versioned, and accessed by role. Developers interact with secrets through a Go CLI (`jex`) that can pull secrets to a local `.env` file or inject them directly into a running process without writing anything to disk. Team owners manage access, environments, and audit history through a web dashboard. CI/CD pipelines receive scoped, read-only tokens that can be revoked instantly.
+Jex is an open-source secrets manager built for developer teams. It provides a shared encrypted vault where secrets are stored, versioned, and accessed by role. Developers interact with secrets through a Go CLI (`jex`) that can pull secrets to a local `.env` file or inject them directly into a running process without writing anything to disk. Project admins manage access, environments, and audit history through a web dashboard. CI/CD pipelines receive scoped, read-only tokens that can be revoked instantly.
 
 The entire stack is MIT-licensed and self-hostable via a single `docker-compose up` command, removing cloud vendor lock-in.
 
@@ -66,8 +66,8 @@ The entire stack is MIT-licensed and self-hostable via a single `docker-compose 
 - Pull secrets from the vault to a local `.env` file
 
 ### Role-Based Access Control
-- Three roles: Owner, Developer, Read-only
-- Owners: full access to all environments
+- Three roles: Project Admin, Developer, Read-only
+- Project Admins: full access to all environments
 - Developers: read + write on `dev`, read-only on `staging`, no access to `prod`
 - Read-only: read-only access to `dev` and `staging`, no access to `prod`
 - CI/CD tokens: project-scoped, environment-scoped, read-only, revokable
@@ -85,7 +85,7 @@ The entire stack is MIT-licensed and self-hostable via a single `docker-compose 
 ### Audit Log
 - Every secret read, write, create, and delete is logged
 - Each log entry records: actor (user or CI/CD token), timestamp, operation, affected key, and environment
-- Audit log is viewable in the web dashboard (owner-only)
+- Audit log is viewable in the web dashboard (project-admin-only)
 
 ### Web Dashboard
 - Project list and creation
@@ -118,7 +118,7 @@ The entire stack is MIT-licensed and self-hostable via a single `docker-compose 
 | Criterion | Target |
 |-----------|--------|
 | A new developer can onboard (clone, install, authenticate, pull secrets) without help from a teammate | ≤ 5 minutes end-to-end |
-| A team owner can invite a teammate and assign a role | ≤ 2 minutes |
+| A project admin can invite a teammate and assign a role | ≤ 2 minutes |
 | `jex run -- <command>` injects secrets into a process without creating a file on disk | Verified on macOS, Linux |
 | CI/CD token, once revoked, stops granting access immediately | ≤ 1 second propagation |
 | All secrets are encrypted before storage — no plain-text secrets in the database | Verified by database inspection |

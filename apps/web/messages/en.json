@@ -61,7 +61,7 @@
       "remove": "Remove"
     },
     "roles": {
-      "Owner": "Owner",
+      "Owner": "Project Admin",
       "Developer": "Developer",
       "ReadOnly": "Read-only"
     },
@@ -166,10 +166,10 @@
       "userNotFound": "No account found with that email.",
       "alreadyMember": "This user is already a member.",
       "inviteError": "Failed to invite",
-      "cannotDemoteLastOwner": "Cannot demote the last owner.",
-      "cannotRemoveLastOwner": "Cannot remove the last owner.",
+      "cannotDemoteLastOwner": "Cannot demote the last project admin.",
+      "cannotRemoveLastOwner": "Cannot remove the last project admin.",
       "roles": {
-        "Owner": "Owner",
+        "Owner": "Project Admin",
         "Developer": "Developer",
         "ReadOnly": "Read-only"
       }
@@ -240,7 +240,7 @@
     "feat1Title": "AES-256-GCM Encryption",
     "feat1Desc": "Every secret is encrypted before it reaches the database. The server never holds plaintext values — your keys, your control.",
     "feat2Title": "Role-Based Access Control",
-    "feat2Desc": "Owners, members, and read-only roles. Scope CI/CD tokens to a single environment. The last owner can never be removed.",
+    "feat2Desc": "Project admins, developers, and read-only roles. Scope CI/CD tokens to a single environment. The last project admin can never be removed.",
     "feat3Title": "Environment Segmentation",
     "feat3Desc": "dev, staging, prod — each environment is isolated. A member scoped to dev cannot read prod secrets, by design.",
     "feat4Title": "Append-Only Audit Trail",

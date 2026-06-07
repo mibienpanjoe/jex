@@ -188,7 +188,7 @@ export default function MembersPage() {
                   <div style={{ fontSize: 12, color: "#555A70", marginTop: 1 }}>{member.user.email}</div>
                 </div>
 
-                {/* Role — dropdown for owners, badge for others */}
+                {/* Role selector for project admins, badge for others */}
                 {isOwner && !isLastOwner ? (
                   <select
                     value={member.role}

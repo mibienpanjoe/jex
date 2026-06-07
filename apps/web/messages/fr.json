@@ -61,7 +61,7 @@
       "remove": "Retirer"
     },
     "roles": {
-      "Owner": "Propriétaire",
+      "Owner": "Admin projet",
       "Developer": "Développeur",
       "ReadOnly": "Lecture seule"
     },
@@ -166,10 +166,10 @@
       "userNotFound": "Aucun compte trouvé avec cet email.",
       "alreadyMember": "Cet utilisateur est déjà membre.",
       "inviteError": "L'invitation a échoué",
-      "cannotDemoteLastOwner": "Impossible de rétrograder le dernier propriétaire.",
-      "cannotRemoveLastOwner": "Impossible de retirer le dernier propriétaire.",
+      "cannotDemoteLastOwner": "Impossible de rétrograder le dernier admin projet.",
+      "cannotRemoveLastOwner": "Impossible de retirer le dernier admin projet.",
       "roles": {
-        "Owner": "Propriétaire",
+        "Owner": "Admin projet",
         "Developer": "Développeur",
         "ReadOnly": "Lecture seule"
       }
@@ -240,7 +240,7 @@
     "feat1Title": "Chiffrement AES-256-GCM",
     "feat1Desc": "Chaque secret est chiffré avant d'atteindre la base de données. Le serveur ne détient jamais de valeurs en clair : vos clés, votre contrôle.",
     "feat2Title": "Contrôle d'accès basé sur les rôles",
-    "feat2Desc": "Propriétaires, membres et rôles en lecture seule. Limitez les tokens CI/CD à un seul environnement. Le dernier propriétaire ne peut jamais être supprimé.",
+    "feat2Desc": "Admins projet, développeurs et rôles en lecture seule. Limitez les tokens CI/CD à un seul environnement. Le dernier admin projet ne peut jamais être supprimé.",
     "feat3Title": "Segmentation par environnement",
     "feat3Desc": "dev, staging, prod : chaque environnement est isolé. Un membre limité à dev ne peut pas lire les secrets de prod, par conception.",
     "feat4Title": "Journal d'audit immuable",
