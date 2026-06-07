@@ -1,6 +1,8 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/Jex-Secrets%20Manager-6366F1?style=for-the-badge&logoColor=white" alt="Jex" />
+<img src="apps/web/public/brand/jex-pangolin-mark.svg" alt="Jex logo" width="96" />
+
+# Jex
 
 **Stop sharing `.env` files over chat . Start using a vault.**
 
