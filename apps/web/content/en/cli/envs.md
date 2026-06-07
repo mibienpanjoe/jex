@@ -32,5 +32,5 @@ The active environment (from `.envault`) is marked with `*`.
 
 ## See also
 
-- [`jex init`](/docs/cli/init) — change the default environment
-- [Environments](/docs/environments) — creating and managing environments
+- [`jex init`](/en/docs/cli/init) — change the default environment
+- [Environments](/en/docs/environments) — creating and managing environments

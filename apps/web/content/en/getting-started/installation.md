@@ -3,7 +3,7 @@
 ## Requirements
 
 - Node.js 18 or later (for the npm wrapper)
-- A Jex account — [create one free](/register) or [self-host](/docs/self-hosting)
+- A Jex account — [create one free](/en/register) or [self-host](/en/docs/self-hosting)
 
 ## Install the CLI
 
@@ -47,4 +47,4 @@ Or set the URL once in `.envault` using `jex init`.
 
 ## Next step
 
-→ [Quick Start](/docs/getting-started/quick-start)
+→ [Quick Start](/en/docs/getting-started/quick-start)

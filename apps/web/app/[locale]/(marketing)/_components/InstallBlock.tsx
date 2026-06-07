@@ -116,7 +116,7 @@ export function InstallBlock() {
             {t("ctaPrimary")}
           </Link>
           <Link
-            href="/docs/getting-started/quick-start"
+            href={withLocale("/docs/getting-started/quick-start", locale)}
             className="w-full sm:w-auto inline-flex min-h-11 items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium border transition-colors"
             style={{ background: "#FFFFFF", color: "#111318", borderColor: "#E2E4EC" }}
           >

@@ -32,5 +32,5 @@ jex secrets list --env staging
 
 ## Per-environment RBAC
 
-Access to each environment is controlled by role. See [Access Control](/docs/access-control)
+Access to each environment is controlled by role. See [Access Control](/en/docs/access-control)
 for details on scoping members and CI/CD tokens to specific environments.

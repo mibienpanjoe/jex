@@ -80,5 +80,5 @@ All `jex secrets` subcommands accept:
 
 ## See also
 
-- [`jex run`](/docs/cli/run) — inject secrets without writing to disk
-- [Environments](/docs/environments) — managing dev / staging / prod
+- [`jex run`](/en/docs/cli/run) — inject secrets without writing to disk
+- [Environments](/en/docs/environments) — managing dev / staging / prod

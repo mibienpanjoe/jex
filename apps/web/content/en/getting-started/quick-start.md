@@ -97,7 +97,7 @@ jex secrets list
 
 ## Next steps
 
-- [CLI reference](/docs/cli/login) — full list of commands and flags
-- [Environments](/docs/environments) — managing dev / staging / prod
-- [Access control](/docs/access-control) — inviting teammates and RBAC
-- [CI/CD integration](/docs/ci-cd) — scoped tokens for pipelines
+- [CLI reference](/en/docs/cli/login) — full list of commands and flags
+- [Environments](/en/docs/environments) — managing dev / staging / prod
+- [Access control](/en/docs/access-control) — inviting teammates and RBAC
+- [CI/CD integration](/en/docs/ci-cd) — scoped tokens for pipelines

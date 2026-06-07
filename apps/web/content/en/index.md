@@ -16,7 +16,7 @@ The CLI's `jex run` command means **secrets never touch disk** in your developme
 
 ## Quick links
 
-- [Installation](/docs/getting-started/installation)
-- [Quick start](/docs/getting-started/quick-start)
-- [CLI reference](/docs/cli/login)
-- [Self-hosting](/docs/self-hosting)
+- [Installation](/en/docs/getting-started/installation)
+- [Quick start](/en/docs/getting-started/quick-start)
+- [CLI reference](/en/docs/cli/login)
+- [Self-hosting](/en/docs/self-hosting)

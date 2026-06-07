@@ -24,4 +24,4 @@ level — no workaround exists.
 ## CI/CD tokens
 
 For automated pipelines, use CI/CD tokens instead of personal accounts. See
-[CI/CD Integration](/docs/ci-cd) for the full guide.
+[CI/CD Integration](/en/docs/ci-cd) for the full guide.

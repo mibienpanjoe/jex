@@ -19,4 +19,4 @@ warning is printed. The session will expire server-side per the configured TTL.
 
 ## See also
 
-- [`jex login`](/docs/cli/login)
+- [`jex login`](/en/docs/cli/login)

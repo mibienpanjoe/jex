@@ -47,5 +47,5 @@ your project.
 
 ## See also
 
-- [`jex secrets pull`](/docs/cli/secrets) — pull secrets after initializing
-- [`jex envs`](/docs/cli/envs) — list available environments
+- [`jex secrets pull`](/en/docs/cli/secrets) — pull secrets after initializing
+- [`jex envs`](/en/docs/cli/envs) — list available environments

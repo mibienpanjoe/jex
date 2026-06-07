@@ -42,5 +42,5 @@ Never commit this file. Jex adds `~/.jex/` to your global gitignore by conventio
 
 ## See also
 
-- [`jex logout`](/docs/cli/logout) — revoke the current session
-- [`jex init`](/docs/cli/init) — initialize a project after logging in
+- [`jex logout`](/en/docs/cli/logout) — revoke the current session
+- [`jex init`](/en/docs/cli/init) — initialize a project after logging in

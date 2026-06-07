@@ -6,9 +6,14 @@ const withNextIntl = createNextIntlPlugin();
 
 const withNextra = nextra({
   contentDirBasePath: "/docs",
+  unstable_shouldAddLocaleToLinks: true,
 });
 
 const nextConfig: NextConfig = {
+  i18n: {
+    locales: ["en", "fr"],
+    defaultLocale: "fr",
+  },
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   output: "standalone",
 };

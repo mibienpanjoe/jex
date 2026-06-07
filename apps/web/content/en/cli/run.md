@@ -64,5 +64,5 @@ or authentication failure exits with code `1`.
 
 ## See also
 
-- [`jex secrets pull`](/docs/cli/secrets) — write secrets to `.env` instead
-- [`jex init`](/docs/cli/init) — set up `.envault` first
+- [`jex secrets pull`](/en/docs/cli/secrets) — write secrets to `.env` instead
+- [`jex init`](/en/docs/cli/init) — set up `.envault` first
