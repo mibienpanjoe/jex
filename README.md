@@ -2,7 +2,7 @@
 
 <img src="https://img.shields.io/badge/Jex-Secrets%20Manager-6366F1?style=for-the-badge&logoColor=white" alt="Jex" />
 
-**Stop sharing `.env` files over Slack. Start using a vault.**
+**Stop sharing `.env` files over chat . Start using a vault.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-22C55E.svg?style=flat-square)](LICENSE)
 [![Go](https://img.shields.io/badge/CLI-Go-00ADD8?style=flat-square&logo=go&logoColor=white)](cli/)
@@ -19,7 +19,7 @@
 
 ## What is Jex?
 
-Jex is an **open-source secrets manager** for developer teams. It gives your team a shared encrypted vault where secrets are stored, versioned, and accessed by role — replacing the insecure habit of sharing `.env` files over chat.
+Jex is an **open-source secrets manager** for developer teams. It gives your team a shared encrypted vault where secrets are stored, versioned, and accessed by role ; replacing the insecure habit of sharing `.env` files over chat.
 
 ```bash
 # Inject secrets directly into any process — nothing written to disk
@@ -51,35 +51,6 @@ Existing solutions (HashiCorp Vault, AWS Secrets Manager, Doppler) are either to
 
 ---
 
-## Solution
-
-Jex is **self-hostable**, **MIT-licensed**, and designed for the way developers actually work.
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         Jex Architecture                        │
-│                                                                 │
-│   Developer           CI/CD Pipeline         Team Owner        │
-│       │                     │                     │            │
-│       ▼                     ▼                     ▼            │
-│  ┌─────────┐         ┌──────────┐          ┌──────────┐        │
-│  │  Go CLI │         │  Token   │          │ Web Dash │        │
-│  │  (jex)  │         │ (scoped) │          │(Next.js) │        │
-│  └────┬────┘         └────┬─────┘          └────┬─────┘        │
-│       └──────────┬────────┘                     │              │
-│                  ▼                               │              │
-│         ┌─────────────────────────────────────── ┘             │
-│         │         Node.js / Express API                        │
-│         │  AuthGateway → AccessPolicy → SecretsService         │
-│         │               CryptoService → VaultStore             │
-│         │                          ↕ AuditLog                  │
-│         └───────────────────────────────────────               │
-│                         PostgreSQL                              │
-│                (AES-256-GCM encrypted at rest)                  │
-└─────────────────────────────────────────────────────────────────┘
-```
-
----
 
 ## Features
 
@@ -233,7 +204,7 @@ Jex is in active development and contributions are welcome. Read [CONTRIBUTING.m
 
 ## License
 
-MIT — free to use, self-host, and modify. See [LICENSE](LICENSE).
+MIT  free to use, self-host, and modify. See [LICENSE](LICENSE).
 
 ---
 
