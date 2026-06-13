@@ -23,18 +23,6 @@
 
 Jex is an **open-source secrets manager** for developer teams. It gives your team a shared encrypted vault where secrets are stored, versioned, and accessed by role, replacing the insecure habit of sharing `.env` files over chat.
 
-```bash
-# Inject secrets directly into any process; nothing written to disk
-jex run -- npm start
-
-# Pull secrets to a local .env file
-jex secrets pull
-
-# Push your existing .env to the vault
-jex secrets push
-```
-
-Secrets are **encrypted with AES-256-GCM** before they ever reach the database. The server never stores plain text.
 
 ---
 
@@ -53,34 +41,40 @@ Existing solutions (HashiCorp Vault, AWS Secrets Manager, Doppler) are either to
 
 ---
 
+## A Small Team Workflow
 
-## Features
+Imagine a team of four developers shipping a SaaS app: one project admin, two backend developers, and one frontend developer. Before Jex, every new API key meant another `.env` file sent through chat, copied to laptops, and forgotten until staging or production broke.
 
-### For Developers
-- **`jex run -- <command>`**: inject secrets into a subprocess without writing any file to disk
-- **`jex secrets pull`**: download secrets to a local `.env` instantly
-- **`jex secrets push`**: bulk-import an existing `.env` to the vault
-- **`jex secrets set KEY=value`**: set a single secret from the terminal
-- **`jex login`**: authenticate via browser OAuth (GitHub) or token
+With Jex, the project admin creates a project in the dashboard, adds `dev`, `staging`, and `prod` environments, then invites the team with the right roles. Developers can work with `dev` secrets, read what they need, and avoid touching production credentials. Production access stays limited to project admins and scoped CI/CD tokens.
 
-### For Project Admins
-- Role-based access control with three roles: **Project Admin**, **Developer**, **Read-only**
-- Environment-scoped permissions: `dev`, `staging`, `prod`
-- Invite teammates by email; no account required to receive an invite
-- **Audit log**: every secret access event is recorded (who, what, when, which env)
-- Full-featured web dashboard; no CLI required for management
+The team imports its existing `.env` once:
 
-### For CI/CD Pipelines
-- Create scoped, environment-locked tokens from the dashboard
-- Tokens are **revoked instantly**: no propagation delay, no cache
-- Read-only by design: CI tokens cannot create or modify secrets
+```bash
+jex login
+jex init
+jex secrets push
+```
 
-### Security Architecture
-- **AES-256-GCM** encryption: secrets are encrypted before any database write
-- **Zero plain text at rest**: `VaultStore` only ever receives ciphertext
-- **Audit-first**: audit writes are inside the same transaction as secret writes; no silent failures
-- **RBAC on every request**: `AccessPolicy` is called before any secret operation, no shortcuts
-- **`jex run` never writes a file**: subprocess injection via `exec.Command` env only
+After that, day-to-day development is simple. A developer pulls a local `.env` when a framework expects one:
+
+```bash
+jex secrets pull
+npm run dev
+```
+
+Or, when the team wants secrets to stay off disk entirely, they inject them directly into the process:
+
+```bash
+jex run -- npm run dev
+```
+
+When a database URL changes, a developer updates the shared vault instead of messaging everyone:
+
+```bash
+jex secrets set DATABASE_URL=postgres://...
+```
+
+The next teammate gets the new value from Jex, not from a stale chat thread. CI uses an environment-scoped token for `staging` or `prod`, so pipelines can read only the secrets they are allowed to use. Every secret mutation is audited, every request goes through RBAC, and every stored value is encrypted with AES-256-GCM before it reaches PostgreSQL.
 
 ---
 
@@ -106,35 +100,9 @@ npm install -g jex-secrets
 jex --version
 ```
 
-### First project setup
-
-```bash
-# Link your repo to a Jex project
-jex init
-
-# Pull secrets for your current environment
-jex secrets pull
-
-# Run your app with secrets injected; no .env file created
-jex run -- npm run dev
-```
 
 ---
 
-## RBAC Matrix
-
-| Operation | Project Admin | Developer | Read-only | CI Token |
-|-----------|:-----:|:---------:|:---------:|:--------:|
-| Read `dev` | ✅ | ✅ | ✅ | ✅ (if scoped) |
-| Write `dev` | ✅ | ✅ | ❌ | ❌ |
-| Read `staging` | ✅ | ✅ | ✅ | ✅ (if scoped) |
-| Write `staging` | ✅ | ❌ | ❌ | ❌ |
-| Read `prod` | ✅ | ❌ | ❌ | ✅ (if scoped) |
-| Write `prod` | ✅ | ❌ | ❌ | ❌ |
-| Manage members | ✅ | ❌ | ❌ | ❌ |
-| View audit log | ✅ | ❌ | ❌ | ❌ |
-
----
 
 ## Tech Stack
 
