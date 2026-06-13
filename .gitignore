@@ -10,6 +10,9 @@ node_modules/
 dist/
 .next/
 out/
+.playwright-mcp/
+tsconfig.tsbuildinfo
+*.tsbuildinfo
 
 # Go binaries
 bin/
