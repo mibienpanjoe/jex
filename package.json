@@ -7,7 +7,8 @@
     "apps/api"
   ],
   "scripts": {
-    "dev:api": "npm run dev --workspace=apps/api",
-    "dev:web": "npm run dev --workspace=apps/web"
+    "dev:api": "node scripts/dev-api.mjs",
+    "dev:web": "node scripts/dev-web.mjs",
+    "dev:web:clean": "node scripts/dev-web.mjs --clean"
   }
 }

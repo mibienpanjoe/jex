@@ -1,10 +1,6 @@
-export const locales = ["en", "fr"] as const;
+import { isLocale, locales, type Locale } from "@/i18n/locales";
 
-export type Locale = (typeof locales)[number];
-
-export function isLocale(value: string): value is Locale {
-  return locales.includes(value as Locale);
-}
+export { isLocale, locales, type Locale };
 
 export function withLocale(path: string, locale: string): string {
   if (path.startsWith("#")) return path;
