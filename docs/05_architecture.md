@@ -36,7 +36,7 @@ The API and web dashboard run as a unified Next.js + Node.js deployment on a sin
 **Key behaviors:**
 1. Parse and validate session tokens (JWT or opaque token via Better Auth)
 2. On every request, check token revocation status in the database — no in-memory cache that could serve revoked tokens
-3. Validate OAuth state parameter and exchange code for user identity via GitHub/Google
+3. Validate OAuth state parameter and exchange code for user identity via GitHub
 4. Manage 2FA challenge/response flow (TOTP via Better Auth plugin)
 5. Issue new session tokens on successful login
 6. Invalidate tokens on logout
@@ -412,7 +412,7 @@ jex/
 
 ### ADR-01: Use Better Auth over Passport.js / Auth.js
 **Decision:** Use Better Auth for authentication.
-**Rationale:** Better Auth is open-source, self-hostable, and ships with first-class support for TOTP 2FA, OAuth (GitHub, Google), and session management — matching all FR-010 requirements without custom implementation. Auth.js (NextAuth) is tightly coupled to Next.js and does not integrate cleanly with a standalone API server.
+**Rationale:** Better Auth is open-source, self-hostable, and ships with first-class support for TOTP 2FA, GitHub OAuth, and session management — matching all FR-010 requirements without custom implementation. Auth.js (NextAuth) is tightly coupled to Next.js and does not integrate cleanly with a standalone API server.
 **Consequence:** Better Auth owns the sessions table schema; Prisma adapter is used for PostgreSQL.
 
 ### ADR-02: AES-256-GCM over libsodium (secretbox)

@@ -154,16 +154,16 @@ Auth required: **Yes**
 
 ---
 
-### GET /api/v1/auth/oauth/:provider
-Initiate OAuth login flow. `provider` is `github` or `google`.
+### POST /api/v1/auth/sign-in/social
+Initiate social login through Better Auth. Jex enables `github` as the default social provider.
 Auth required: **No**
 
 **Response:** HTTP 302 redirect to provider's authorization URL
 
 ---
 
-### GET /api/v1/auth/oauth/:provider/callback
-OAuth callback endpoint. Handled by Better Auth.
+### GET /api/v1/auth/callback/github
+GitHub OAuth callback endpoint. Handled by Better Auth.
 Auth required: **No**
 
 **Success:** HTTP 302 redirect to dashboard with session token set in cookie or returned as query param for CLI token exchange
@@ -845,8 +845,8 @@ Health check endpoint. No authentication required.
 | POST | `/auth/logout` | Revoke current session | Yes |
 | GET | `/auth/sessions` | List active sessions | Yes |
 | DELETE | `/auth/sessions/:id` | Revoke a session | Yes |
-| GET | `/auth/oauth/:provider` | Initiate OAuth | No |
-| GET | `/auth/oauth/:provider/callback` | OAuth callback | No |
+| POST | `/auth/sign-in/social` | Initiate GitHub OAuth | No |
+| GET | `/auth/callback/github` | GitHub OAuth callback | No |
 | GET | `/projects` | List user's projects | Yes |
 | POST | `/projects` | Create project | Yes |
 | GET | `/projects/:id` | Get project details | Yes (member) |

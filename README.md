@@ -61,7 +61,7 @@ Existing solutions (HashiCorp Vault, AWS Secrets Manager, Doppler) are either to
 - **`jex secrets pull`**: download secrets to a local `.env` instantly
 - **`jex secrets push`**: bulk-import an existing `.env` to the vault
 - **`jex secrets set KEY=value`**: set a single secret from the terminal
-- **`jex login`**: authenticate via browser OAuth (GitHub, Google) or token
+- **`jex login`**: authenticate via browser OAuth (GitHub) or token
 
 ### For Project Admins
 - Role-based access control with three roles: **Project Admin**, **Developer**, **Read-only**

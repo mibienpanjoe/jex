@@ -35,7 +35,7 @@ Version: v1.0, 2026-04-06
 - **FR-011**: The system MUST support account creation with email and password.
 - **FR-012**: Passwords MUST be hashed using bcrypt with a cost factor ≥ 12 before storage.
 - **FR-013**: The system MUST support login via GitHub OAuth.
-- **FR-014**: The system MUST support login via Google OAuth.
+- **FR-014**: The system MUST NOT expose Google OAuth in the default product flow.
 - **FR-015**: The system MUST support two-factor authentication (TOTP) as an optional account setting.
 - **FR-016**: The system MUST issue a session token upon successful authentication.
 - **FR-017**: Session tokens MUST be invalidated on logout.

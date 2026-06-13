@@ -59,8 +59,40 @@ The API starts at `http://localhost:3001` and the dashboard at `http://localhost
 | `WEB_ORIGIN` | no | Public dashboard origin allowed to make credentialed API requests. Defaults to `http://localhost:3000`. |
 | `WEB_DEFAULT_LOCALE` | no | Locale used for auth redirects from the API to the dashboard. Defaults to `fr`. |
 | `PORT` | no | Defaults to `3001`. |
-| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | no | Only if GitHub OAuth login is enabled. |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | no | Only if Google OAuth login is enabled. |
+| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | yes for GitHub login | OAuth app credentials from GitHub. |
+
+## GitHub OAuth setup
+
+Create a GitHub OAuth App from **Settings → Developer settings → OAuth Apps**.
+
+For local development:
+
+| GitHub field | Value |
+|---|---|
+| Homepage URL | `http://localhost:3000` |
+| Authorization callback URL | `http://localhost:3001/api/v1/auth/callback/github` |
+
+Then copy the generated client ID and client secret into `apps/api/.env`:
+
+```bash
+GITHUB_CLIENT_ID="..."
+GITHUB_CLIENT_SECRET="..."
+```
+
+For production, use your public origins instead:
+
+```bash
+BETTER_AUTH_URL="https://api.jex.yourcompany.com"
+WEB_ORIGIN="https://jex.yourcompany.com"
+GITHUB_CLIENT_ID="..."
+GITHUB_CLIENT_SECRET="..."
+```
+
+The production GitHub callback URL must match the public API origin:
+
+```text
+https://api.jex.yourcompany.com/api/v1/auth/callback/github
+```
 
 ### `apps/web/.env`
 

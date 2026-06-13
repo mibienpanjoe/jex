@@ -48,7 +48,6 @@ The entire stack is MIT-licensed and self-hostable via a single `docker-compose 
 ### Authentication
 - Email/password account creation and login
 - GitHub OAuth login
-- Google OAuth login
 - Two-factor authentication (via Better Auth plugin)
 - Session management (create, list, revoke sessions)
 

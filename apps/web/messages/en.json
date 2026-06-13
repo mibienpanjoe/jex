@@ -22,7 +22,6 @@
     "email": "Email",
     "password": "Password",
     "continueGithub": "Continue with GitHub",
-    "continueGoogle": "Continue with Google",
     "emailDivider": "or continue with email",
     "login": {
       "subtitle": "Sign in to your account",

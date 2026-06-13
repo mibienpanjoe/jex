@@ -59,8 +59,40 @@ L'API démarre sur `http://localhost:3001` et le tableau de bord sur `http://loc
 | `WEB_ORIGIN` | non | Origine publique du tableau de bord autorisée à faire des requêtes API avec identifiants. Par défaut : `http://localhost:3000`. |
 | `WEB_DEFAULT_LOCALE` | non | Locale utilisée pour les redirections auth de l'API vers le tableau de bord. Par défaut : `fr`. |
 | `PORT` | non | Par défaut : `3001`. |
-| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | non | Uniquement si la connexion OAuth GitHub est activée. |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | non | Uniquement si la connexion OAuth Google est activée. |
+| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | oui pour la connexion GitHub | Identifiants de l'application OAuth GitHub. |
+
+## Configuration OAuth GitHub
+
+Créez une application OAuth GitHub depuis **Settings → Developer settings → OAuth Apps**.
+
+Pour le développement local :
+
+| Champ GitHub | Valeur |
+|---|---|
+| Homepage URL | `http://localhost:3000` |
+| Authorization callback URL | `http://localhost:3001/api/v1/auth/callback/github` |
+
+Copiez ensuite le client ID et le client secret générés dans `apps/api/.env` :
+
+```bash
+GITHUB_CLIENT_ID="..."
+GITHUB_CLIENT_SECRET="..."
+```
+
+En production, utilisez vos origines publiques :
+
+```bash
+BETTER_AUTH_URL="https://api.jex.yourcompany.com"
+WEB_ORIGIN="https://jex.yourcompany.com"
+GITHUB_CLIENT_ID="..."
+GITHUB_CLIENT_SECRET="..."
+```
+
+L'URL de callback GitHub en production doit correspondre à l'origine publique de l'API :
+
+```text
+https://api.jex.yourcompany.com/api/v1/auth/callback/github
+```
 
 ### `apps/web/.env`
 

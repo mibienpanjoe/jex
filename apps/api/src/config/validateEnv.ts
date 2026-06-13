@@ -26,6 +26,12 @@ export async function validateEnv(): Promise<void> {
     throw new Error("DATABASE_URL is not set.");
   }
 
+  if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
+    throw new Error(
+      "GitHub OAuth is not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET from your GitHub OAuth App.",
+    );
+  }
+
   const prisma = new PrismaClient();
   try {
     await prisma.$connect();
