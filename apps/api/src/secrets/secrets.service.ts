@@ -36,7 +36,7 @@ export async function getSecretValue(
   }
 
   const actorId = actor.actorType === "User" ? actor.userId : actor.tokenId;
-  const actorName = actorId;
+  const actorName = actor.actorName;
 
   await prisma.$transaction(async (tx) => {
     await record(tx, {
@@ -69,7 +69,7 @@ export async function exportSecrets(
     await record(tx, {
       projectId,
       actorId,
-      actorName: actorId,
+      actorName: actor.actorName,
       actorType: actor.actorType === "User" ? "User" : "CICDToken",
       operation: "SECRET_READ_BULK",
       env,
@@ -99,7 +99,7 @@ export async function setSecret(
     await record(tx, {
       projectId,
       actorId,
-      actorName: actorId,
+      actorName: actor.actorName,
       actorType: actor.actorType === "User" ? "User" : "CICDToken",
       operation: isUpdate ? "SECRET_UPDATE" : "SECRET_CREATE",
       env,
@@ -125,7 +125,7 @@ export async function removeSecret(
     await record(tx, {
       projectId,
       actorId,
-      actorName: actorId,
+      actorName: actor.actorName,
       actorType: actor.actorType === "User" ? "User" : "CICDToken",
       operation: "SECRET_DELETE",
       env,
@@ -166,7 +166,7 @@ export async function importSecrets(
     await record(tx, {
       projectId,
       actorId,
-      actorName: actorId,
+      actorName: actor.actorName,
       actorType: actor.actorType === "User" ? "User" : "CICDToken",
       operation: "SECRET_CREATE",
       env,

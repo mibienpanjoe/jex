@@ -24,6 +24,7 @@ router.get("/", async (req: Request, res: Response) => {
   if (!actor) return;
 
   const { userId } = actor;
+  const actorName = actor.actorName;
   const projectId = req.params["projectId"] as string;
 
   await requireMember(userId, projectId, res);
@@ -39,6 +40,7 @@ router.post("/", async (req: Request, res: Response) => {
   if (!actor) return;
 
   const { userId } = actor;
+  const actorName = actor.actorName;
   const projectId = req.params["projectId"] as string;
 
   await requireOwner(userId, projectId, res);
@@ -72,7 +74,7 @@ router.post("/", async (req: Request, res: Response) => {
     await record(tx, {
       projectId,
       actorId: userId,
-      actorName: userId,
+      actorName,
       actorType: "User",
       operation: "MEMBER_INVITE",
     });
@@ -87,6 +89,7 @@ router.patch("/:targetUserId", async (req: Request, res: Response) => {
   if (!actor) return;
 
   const { userId } = actor;
+  const actorName = actor.actorName;
   const projectId = req.params["projectId"] as string;
   const targetUserId = req.params["targetUserId"] as string;
   const { role } = req.body as { role?: string };
@@ -117,7 +120,7 @@ router.patch("/:targetUserId", async (req: Request, res: Response) => {
     await record(tx, {
       projectId,
       actorId: userId,
-      actorName: userId,
+      actorName,
       actorType: "User",
       operation: "MEMBER_ROLE_CHANGE",
     });
@@ -133,6 +136,7 @@ router.delete("/:targetUserId", async (req: Request, res: Response) => {
   if (!actor) return;
 
   const { userId } = actor;
+  const actorName = actor.actorName;
   const projectId = req.params["projectId"] as string;
   const targetUserId = req.params["targetUserId"] as string;
 
@@ -154,7 +158,7 @@ router.delete("/:targetUserId", async (req: Request, res: Response) => {
     await record(tx, {
       projectId,
       actorId: userId,
-      actorName: userId,
+      actorName,
       actorType: "User",
       operation: "MEMBER_REMOVE",
     });

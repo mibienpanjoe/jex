@@ -132,7 +132,7 @@ function ProjectCard({ project, locale }: { project: Project; locale: string }) 
 }
 
 function RoleBadge({ role }: { role: Project["role"] }) {
-  const t = useTranslations("dashboard.roles");
+  const t = useTranslations("dashboard");
   const colors: Record<string, string> = {
     Owner: "#6366F1",
     Developer: "#22C55E",
@@ -152,7 +152,7 @@ function RoleBadge({ role }: { role: Project["role"] }) {
         letterSpacing: "0.5px",
       }}
     >
-      {t(role)}
+      {t(`roles.${role}`)}
     </span>
   );
 }

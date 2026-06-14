@@ -28,7 +28,7 @@ export async function createProject(userId: string, name: string) {
       })),
     });
 
-    return project;
+    return { ...project, role: Role.Owner };
   });
 }
 

@@ -14,6 +14,7 @@ router.get("/", async (req: Request, res: Response) => {
   if (!actor) return;
 
   const { userId } = actor;
+  const actorName = actor.actorName;
   const projectId = req.params["projectId"] as string;
 
   await requireOwner(userId, projectId, res);
@@ -29,6 +30,7 @@ router.post("/", async (req: Request, res: Response) => {
   if (!actor) return;
 
   const { userId } = actor;
+  const actorName = actor.actorName;
   const projectId = req.params["projectId"] as string;
 
   await requireOwner(userId, projectId, res);
@@ -68,7 +70,7 @@ router.post("/", async (req: Request, res: Response) => {
     await record(tx, {
       projectId,
       actorId: userId,
-      actorName: userId,
+      actorName,
       actorType: "User",
       operation: "TOKEN_CREATE",
       env: environment.name,
@@ -87,6 +89,7 @@ router.delete("/:tokenId", async (req: Request, res: Response) => {
   if (!actor) return;
 
   const { userId } = actor;
+  const actorName = actor.actorName;
   const projectId = req.params["projectId"] as string;
   const tokenId = req.params["tokenId"] as string;
 
@@ -102,7 +105,7 @@ router.delete("/:tokenId", async (req: Request, res: Response) => {
       await record(tx, {
         projectId,
         actorId: userId,
-        actorName: userId,
+        actorName,
         actorType: "User",
         operation: "TOKEN_REVOKE",
         env: token.scopedEnv,

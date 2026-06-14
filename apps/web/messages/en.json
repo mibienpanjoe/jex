@@ -17,6 +17,8 @@
   "auth": {
     "meta": {
       "title": "Login",
+      "loginTitle": "Login",
+      "registerTitle": "Create account",
       "description": "Sign in to Jex or create an account to manage your team secrets."
     },
     "email": "Email",

@@ -159,3 +159,145 @@ body {
 .delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
 .delay-600 { animation-delay: 600ms; }
+
+/* ─── Documentation ─────────────────────────────────────────────────────── */
+
+.jex-docs-layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 24px 72px;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 56px;
+}
+
+.jex-docs-sidebar {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.jex-docs-content {
+  color: #20243a;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.jex-docs-content h1 {
+  color: #111322;
+  font-size: 42px;
+  line-height: 1.1;
+  letter-spacing: 0;
+  margin: 0 0 24px;
+}
+
+.jex-docs-content h2 {
+  color: #111322;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: 0;
+  margin: 48px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e6e8f0;
+}
+
+.jex-docs-content h3 {
+  color: #111322;
+  font-size: 20px;
+  line-height: 1.35;
+  margin: 32px 0 10px;
+}
+
+.jex-docs-content p,
+.jex-docs-content ul,
+.jex-docs-content ol {
+  margin: 0 0 18px;
+}
+
+.jex-docs-content ul,
+.jex-docs-content ol {
+  padding-left: 24px;
+}
+
+.jex-docs-content li {
+  margin: 6px 0;
+}
+
+.jex-docs-content a {
+  color: #5b21b6;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.jex-docs-content code {
+  border: 1px solid #e1e4ee;
+  border-radius: 6px;
+  background: #f6f7fb;
+  color: #20243a;
+  padding: 2px 6px;
+  font-size: 0.9em;
+}
+
+.jex-docs-content pre {
+  overflow-x: auto;
+  border-radius: 10px;
+  background: #0d0f14;
+  color: #f0f2f8;
+  padding: 18px;
+  margin: 22px 0;
+}
+
+.jex-docs-content pre code {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.jex-docs-content blockquote {
+  margin: 22px 0;
+  padding: 12px 18px;
+  border-left: 4px solid #6d28d9;
+  background: #f7f6ff;
+  color: #3d4156;
+}
+
+.jex-docs-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 22px 0;
+  font-size: 14px;
+}
+
+.jex-docs-content th,
+.jex-docs-content td {
+  border: 1px solid #e6e8f0;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.jex-docs-content th {
+  background: #f6f7fb;
+  color: #111322;
+}
+
+@media (max-width: 860px) {
+  .jex-docs-layout {
+    display: block;
+    padding: 28px 20px 56px;
+  }
+
+  .jex-docs-sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 34px;
+    padding-right: 0;
+  }
+
+  .jex-docs-content h1 {
+    font-size: 34px;
+  }
+}

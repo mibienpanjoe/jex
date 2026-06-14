@@ -233,7 +233,8 @@ export default function MembersPage() {
                     </div>
                   ) : (
                     <button
-                      onClick={() => !isLastOwner && setRemoveTarget(member.userId)}
+                      onClick={() => setRemoveTarget(member.userId)}
+                      disabled={isLastOwner}
                       title={isLastOwner ? t("cannotRemoveLastOwner") : undefined}
                       style={{
                         background: "transparent",
@@ -243,6 +244,7 @@ export default function MembersPage() {
                         color: isLastOwner ? "#2A2F42" : "#8B90A8",
                         fontSize: 12,
                         cursor: isLastOwner ? "not-allowed" : "pointer",
+                        opacity: isLastOwner ? 0.55 : 1,
                       }}
                     >
                       {common("remove")}

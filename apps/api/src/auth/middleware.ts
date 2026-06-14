@@ -29,6 +29,7 @@ export async function authenticate(
 
     const cicdToken = await prisma.cICDToken.findFirst({
       where: { tokenHash, revokedAt: null },
+      select: { id: true, name: true, scopedEnv: true },
     });
 
     if (!cicdToken) {
@@ -39,6 +40,7 @@ export async function authenticate(
     req.actor = {
       actorType: "CICDToken",
       tokenId: cicdToken.id,
+      actorName: cicdToken.name,
       scopedEnv: cicdToken.scopedEnv,
     };
 
@@ -50,6 +52,7 @@ export async function authenticate(
   if (token) {
     const session = await prisma.session.findUnique({
       where: { token },
+      include: { user: { select: { name: true, email: true } } },
     });
 
     if (!session || session.revokedAt !== null || session.expiresAt < new Date()) {
@@ -61,6 +64,7 @@ export async function authenticate(
       actorType: "User",
       userId: session.userId,
       sessionId: session.id,
+      actorName: session.user.name || session.user.email,
     };
 
     next();
@@ -83,6 +87,7 @@ export async function authenticate(
 
   const dbSession = await prisma.session.findUnique({
     where: { id: sessionResult.session.id },
+    include: { user: { select: { name: true, email: true } } },
   });
 
   if (!dbSession || dbSession.revokedAt !== null || dbSession.expiresAt < new Date()) {
@@ -94,6 +99,7 @@ export async function authenticate(
     actorType: "User",
     userId: dbSession.userId,
     sessionId: dbSession.id,
+    actorName: dbSession.user.name || dbSession.user.email,
   };
 
   next();

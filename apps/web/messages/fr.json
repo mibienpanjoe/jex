@@ -17,6 +17,8 @@
   "auth": {
     "meta": {
       "title": "Connexion",
+      "loginTitle": "Connexion",
+      "registerTitle": "Créer un compte",
       "description": "Connectez-vous à Jex ou créez un compte pour gérer les secrets de votre équipe."
     },
     "email": "Email",
