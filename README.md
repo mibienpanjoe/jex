@@ -15,9 +15,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-6366F1?style=flat-square)](CONTRIBUTING.md)
 [![Status](https://img.shields.io/badge/Status-In%20Development-F59E0B?style=flat-square)](#)
 
-**Website:** https://site-henna-rho-78.vercel.app  
-**Docs:** https://site-henna-rho-78.vercel.app/en/docs  
-**Self-hosting:** https://site-henna-rho-78.vercel.app/en/docs/self-hosting
+**[Website](https://site-henna-rho-78.vercel.app)** · **[Docs](https://site-henna-rho-78.vercel.app/en/docs)** · **[Self-hosting](https://site-henna-rho-78.vercel.app/en/docs/self-hosting)**
 
 </div>
 
