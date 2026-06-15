@@ -66,6 +66,11 @@
       "Developer": "Developer",
       "ReadOnly": "Read-only"
     },
+    "projectCardRoles": {
+      "Owner": "Admin",
+      "Developer": "Developer",
+      "ReadOnly": "Read-only"
+    },
     "projects": {
       "meta": {
         "title": "Dashboard",

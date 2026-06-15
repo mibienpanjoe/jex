@@ -152,7 +152,7 @@ function RoleBadge({ role }: { role: Project["role"] }) {
         letterSpacing: "0.5px",
       }}
     >
-      {t(`roles.${role}`)}
+      {t(`projectCardRoles.${role}`)}
     </span>
   );
 }
