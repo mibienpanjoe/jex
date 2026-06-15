@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="apps/web/public/brand/jex-pangolin-mark.svg" alt="Jex logo" width="96" />
+<img src="apps/site/public/brand/jex-pangolin-mark.svg" alt="Jex logo" width="96" />
 
 # Jex
 
@@ -15,6 +15,10 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-6366F1?style=flat-square)](CONTRIBUTING.md)
 [![Status](https://img.shields.io/badge/Status-In%20Development-F59E0B?style=flat-square)](#)
 
+**Website:** https://site-henna-rho-78.vercel.app  
+**Docs:** https://site-henna-rho-78.vercel.app/en/docs  
+**Self-hosting:** https://site-henna-rho-78.vercel.app/en/docs/self-hosting
+
 </div>
 
 ---
@@ -23,6 +27,7 @@
 
 Jex is an **open-source secrets manager** for developer teams. It gives your team a shared encrypted vault where secrets are stored, versioned, and accessed by role, replacing the insecure habit of sharing `.env` files over chat.
 
+Jex is self-hosted infrastructure. The public website hosts only the landing page and documentation; teams run their own API, dashboard, PostgreSQL database, encryption key, backups, and access controls.
 
 ---
 
@@ -47,10 +52,10 @@ Imagine a team of four developers shipping a SaaS app: one project admin, two ba
 
 With Jex, the project admin creates a project in the dashboard, adds `dev`, `staging`, and `prod` environments, then invites the team with the right roles. Developers can work with `dev` secrets, read what they need, and avoid touching production credentials. Production access stays limited to project admins and scoped CI/CD tokens.
 
-The team imports its existing `.env` once:
+After self-hosting Jex, the team imports its existing `.env` once:
 
 ```bash
-jex login
+jex login --api-url https://jex.yourcompany.com
 jex init
 jex secrets push
 ```
@@ -90,6 +95,8 @@ docker-compose up
 
 That's it. The API, web dashboard, and PostgreSQL database start together. Open `http://localhost:3000` to create your first account.
 
+For production guidance, read the [self-hosting guide](https://site-henna-rho-78.vercel.app/en/docs/self-hosting) and [self-host first](https://site-henna-rho-78.vercel.app/en/docs/getting-started/self-host-first) notes.
+
 ### Install the CLI
 
 ```bash
@@ -100,6 +107,7 @@ npm install -g jex-secrets
 jex --version
 ```
 
+CLI setup details are in the [installation guide](https://site-henna-rho-78.vercel.app/en/docs/getting-started/installation).
 
 ---
 
@@ -132,7 +140,8 @@ jex/
 │   │   │   ├── audit/       # AuditLog: append-only event recorder
 │   │   │   └── vault/       # VaultStore: all Prisma queries
 │   │   └── prisma/
-│   └── web/                 # Next.js 16 dashboard + landing + docs
+│   ├── site/                # Public landing page + docs, deployed by the Jex project
+│   └── web/                 # Self-hosted Next.js dashboard/auth app
 ├── cli/                     # Go binary for all jex commands
 │   ├── cmd/
 │   └── internal/
@@ -146,6 +155,18 @@ jex/
 ---
 
 ## Documentation
+
+Public documentation:
+
+| Guide | Link |
+|-------|------|
+| Product docs | https://site-henna-rho-78.vercel.app/en/docs |
+| Why self-host | https://site-henna-rho-78.vercel.app/en/docs/why-self-host |
+| Self-host first | https://site-henna-rho-78.vercel.app/en/docs/getting-started/self-host-first |
+| Self-hosting guide | https://site-henna-rho-78.vercel.app/en/docs/self-hosting |
+| CLI installation | https://site-henna-rho-78.vercel.app/en/docs/getting-started/installation |
+
+Engineering documents in this repository:
 
 | Document | Contents |
 |----------|----------|
@@ -182,6 +203,6 @@ MIT: free to use, self-host, and modify. See [LICENSE](LICENSE).
 
 Built for developer teams who move fast and take security seriously.
 
-**[Get Started](#quick-start)** · **[Read the Docs](docs/)** · **[Open an Issue](https://github.com/mibienpanjoe/jex/issues)**
+**[Get Started](#quick-start)** · **[Read the Docs](https://site-henna-rho-78.vercel.app/en/docs)** · **[Open an Issue](https://github.com/mibienpanjoe/jex/issues)**
 
 </div>
