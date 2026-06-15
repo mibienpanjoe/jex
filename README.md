@@ -156,13 +156,11 @@ jex/
 
 Public documentation:
 
-| Guide | Link |
-|-------|------|
-| Product docs | https://site-henna-rho-78.vercel.app/en/docs |
-| Why self-host | https://site-henna-rho-78.vercel.app/en/docs/why-self-host |
-| Self-host first | https://site-henna-rho-78.vercel.app/en/docs/getting-started/self-host-first |
-| Self-hosting guide | https://site-henna-rho-78.vercel.app/en/docs/self-hosting |
-| CLI installation | https://site-henna-rho-78.vercel.app/en/docs/getting-started/installation |
+- [Product docs](https://site-henna-rho-78.vercel.app/en/docs)
+- [Why self-host](https://site-henna-rho-78.vercel.app/en/docs/why-self-host)
+- [Self-host first](https://site-henna-rho-78.vercel.app/en/docs/getting-started/self-host-first)
+- [Self-hosting guide](https://site-henna-rho-78.vercel.app/en/docs/self-hosting)
+- [CLI installation](https://site-henna-rho-78.vercel.app/en/docs/getting-started/installation)
 
 Engineering documents in this repository:
 
