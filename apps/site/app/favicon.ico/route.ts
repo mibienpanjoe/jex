@@ -1,0 +1,17 @@
+export function GET() {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#6366F1"/>
+  <path d="M48 43.5C43.6 50.2 35.4 53.3 27.8 51.3C18.1 48.8 12.3 39 14.8 29.3C16.9 21.1 24.2 15.7 32.2 15.7C38.8 15.7 44.8 19.4 47.9 25.2C45.7 23.8 43.1 23 40.2 23C32.4 23 26 29.4 26 37.2C26 41.8 28.2 45.8 31.6 48.4C37.2 49.2 43.1 47.5 48 43.5Z" fill="#FFFFFF"/>
+  <path d="M21.6 25.9C24 23.2 27.5 21.5 31.4 21.5C31.9 21.5 32.4 21.5 32.9 21.6L28.6 27.5H21.5C21.5 26.9 21.5 26.4 21.6 25.9Z" fill="#EEF2FF"/>
+  <path d="M21.9 32.2H29.9L35.1 25.1C37 25.8 38.7 26.9 40 28.4L34.4 36H23.1C22.6 34.8 22.2 33.5 21.9 32.2Z" fill="#EEF2FF"/>
+  <path d="M26.2 41.4H35.8L42.8 31.8C43.7 33.5 44.2 35.4 44.2 37.4C44.2 38.3 44.1 39.2 43.9 40L36.6 46.2C32.4 46.1 28.7 44.3 26.2 41.4Z" fill="#EEF2FF"/>
+  <path d="M37.8 18.1C43 20 47.2 24 49.4 29.1" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+</svg>`;
+
+  return new Response(svg, {
+    headers: {
+      "Cache-Control": "public, max-age=31536000, immutable",
+      "Content-Type": "image/svg+xml",
+    },
+  });
+}

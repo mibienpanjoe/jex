@@ -4,9 +4,9 @@ import { routing } from "./i18n/routing";
 export default createMiddleware(routing);
 
 export const config = {
-  // Match all pathnames except for internal Next.js paths, API routes, docs,
-  // and static files. Human-facing app routes are locale-prefixed.
+  // Match all pathnames except for internal Next.js paths, API routes, and
+  // static files. Human-facing dashboard routes are locale-prefixed.
   matcher: [
-    "/((?!_next|_vercel|api|docs|favicon.ico|.*\\..*).*)",
+    "/((?!_next|_vercel|api|favicon.ico|.*\\..*).*)",
   ],
 };

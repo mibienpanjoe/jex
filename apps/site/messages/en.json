@@ -1,0 +1,268 @@
+{
+  "meta": {
+    "title": "Jex — Secrets Manager for Developer Teams",
+    "description": "Manage project secrets without shared .env files. Jex is an open-source manager with AES-256-GCM encryption, RBAC, and a Go CLI."
+  },
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How it works",
+    "docs": "Docs",
+    "github": "GitHub",
+    "login": "Login",
+    "getStarted": "Get started",
+    "getStartedFree": "Get started free",
+    "selfHost": "Self-host Jex",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "auth": {
+    "meta": {
+      "title": "Login",
+      "loginTitle": "Login",
+      "registerTitle": "Create account",
+      "description": "Sign in to Jex or create an account to manage your team secrets."
+    },
+    "email": "Email",
+    "password": "Password",
+    "continueGithub": "Continue with GitHub",
+    "emailDivider": "or continue with email",
+    "login": {
+      "subtitle": "Sign in to your account",
+      "submit": "Sign in",
+      "loading": "Signing in...",
+      "error": "Login failed",
+      "noAccount": "Don't have an account?",
+      "createOne": "Create one"
+    },
+    "register": {
+      "subtitle": "Create your account",
+      "name": "Full name",
+      "submit": "Create account",
+      "loading": "Creating account...",
+      "error": "Registration failed",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in"
+    }
+  },
+  "dashboard": {
+    "common": {
+      "loading": "Loading...",
+      "loadError": "We could not reach the Jex API. Check that the API server is running, then try again.",
+      "retry": "Try again",
+      "cancel": "Cancel",
+      "create": "Create",
+      "creating": "Creating...",
+      "save": "Save",
+      "saving": "Saving...",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "edit": "Edit",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "yes": "Yes",
+      "remove": "Remove"
+    },
+    "roles": {
+      "Owner": "Project Admin",
+      "Developer": "Developer",
+      "ReadOnly": "Read-only"
+    },
+    "projects": {
+      "meta": {
+        "title": "Dashboard",
+        "description": "Manage Jex projects, secrets, members, audit logs, and CI/CD tokens."
+      },
+      "title": "Projects",
+      "newProject": "New project",
+      "created": "Created {date}",
+      "empty": "No projects yet.",
+      "createFirst": "Create your first project",
+      "modal": {
+        "title": "New project",
+        "name": "Project name",
+        "cancel": "Cancel",
+        "create": "Create",
+        "creating": "Creating...",
+        "error": "Failed to create project"
+      }
+    },
+    "project": {
+      "projects": "Projects",
+      "created": "Created {date}",
+      "environments": {
+        "title": "Environments",
+        "desc": "Create custom environments and delete ones you no longer use.",
+        "placeholder": "preview-1",
+        "create": "Create",
+        "creating": "Creating...",
+        "deleteLabel": "Delete {name}",
+        "invalidName": "Use lowercase letters, numbers, and single hyphens only.",
+        "duplicate": "An environment with this name already exists.",
+        "defaultProtected": "Default environments cannot be deleted.",
+        "actionError": "Environment update failed."
+      },
+      "links": {
+        "secrets": {
+          "title": "Secrets",
+          "desc": "Manage encrypted secrets for {env}"
+        },
+        "audit": {
+          "title": "Audit log",
+          "desc": "View all secret access and mutations"
+        },
+        "members": {
+          "title": "Members",
+          "desc": "Manage team members and roles"
+        },
+        "tokens": {
+          "title": "CI/CD tokens",
+          "desc": "Create and revoke environment-scoped tokens"
+        }
+      }
+    },
+    "secrets": {
+      "title": "Secrets",
+      "count": "{count, plural, =0 {0 secrets} =1 {1 secret} other {# secrets}}",
+      "importEnv": "Import .env",
+      "addSecret": "Add secret",
+      "key": "KEY",
+      "value": "VALUE",
+      "createError": "Failed to create secret",
+      "invalidImport": "No valid KEY=VALUE pairs found in file",
+      "importError": "Import failed",
+      "imported": "{count, plural, =1 {Imported 1 secret} other {Imported # secrets}}",
+      "empty": "No secrets in {env}.",
+      "emptyHint": "Click \"Add secret\" or import a .env file.",
+      "confirmDelete": "Delete {key}?",
+      "hide": "Hide",
+      "reveal": "Reveal"
+    },
+    "tokens": {
+      "title": "CI/CD tokens",
+      "count": "{count, plural, =0 {0 active tokens} =1 {1 active token} other {# active tokens}}",
+      "newToken": "New token",
+      "createdTitle": "Token created — copy it now",
+      "createdBody": "This token will not be shown again. Store it in a safe place.",
+      "created": "Created {date}",
+      "lastUsed": "Last used {date}",
+      "empty": "No active CI/CD tokens.",
+      "emptyHint": "Create a token to use in your CI pipeline.",
+      "confirmRevoke": "Revoke?",
+      "revoke": "Revoke",
+      "modalTitle": "New CI/CD token",
+      "name": "Token name",
+      "scopedEnv": "Scoped environment",
+      "envNotFound": "That environment no longer exists.",
+      "createError": "Failed to create token",
+      "revokeError": "Failed to revoke token"
+    },
+    "members": {
+      "title": "Members",
+      "count": "{count, plural, =0 {0 members} =1 {1 member} other {# members}}",
+      "invite": "Invite member",
+      "modalTitle": "Invite member",
+      "email": "Email",
+      "role": "Role",
+      "inviting": "Inviting...",
+      "confirmRemove": "Remove?",
+      "userNotFound": "No account found with that email.",
+      "alreadyMember": "This user is already a member.",
+      "inviteError": "Failed to invite",
+      "cannotDemoteLastOwner": "Cannot demote the last project admin.",
+      "cannotRemoveLastOwner": "Cannot remove the last project admin.",
+      "roles": {
+        "Owner": "Project Admin",
+        "Developer": "Developer",
+        "ReadOnly": "Read-only"
+      }
+    },
+    "audit": {
+      "title": "Audit log",
+      "allEnvs": "All environments",
+      "allOperations": "All operations",
+      "clearFilters": "Clear filters",
+      "empty": "No audit events found.",
+      "actor": "Actor",
+      "operation": "Operation",
+      "environment": "Environment",
+      "key": "Key",
+      "time": "Time",
+      "operations": {
+        "SECRET_CREATE": "Create",
+        "SECRET_READ": "Read",
+        "SECRET_READ_BULK": "Export",
+        "SECRET_UPDATE": "Update",
+        "SECRET_DELETE": "Delete",
+        "MEMBER_INVITE": "Invite",
+        "MEMBER_ROLE_CHANGE": "Role change",
+        "MEMBER_REMOVE": "Remove",
+        "TOKEN_CREATE": "Token created",
+        "TOKEN_REVOKE": "Token revoked"
+      }
+    }
+  },
+  "hero": {
+    "badge": "Open-source · MIT License",
+    "headline": "Your env vars,",
+    "headlineAccent": "locked and shared the right way.",
+    "subheadline": "Jex helps teams run their own encrypted secrets vault. Self-host the API, dashboard, and database, then pull or inject secrets with the Go CLI.",
+    "ctaPrimary": "Self-host Jex",
+    "ctaSecondary": "View on GitHub",
+    "socialProof": "Open-source and self-hosted · AES-256-GCM encryption · RBAC · Audit trail"
+  },
+  "problem": {
+    "sectionLabel": "The problem",
+    "headline": "Your secrets are scattered.",
+    "subheadline": "Every team develops workarounds. None of them are secure. Jex fixes the root cause.",
+    "card1Headline": "No more Slack DMs",
+    "card1Body": "Sharing secrets over chat is a security incident waiting to happen. Jex gives every team member the exact keys they need, with no message history to audit.",
+    "card2Headline": "No more stale credentials",
+    "card2Body": "One vault, one source of truth. When a secret changes, every developer and every environment gets the update automatically, with no manual sync.",
+    "card3Headline": "No more accidental commits",
+    "card3Body": "jex run injects secrets at process launch: in memory, never to disk. No .env file, no accidental git add, no exposure in your repository history."
+  },
+  "howItWorks": {
+    "sectionLabel": "How it works",
+    "headline": "Three steps. Start in five minutes.",
+    "subheadline": "From set to ship — one command per stage, and nothing plaintext in between.",
+    "step1Label": "Vault",
+    "step1Title": "Store secrets, encrypted",
+    "step1Desc": "Add secrets to the vault via the dashboard or CLI. Every value is encrypted with AES-256-GCM before it touches the database. The server never holds plaintext.",
+    "step2Label": "CLI",
+    "step2Title": "Pull or inject on demand",
+    "step2Desc": "Use jex secrets pull to write an atomic .env file, or jex run to inject directly into your process environment — no file ever written.",
+    "step3Label": "Run",
+    "step3Title": "Your app, with secrets",
+    "step3Desc": "Your process starts with secrets in its environment. Teammates, CI/CD pipelines, and different environments each get exactly the keys they're authorized to see."
+  },
+  "features": {
+    "sectionLabel": "Features",
+    "headline": "Everything a team needs.",
+    "subheadline": "Built for developer teams who take security seriously without sacrificing developer experience.",
+    "feat1Title": "AES-256-GCM Encryption",
+    "feat1Desc": "Every secret is encrypted before it reaches the database. The server never holds plaintext values — your keys, your control.",
+    "feat2Title": "Role-Based Access Control",
+    "feat2Desc": "Project admins, developers, and read-only roles. Scope CI/CD tokens to a single environment. The last project admin can never be removed.",
+    "feat3Title": "Environment Segmentation",
+    "feat3Desc": "dev, staging, prod — each environment is isolated. A member scoped to dev cannot read prod secrets, by design.",
+    "feat4Title": "Append-Only Audit Trail",
+    "feat4Desc": "Every read, write, and delete is recorded atomically alongside the secret operation. Immutable. Filterable. Always consistent.",
+    "feat5Title": "CI/CD Tokens",
+    "feat5Desc": "Create scoped tokens for pipelines with read-only access to a single environment. Revoke them instantly — no cache, no delay.",
+    "feat6Title": "Self-Hostable",
+    "feat6Desc": "Run the full stack with docker-compose up. Open-source, MIT licensed. No vendor lock-in, no data leaving your infrastructure."
+  },
+  "install": {
+    "sectionLabel": "Self-host first",
+    "headline": "Run Jex on your infrastructure.",
+    "subheadline": "Deploy the stack, then install the CLI and point it at your team's Jex API.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "ctaPrimary": "Self-host Jex",
+    "ctaDocs": "Read the docs \u2192"
+  },
+  "footer": {
+    "builtBy": "Built by",
+    "license": "MIT License"
+  }
+}

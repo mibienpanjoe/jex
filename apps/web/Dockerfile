@@ -17,7 +17,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends wget \
   && groupadd -r jex && useradd -r -g jex jex
 COPY --from=builder --chown=jex:jex /app/.next/standalone ./
 COPY --from=builder --chown=jex:jex /app/.next/static ./app/.next/static
-COPY --from=builder --chown=jex:jex /app/content ./app/content
 COPY --from=builder --chown=jex:jex /app/public ./app/public
 USER jex
 EXPOSE 3000

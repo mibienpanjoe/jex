@@ -1,0 +1,268 @@
+{
+  "meta": {
+    "title": "Jex — Gestionnaire de secrets pour les équipes de développeurs",
+    "description": "Gérez les secrets de vos projets, sans fichiers .env partagés. Jex est un gestionnaire open-source avec chiffrement AES-256-GCM, RBAC, et une CLI Go."
+  },
+  "nav": {
+    "features": "Fonctionnalités",
+    "howItWorks": "Comment ça marche",
+    "docs": "Documentation",
+    "github": "GitHub",
+    "login": "Connexion",
+    "getStarted": "Commencer",
+    "getStartedFree": "Commencer gratuitement",
+    "selfHost": "Auto-héberger Jex",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
+  },
+  "auth": {
+    "meta": {
+      "title": "Connexion",
+      "loginTitle": "Connexion",
+      "registerTitle": "Créer un compte",
+      "description": "Connectez-vous à Jex ou créez un compte pour gérer les secrets de votre équipe."
+    },
+    "email": "Email",
+    "password": "Mot de passe",
+    "continueGithub": "Continuer avec GitHub",
+    "emailDivider": "ou continuer avec l'email",
+    "login": {
+      "subtitle": "Connectez-vous à votre compte",
+      "submit": "Se connecter",
+      "loading": "Connexion...",
+      "error": "La connexion a échoué",
+      "noAccount": "Pas encore de compte ?",
+      "createOne": "Créer un compte"
+    },
+    "register": {
+      "subtitle": "Créez votre compte",
+      "name": "Nom complet",
+      "submit": "Créer le compte",
+      "loading": "Création du compte...",
+      "error": "L'inscription a échoué",
+      "hasAccount": "Vous avez déjà un compte ?",
+      "signIn": "Se connecter"
+    }
+  },
+  "dashboard": {
+    "common": {
+      "loading": "Chargement...",
+      "loadError": "Impossible de joindre l'API Jex. Vérifiez que le serveur API est lancé, puis réessayez.",
+      "retry": "Réessayer",
+      "cancel": "Annuler",
+      "create": "Créer",
+      "creating": "Création...",
+      "save": "Enregistrer",
+      "saving": "Enregistrement...",
+      "delete": "Supprimer",
+      "deleting": "Suppression...",
+      "edit": "Modifier",
+      "copy": "Copier",
+      "copied": "Copié !",
+      "yes": "Oui",
+      "remove": "Retirer"
+    },
+    "roles": {
+      "Owner": "Admin projet",
+      "Developer": "Développeur",
+      "ReadOnly": "Lecture seule"
+    },
+    "projects": {
+      "meta": {
+        "title": "Tableau de bord",
+        "description": "Gérez les projets, secrets, membres, journaux d'audit et tokens CI/CD Jex."
+      },
+      "title": "Projets",
+      "newProject": "Nouveau projet",
+      "created": "Créé le {date}",
+      "empty": "Aucun projet pour le moment.",
+      "createFirst": "Créer votre premier projet",
+      "modal": {
+        "title": "Nouveau projet",
+        "name": "Nom du projet",
+        "cancel": "Annuler",
+        "create": "Créer",
+        "creating": "Création...",
+        "error": "Impossible de créer le projet"
+      }
+    },
+    "project": {
+      "projects": "Projets",
+      "created": "Créé le {date}",
+      "environments": {
+        "title": "Environnements",
+        "desc": "Créez des environnements personnalisés et supprimez ceux qui ne servent plus.",
+        "placeholder": "preview-1",
+        "create": "Créer",
+        "creating": "Création...",
+        "deleteLabel": "Supprimer {name}",
+        "invalidName": "Utilisez seulement des minuscules, des chiffres et des tirets simples.",
+        "duplicate": "Un environnement avec ce nom existe déjà.",
+        "defaultProtected": "Les environnements par défaut ne peuvent pas être supprimés.",
+        "actionError": "La mise à jour de l'environnement a échoué."
+      },
+      "links": {
+        "secrets": {
+          "title": "Secrets",
+          "desc": "Gérer les secrets chiffrés pour {env}"
+        },
+        "audit": {
+          "title": "Journal d'audit",
+          "desc": "Voir tous les accès et mutations de secrets"
+        },
+        "members": {
+          "title": "Membres",
+          "desc": "Gérer les membres et les rôles"
+        },
+        "tokens": {
+          "title": "Tokens CI/CD",
+          "desc": "Créer et révoquer des tokens limités à un environnement"
+        }
+      }
+    },
+    "secrets": {
+      "title": "Secrets",
+      "count": "{count, plural, =0 {0 secret} =1 {1 secret} other {# secrets}}",
+      "importEnv": "Importer .env",
+      "addSecret": "Ajouter un secret",
+      "key": "CLÉ",
+      "value": "VALEUR",
+      "createError": "Impossible de créer le secret",
+      "invalidImport": "Aucune paire CLÉ=VALEUR valide trouvée dans le fichier",
+      "importError": "L'import a échoué",
+      "imported": "{count, plural, =1 {1 secret importé} other {# secrets importés}}",
+      "empty": "Aucun secret dans {env}.",
+      "emptyHint": "Cliquez sur \"Ajouter un secret\" ou importez un fichier .env.",
+      "confirmDelete": "Supprimer {key} ?",
+      "hide": "Masquer",
+      "reveal": "Révéler"
+    },
+    "tokens": {
+      "title": "Tokens CI/CD",
+      "count": "{count, plural, =0 {0 token actif} =1 {1 token actif} other {# tokens actifs}}",
+      "newToken": "Nouveau token",
+      "createdTitle": "Token créé — copiez-le maintenant",
+      "createdBody": "Ce token ne sera plus affiché. Conservez-le dans un endroit sûr.",
+      "created": "Créé le {date}",
+      "lastUsed": "Dernière utilisation le {date}",
+      "empty": "Aucun token CI/CD actif.",
+      "emptyHint": "Créez un token pour l'utiliser dans votre pipeline CI.",
+      "confirmRevoke": "Révoquer ?",
+      "revoke": "Révoquer",
+      "modalTitle": "Nouveau token CI/CD",
+      "name": "Nom du token",
+      "scopedEnv": "Environnement limité",
+      "envNotFound": "Cet environnement n'existe plus.",
+      "createError": "Impossible de créer le token",
+      "revokeError": "Impossible de révoquer le token"
+    },
+    "members": {
+      "title": "Membres",
+      "count": "{count, plural, =0 {0 membre} =1 {1 membre} other {# membres}}",
+      "invite": "Inviter un membre",
+      "modalTitle": "Inviter un membre",
+      "email": "Email",
+      "role": "Rôle",
+      "inviting": "Invitation...",
+      "confirmRemove": "Retirer ?",
+      "userNotFound": "Aucun compte trouvé avec cet email.",
+      "alreadyMember": "Cet utilisateur est déjà membre.",
+      "inviteError": "L'invitation a échoué",
+      "cannotDemoteLastOwner": "Impossible de rétrograder le dernier admin projet.",
+      "cannotRemoveLastOwner": "Impossible de retirer le dernier admin projet.",
+      "roles": {
+        "Owner": "Admin projet",
+        "Developer": "Développeur",
+        "ReadOnly": "Lecture seule"
+      }
+    },
+    "audit": {
+      "title": "Journal d'audit",
+      "allEnvs": "Tous les environnements",
+      "allOperations": "Toutes les opérations",
+      "clearFilters": "Effacer les filtres",
+      "empty": "Aucun événement d'audit trouvé.",
+      "actor": "Acteur",
+      "operation": "Opération",
+      "environment": "Environnement",
+      "key": "Clé",
+      "time": "Heure",
+      "operations": {
+        "SECRET_CREATE": "Création",
+        "SECRET_READ": "Lecture",
+        "SECRET_READ_BULK": "Export",
+        "SECRET_UPDATE": "Mise à jour",
+        "SECRET_DELETE": "Suppression",
+        "MEMBER_INVITE": "Invitation",
+        "MEMBER_ROLE_CHANGE": "Changement de rôle",
+        "MEMBER_REMOVE": "Retrait",
+        "TOKEN_CREATE": "Token créé",
+        "TOKEN_REVOKE": "Token révoqué"
+      }
+    }
+  },
+  "hero": {
+    "badge": "Open-source · Licence MIT",
+    "headline": "Your env vars,",
+    "headlineAccent": "locked and shared the right way.",
+    "subheadline": "Jex aide les équipes à exploiter leur propre vault de secrets chiffré. Auto-hébergez l'API, le tableau de bord et la base de données, puis récupérez ou injectez les secrets avec la CLI Go.",
+    "ctaPrimary": "Auto-héberger Jex",
+    "ctaSecondary": "Voir sur GitHub",
+    "socialProof": "Open-source et auto-hébergé · Chiffrement AES-256-GCM · RBAC · Journal d'audit"
+  },
+  "problem": {
+    "sectionLabel": "Le problème",
+    "headline": "Vos secrets sont éparpillés.",
+    "subheadline": "Chaque équipe développe des contournements. Aucun n'est sécurisé. Jex résout le problème à la racine.",
+    "card1Headline": "Fini les DMs Slack",
+    "card1Body": "Partager des secrets par messagerie est un incident de sécurité qui attend de se produire. Jex donne à chaque membre de l'équipe exactement les clés dont il a besoin.",
+    "card2Headline": "Fini les identifiants obsolètes",
+    "card2Body": "Un vault, une seule source de vérité. Quand un secret est mis à jour, chaque développeur et chaque environnement reçoit la mise à jour automatiquement.",
+    "card3Headline": "Fini les commits accidentels",
+    "card3Body": "jex run injecte les secrets au lancement du processus : en mémoire, jamais sur le disque. Pas de fichier .env, pas de git add accidentel."
+  },
+  "howItWorks": {
+    "sectionLabel": "Comment ça marche",
+    "headline": "Trois étapes. Démarrez en cinq minutes.",
+    "subheadline": "De la configuration au déploiement : une commande par étape, et rien en clair entre les deux.",
+    "step1Label": "Vault",
+    "step1Title": "Stockez vos secrets, chiffrés",
+    "step1Desc": "Ajoutez vos secrets au vault via le tableau de bord ou la CLI. Chaque valeur est chiffrée avec AES-256-GCM avant d'atteindre la base de données.",
+    "step2Label": "CLI",
+    "step2Title": "Récupérez ou injectez à la demande",
+    "step2Desc": "Utilisez jex secrets pull pour écrire un fichier .env atomique, ou jex run pour injecter directement dans l'environnement de votre processus.",
+    "step3Label": "Exécution",
+    "step3Title": "Votre application, avec ses secrets",
+    "step3Desc": "Votre processus démarre avec les secrets dans son environnement. Chaque membre, pipeline CI/CD et environnement reçoit exactement les clés autorisées."
+  },
+  "features": {
+    "sectionLabel": "Fonctionnalités",
+    "headline": "Tout ce dont une équipe a besoin.",
+    "subheadline": "Conçu pour les équipes de développeurs qui prennent la sécurité au sérieux sans sacrifier l'expérience développeur.",
+    "feat1Title": "Chiffrement AES-256-GCM",
+    "feat1Desc": "Chaque secret est chiffré avant d'atteindre la base de données. Le serveur ne détient jamais de valeurs en clair : vos clés, votre contrôle.",
+    "feat2Title": "Contrôle d'accès basé sur les rôles",
+    "feat2Desc": "Admins projet, développeurs et rôles en lecture seule. Limitez les tokens CI/CD à un seul environnement. Le dernier admin projet ne peut jamais être supprimé.",
+    "feat3Title": "Segmentation par environnement",
+    "feat3Desc": "dev, staging, prod : chaque environnement est isolé. Un membre limité à dev ne peut pas lire les secrets de prod, par conception.",
+    "feat4Title": "Journal d'audit immuable",
+    "feat4Desc": "Chaque lecture, écriture et suppression est enregistrée atomiquement. Immuable. Filtrable. Toujours cohérent.",
+    "feat5Title": "Tokens CI/CD",
+    "feat5Desc": "Créez des tokens limités pour les pipelines avec accès en lecture seule à un seul environnement. Révocation instantanée : pas de cache, pas de délai.",
+    "feat6Title": "Auto-hébergeable",
+    "feat6Desc": "Lancez la stack complète avec docker-compose up. Open-source, licence MIT. Pas d'enfermement propriétaire, pas de données quittant votre infrastructure."
+  },
+  "install": {
+    "sectionLabel": "Auto-hébergement d'abord",
+    "headline": "Exécutez Jex sur votre infrastructure.",
+    "subheadline": "Déployez la stack, puis installez la CLI et pointez-la vers l'API Jex de votre équipe.",
+    "copy": "Copier",
+    "copied": "Copié",
+    "ctaPrimary": "Auto-héberger Jex",
+    "ctaDocs": "Lire la documentation \u2192"
+  },
+  "footer": {
+    "builtBy": "Créé par",
+    "license": "Licence MIT"
+  }
+}

@@ -4,11 +4,14 @@
   "private": true,
   "workspaces": [
     "apps/web",
-    "apps/api"
+    "apps/api",
+    "apps/site"
   ],
   "scripts": {
     "dev:api": "node scripts/dev-api.mjs",
     "dev:web": "node scripts/dev-web.mjs",
-    "dev:web:clean": "node scripts/dev-web.mjs --clean"
+    "dev:web:clean": "node scripts/dev-web.mjs --clean",
+    "dev:site": "npm run dev --workspace=apps/site",
+    "build:site": "npm run build --workspace=apps/site"
   }
 }
